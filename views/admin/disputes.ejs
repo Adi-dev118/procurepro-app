@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Dispute Center</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <i class="bi bi-shop logo-icon"></i>
+            <span class="logo-text">AdminPanel</span>
+          </div>
+          <button class="toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="sidebar-menu">
+          <ul>
+            <li>
+              <a href="/admin/dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/users">
+                <i class="bi bi-people"></i>
+                <span class="menu-text">User Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/suppliers">
+                <i class="bi bi-truck"></i>
+                <span class="menu-text">Supplier Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/products">
+                <i class="bi bi-box-seam"></i>
+                <span class="menu-text">Product Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="menu-text">Order Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/disputes" class="active">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span class="menu-text">Dispute Center</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/settings">
+                <i class="bi bi-gear"></i>
+                <span class="menu-text">System Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>AdminPanel v1.0</p>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+          <button class="mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <h1 class="page-title">Dispute Center</h1>
+
+          <div class="topbar-actions">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <div class="notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="user-profile dropdown" style="position: relative">
+              <button
+                id="adminDropdownBtn"
+                class="d-flex align-items-center gap-2 btn border-0"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="user-avatar"><span>AD</span></div>
+                <span class="user-name">Admin User</span>
+                <i class="bi bi-chevron-down"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end mt-2" style="min-width: 220px">
+                <li class="px-3 py-2 border-bottom">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="user-avatar"><span>AD</span></div>
+                    <div>
+                      <div class="fw-medium">Admin User</div>
+                      <small class="text-muted">admin@panel.com</small>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/profile">
+                    <i class="bi bi-person me-2"></i>My Profile</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/settings">
+                    <i class="bi bi-gear me-2"></i>System Settings</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="/company/login" id="signoutButton">
+                    <i class="bi bi-box-arrow-right me-2"></i>Sign Out</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper disputes-page">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="section-title">Dispute Center</h1>
+            <div>
+              <button class="btn btn-primary me-2">
+                <i class="bi bi-plus-circle me-2"></i>
+                New Dispute
+              </button>
+              <button class="btn btn-outline-secondary">
+                <i class="bi bi-download me-2"></i>
+                Export Reports
+              </button>
+            </div>
+          </div>
+
+          <!-- Dispute Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Total Disputes</h6>
+                      <h3 class="mb-0"><%=total%></h3>
+                    </div>
+                    <div class="stat-icon bg-primary">
+                      <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-down"></i> 3 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Open Disputes</h6>
+                      <h3 class="mb-0"><%=open%></h3>
+                    </div>
+                    <div class="stat-icon bg-warning">
+                      <i class="bi bi-clock-history"></i>
+                    </div>
+                  </div>
+                  <p class="text-danger mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 2 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">In Progress</h6>
+                      <h3 class="mb-0"><%=inProgress%></h3>
+                    </div>
+                    <div class="stat-icon bg-info">
+                      <i class="bi bi-gear"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-down"></i> 1 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Resolved</h6>
+                      <h3 class="mb-0"><%=resolved%></h3>
+                    </div>
+                    <div class="stat-icon bg-success">
+                      <i class="bi bi-check-circle"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 2 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="disputeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="all-disputes-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#all-disputes"
+                type="button"
+              >
+                All Disputes
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="open-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#open"
+                type="button"
+              >
+                Open
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="in-progress-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#in-progress"
+                type="button"
+              >
+                In Progress
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="resolved-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#resolved"
+                type="button"
+              >
+                Resolved
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="escalated-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#escalated"
+                type="button"
+              >
+                Escalated
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="disputeTabsContent">
+            <!-- All Disputes Tab -->
+            <div class="tab-pane fade show active" id="all-disputes" role="tabpanel">
+              <div class="table-container mt-3">
+                <div class="table-header">
+                  <div class="table-actions">
+                    <div class="input-group" style="width: 300px">
+                      <input type="text" class="form-control" placeholder="Search disputes..." />
+                      <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-search"></i>
+                      </button>
+                    </div>
+
+                    <div class="btn-group">
+                      <button
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bi bi-filter me-1"></i> Filter
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">By Date</a></li>
+                        <li><a class="dropdown-item" href="#">By Type</a></li>
+                        <li><a class="dropdown-item" href="#">By Priority</a></li>
+                      </ul>
+                    </div>
+
+                    <button class="btn btn-outline-secondary">
+                      <i class="bi bi-download me-2"></i>
+                      Export
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-hover" data-sortable="true">
+                    <thead>
+                      <tr>
+                        <th>Dispute ID</th>
+                        <th>Order</th>
+                        <th>Parties</th>
+                        <th>Type</th>
+                        <th>Opened</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%disputesData.forEach(dispute => {%>
+                      <tr>
+                        <td>
+                          <strong
+                            >#DSP
+                            <%=String(dispute.disputeId).padStart(4,'0')%></strong
+                          >
+                          <div class="text-muted small">Click to view details</div>
+                        </td>
+                        <td>
+                          <div>#ORD-<%=String(dispute.orderId).padStart(4,'0')%></div>
+                          <div class="text-muted small"><%=dispute.productName%></div>
+                        </td>
+                        <td>
+                          <div>
+                            <strong>Buyer: </strong>
+                            <%=dispute.customerName%>
+                          </div>
+                          <div>
+                            <strong>Supplier:</strong>
+                            <%=dispute.supplierName%>
+                          </div>
+                        </td>
+                        <td>
+                          <span
+                            class="badge <%= dispute.type === 'Counterfied Item' ? 'bg-danger' : dispute.type === 'Late Delivery' ? 'bg-primary' : dispute.type === 'Item not Received'? 'bg-success' : dispute.type === 'Counterfied Item'? 'bg-warning' : 'bg-secondary' %>"
+                            ><%=dispute.type%></span
+                          >
+                        </td>
+                        <td>
+                          <%=dispute.date.toISOString().slice(0,10) %><br /><span
+                            class="text-muted small"
+                            ><%=
+                            dispute.date.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})
+                            %></span
+                          >
+                        </td>
+                        <td>
+                          <span
+                            class="badge <%= dispute.priority === 'high' ? 'bg-danger' : dispute.priority === 'medium' ? 'bg-warning' : 'bg-success' %>"
+                            ><%=dispute.priority%></span
+                          >
+                        </td>
+                        <td>
+                          <span
+                            class="status-badge <%= dispute.status === 'in progress' ? 'suspended' : dispute.status === 'resolved' ? 'active' : dispute.status === 'open'? 'pending' : inactive %>"
+                            ><%=dispute.status%></span
+                          >
+                        </td>
+                        <td>
+                          <div class="action-buttons">
+                            <button
+                              class="btn btn-info btn-sm me-1"
+                              data-bs-toggle="modal"
+                              data-bs-target="#viewDisputeModal"
+                            >
+                              View
+                            </button>
+                            <button class="btn btn-primary btn-sm">Assign</button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <%})%>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="pagination-container">
+                  <div>Showing 1 to 5 of 18 disputes</div>
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            <!-- Other tabs would have similar content filtered by status -->
+          </div>
+
+          <!-- Dispute Resolution Workflow -->
+          <div class="row mt-5">
+            <div class="col-lg-8">
+              <div class="form-section">
+                <h3 class="section-title mb-4">Dispute Resolution Workflow</h3>
+                <div class="workflow-steps mb-4">
+                  <div class="step active">
+                    <div class="step-icon">1</div>
+                    <div class="step-content">
+                      <h6>Dispute Filed</h6>
+                      <p class="text-muted small">Buyer or supplier files a dispute</p>
+                    </div>
+                  </div>
+                  <div class="step active">
+                    <div class="step-icon">2</div>
+                    <div class="step-content">
+                      <h6>Under Review</h6>
+                      <p class="text-muted small">Admin reviews evidence from both parties</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-icon">3</div>
+                    <div class="step-content">
+                      <h6>Resolution Proposed</h6>
+                      <p class="text-muted small">Admin proposes a resolution</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-icon">4</div>
+                    <div class="step-content">
+                      <h6>Resolution Accepted</h6>
+                      <p class="text-muted small">Parties accept the resolution</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Admin Notes -->
+                <div class="mb-4">
+                  <h6>Admin Notes & Resolution Actions</h6>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="admin-note mb-3 p-3 border rounded">
+                        <div class="d-flex justify-content-between">
+                          <strong>Admin User</strong>
+                          <span class="text-muted small">Today, 10:30 AM</span>
+                        </div>
+                        <p class="mb-0 mt-2">
+                          Contacted buyer for additional evidence. Waiting for response.
+                        </p>
+                      </div>
+                      <div class="admin-note mb-3 p-3 border rounded">
+                        <div class="d-flex justify-content-between">
+                          <strong>Admin User</strong>
+                          <span class="text-muted small">Yesterday, 3:15 PM</span>
+                        </div>
+                        <p class="mb-0 mt-2">
+                          Supplier provided tracking information. Item shows as delivered.
+                        </p>
+                      </div>
+                      <textarea
+                        class="form-control mb-3"
+                        rows="3"
+                        placeholder="Add new note..."
+                      ></textarea>
+                      <button class="btn btn-primary">Add Note</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <!-- Refund Approval -->
+              <div class="form-section">
+                <h3 class="section-title mb-4">Refund Approval</h3>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <label class="form-label">Dispute #DSP-001</label>
+                      <p class="text-muted small">Item not received dispute</p>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Requested Refund Amount</label>
+                      <h4>$129.99</h4>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Evidence Submitted</label>
+                      <div class="mb-2">
+                        <span class="badge bg-success me-1">Tracking Proof</span>
+                        <span class="badge bg-warning">Communication Logs</span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Recommended Action</label>
+                      <select class="form-select">
+                        <option>Approve Full Refund</option>
+                        <option>Approve Partial Refund</option>
+                        <option>Deny Refund</option>
+                        <option>Request More Info</option>
+                      </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-success">Approve Refund</button>
+                      <button class="btn btn-danger">Deny Refund</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dispute Statistics -->
+              <div class="form-section mt-4">
+                <h3 class="section-title mb-4">Dispute Statistics</h3>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <label class="form-label">Average Resolution Time</label>
+                      <h4>3.2 days</h4>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Most Common Type</label>
+                      <p>Item Not Received (45%)</p>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Refund Rate</label>
+                      <p>68% of disputes result in refund</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- View Dispute Modal -->
+    <div
+      class="modal fade"
+      id="viewDisputeModal"
+      tabindex="-1"
+      aria-labelledby="viewDisputeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewDisputeModalLabel">Dispute Details - #DSP-001</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="card p-3">
+                  <h6>Buyer Information</h6>
+                  <p class="mb-1"><strong>Sarah Johnson</strong></p>
+                  <p class="mb-1">sarah.j@example.com</p>
+                  <p class="mb-0">Member since: Sep 2023</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card p-3">
+                  <h6>Supplier Information</h6>
+                  <p class="mb-1"><strong>TechGadgets Ltd</strong></p>
+                  <p class="mb-1">info@techgadgets.com</p>
+                  <p class="mb-0">Supplier since: Oct 2023</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Dispute Details</h6>
+              <div class="card p-3">
+                <div class="row">
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Order:</strong> #ORD-7791</p>
+                  </div>
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Product:</strong> Wireless Headphones</p>
+                  </div>
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Amount:</strong> $129.99</p>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Type:</strong> Item Not Received</p>
+                  </div>
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Opened:</strong> Nov 5, 2023 09:15 AM</p>
+                  </div>
+                  <div class="col-md-4">
+                    <p class="mb-1">
+                      <strong>Priority:</strong> <span class="badge bg-danger">High</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Buyer's Claim</h6>
+              <div class="card p-3">
+                <p>
+                  "I ordered the wireless headphones on October 28th with expected delivery by
+                  November 3rd. The tracking shows delivered on November 2nd, but I never received
+                  the package. I've checked with neighbors and the post office, but no one has seen
+                  it."
+                </p>
+                <div class="mt-2">
+                  <strong>Evidence Submitted:</strong>
+                  <ul class="mb-0">
+                    <li>Tracking screenshot showing "delivered" status</li>
+                    <li>Email correspondence with carrier</li>
+                    <li>Photos of empty mailbox area</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Supplier's Response</h6>
+              <div class="card p-3">
+                <p>
+                  "We shipped the item on October 29th via standard shipping. The tracking number
+                  provided shows successful delivery on November 2nd. We have fulfilled our
+                  obligation by shipping the item to the provided address."
+                </p>
+                <div class="mt-2">
+                  <strong>Evidence Submitted:</strong>
+                  <ul class="mb-0">
+                    <li>Shipping confirmation with tracking</li>
+                    <li>Proof of dispatch from warehouse</li>
+                    <li>Carrier delivery confirmation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Recommended Resolution</h6>
+              <div class="card p-3">
+                <div class="mb-3">
+                  <label class="form-label">Resolution Type</label>
+                  <select class="form-select">
+                    <option>Full refund to buyer</option>
+                    <option>Partial refund to buyer</option>
+                    <option>Resend item to buyer</option>
+                    <option>No action required</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Admin Notes</label>
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    placeholder="Add resolution notes..."
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Supporting Documentation</label>
+                  <input type="file" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save Resolution</button>
+            <button type="button" class="btn btn-success">Finalize Resolution</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

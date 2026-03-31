@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Finance</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="../assets/css/vendor.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="vendor-container">
+      <!-- Sidebar -->
+      <aside class="vendor-sidebar">
+        <div class="vendor-sidebar-header">
+          <div class="vendor-logo">
+            <i class="bi bi-shop vendor-logo-icon"></i>
+            <span class="vendor-logo-text">VendorHub</span>
+          </div>
+          <button class="vendor-toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="vendor-sidebar-menu">
+          <ul>
+            <li>
+              <a href="/vendor/dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="vendor-menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/products">
+                <i class="bi bi-box-seam"></i>
+                <span class="vendor-menu-text">Products</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="vendor-menu-text">Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/rfqs">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="vendor-menu-text">RFQs</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/finance" class="active">
+                <i class="bi bi-credit-card"></i>
+                <span class="vendor-menu-text">Finance</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/profile">
+                <i class="bi bi-person-circle"></i>
+                <span class="vendor-menu-text">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="vendor-sidebar-footer">
+          <p><%=name%></p>
+          <small>Vendor Account</small>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="vendor-mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="vendor-main-content">
+        <!-- Topbar -->
+        <header class="vendor-topbar">
+          <button class="vendor-mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <h1 class="vendor-page-title">Financial Dashboard</h1>
+
+          <div class="vendor-topbar-actions">
+            <div class="vendor-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search transactions..." />
+            </div>
+
+            <div class="vendor-notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="vendor-user-profile" id="profileTrigger">
+              <div class="vendor-user-avatar">
+                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+              </div>
+              <span class="vendor-user-name"><%=name%></span>
+              <i class="bi bi-chevron-down" id="profileChevron"></i>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="vendor-profile-dropdown" id="profileDropdown">
+              <div class="vendor-profile-dropdown-header">
+                <div class="vendor-profile-dropdown-avatar">
+                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+                </div>
+                <div class="vendor-profile-dropdown-info">
+                  <strong><%=name%></strong>
+                  <small><%=email%></small>
+                </div>
+              </div>
+              <div class="vendor-profile-dropdown-divider"></div>
+              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
+                <i class="bi bi-box-arrow-right"></i>
+                Sign Out
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="vendor-content-wrapper vendor-finance-page">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="vendor-section-title">Financial Dashboard</h1>
+            <div>
+              <button class="btn btn-outline-primary me-2">
+                <i class="bi bi-download me-2"></i>
+                Export Statements
+              </button>
+              <button class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>
+                Request Payout
+              </button>
+            </div>
+          </div>
+
+          <!-- Finance Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Total Revenue</h6>
+                      <h3 class="mb-0">$<%=revenue%></h3>
+                    </div>
+                    <div class="stat-icon bg-primary">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 12% from last month
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Pending Payout</h6>
+                      <h3 class="mb-0">$<%=pending%></h3>
+                    </div>
+                    <div class="stat-icon bg-warning">
+                      <i class="bi bi-clock-history"></i>
+                    </div>
+                  </div>
+                  <p class="text-danger mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> $450 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Available Balance</h6>
+                      <h3 class="mb-0">$<%=availableBalance%></h3>
+                    </div>
+                    <div class="stat-icon bg-success">
+                      <i class="bi bi-wallet2"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> $1,250 from last week
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Commission Fees</h6>
+                      <h3 class="mb-0">$<%=commission%></h3>
+                    </div>
+                    <div class="stat-icon bg-info">
+                      <i class="bi bi-percent"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">15% platform commission</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="vendor-charts-section">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="vendor-chart-container">
+                  <div class="vendor-chart-header">
+                    <h3 class="vendor-chart-title">Revenue Trend</h3>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                      >
+                        Last 30 days
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 90 days</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="vendor-chart-placeholder">
+                    <i class="bi bi-graph-up me-2"></i>
+                    Revenue Trend Chart (Placeholder)
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="vendor-chart-container">
+                  <div class="vendor-chart-header">
+                    <h3 class="vendor-chart-title">Revenue by Category</h3>
+                  </div>
+                  <div class="vendor-chart-placeholder">
+                    <i class="bi bi-pie-chart me-2"></i>
+                    Revenue Distribution (Placeholder)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <ul class="nav nav-tabs vendor-nav-tabs" id="financeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="transactions-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#transactions"
+                type="button"
+              >
+                Transactions
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="payouts-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#payouts"
+                type="button"
+              >
+                Payouts
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="invoices-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#invoices"
+                type="button"
+              >
+                Invoices
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="fees-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#fees"
+                type="button"
+              >
+                Fees & Commissions
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="financeTabsContent">
+            <!-- Transactions Tab -->
+            <div class="tab-pane fade show active" id="transactions" role="tabpanel">
+              <div class="vendor-table-container mt-3">
+                <div class="vendor-table-header">
+                  <div class="vendor-table-actions">
+                    <div class="input-group" style="width: 300px">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search transactions..."
+                      />
+                      <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-search"></i>
+                      </button>
+                    </div>
+
+                    <div class="btn-group">
+                      <button
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bi bi-filter me-1"></i> Filter
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">All Transactions</a></li>
+                        <li><a class="dropdown-item" href="#">Sales</a></li>
+                        <li><a class="dropdown-item" href="#">Refunds</a></li>
+                        <li><a class="dropdown-item" href="#">Payouts</a></li>
+                        <li><a class="dropdown-item" href="#">Fees</a></li>
+                      </ul>
+                    </div>
+
+                    <div class="btn-group">
+                      <button
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bi bi-calendar me-1"></i> Date Range
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                        <li><a class="dropdown-item" href="#">This month</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="vendor-table-responsive">
+                  <table class="vendor-table" data-sortable="true">
+                    <thead>
+                      <tr>
+                        <th>Transaction ID</th>
+                        <th>Date</th>
+                        <th>Order</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% transactions.forEach(txn => { %>
+                      <tr>
+                        <td>#TXN-<%= txn.transaction_id %></td>
+
+                        <td>
+                          <%= new Date(txn.date).toLocaleDateString() %><br />
+                          <span class="text-muted small">
+                            <%= new Date(txn.date).toLocaleTimeString([], {hour: '2-digit',
+                            minute:'2-digit'}) %>
+                          </span>
+                        </td>
+
+                        <td><%= txn.reference %></td>
+
+                        <td>
+                          <% if(txn.type === 'Sale'){ %>
+                          <span class="badge bg-success">Sale</span>
+                          <% } else if(txn.type === 'Refund'){ %>
+                          <span class="badge bg-danger">Refund</span>
+                          <% } else { %>
+                          <span class="badge bg-info">Payout</span>
+                          <% } %>
+                        </td>
+
+                        <td>$<%= txn.amount %></td>
+
+                        <td>
+                          <span class="vendor-status-badge <%= txn.status.toLowerCase() %>">
+                            <%= txn.status %>
+                          </span>
+                        </td>
+
+                        <td>
+                          <div class="vendor-action-buttons">
+                            <% if(txn.type === 'Sale'){ %>
+                            <button class="btn btn-outline-secondary btn-sm">
+                              <i class="bi bi-receipt me-1"></i> Receipt
+                            </button>
+                            <% } %>
+
+                            <% if(txn.type === 'Payout'){ %>
+                            <button class="btn btn-outline-secondary btn-sm">
+                              <i class="bi bi-receipt me-1"></i> Statement
+                            </button>
+                            <% } %>
+
+                            <% if(txn.status === 'Pending' || txn.status === 'Processing'){ %>
+                            <button class="btn btn-outline-secondary btn-sm">
+                              <i class="bi bi-eye me-1"></i> View
+                            </button>
+                            <% } %>
+                          </div>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="vendor-pagination-container">
+                  <div>Showing 1 to 6 of 245 transactions</div>
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payouts Tab -->
+            <div class="tab-pane fade" id="payouts" role="tabpanel">
+              <div class="vendor-table-container mt-3">
+                <div class="vendor-table-responsive">
+                  <table class="vendor-table">
+                    <thead>
+                      <tr>
+                        <th>Payout ID</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% payouts.forEach(p => { %>
+                      <tr>
+                        <td>#PAY-<%= String(p.id).padStart(3,'0') %></td>
+
+                        <td>
+                          <%= new Date(p.date).toISOString().split('T')[0] %>
+                        </td>
+
+                        <td>
+                          $<%= Number(p.amount).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) %>
+                        </td>
+
+                        <td>
+                          <%= p.method || 'Bank Transfer' %>
+                        </td>
+
+                        <td>
+                          <span
+                            class="vendor-status-badge <%= p.status === 'paid' ? 'completed' : 'pending' %>"
+                          >
+                            <%= p.status === 'paid' ? 'Paid' : 'Pending' %>
+                          </span>
+                        </td>
+
+                        <td>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-download me-1"></i> Statement
+                          </button>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="vendor-form-section mt-4">
+                <h3 class="vendor-section-title mb-4">Request Payout</h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Available Balance</label>
+                      <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="text" class="form-control" value="8,750.00" readonly />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Payout Amount</label>
+                      <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="0.00"
+                          max="8750"
+                          step="0.01"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Payout Method</label>
+                  <select class="form-select">
+                    <option>Bank Transfer (****1234)</option>
+                    <option>PayPal (vendor@techgadgets.com)</option>
+                  </select>
+                </div>
+                <div class="alert alert-info">
+                  <i class="bi bi-info-circle me-2"></i>
+                  Payouts are processed within 3-5 business days. Minimum payout amount is $50.
+                </div>
+                <button class="btn btn-primary">Request Payout</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Financial Summary -->
+          <div class="row mt-5">
+            <div class="col-lg-8">
+              <div class="vendor-form-section">
+                <h3 class="vendor-section-title mb-4">Financial Summary</h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h6 class="card-title">This Month</h6>
+                        <h3 class="mb-0">$<%=thisMonth%></h3>
+                        <p class="text-success mb-0">
+                          <i class="bi bi-arrow-up"></i> 15.2% from last month
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h6 class="card-title">Last Month</h6>
+                        <h3 class="mb-0">$<%=lastMonth%></h3>
+                        <p class="text-success mb-0">
+                          <i class="bi bi-arrow-up"></i> 8.5% from previous
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h6 class="card-title">Average Order Value</h6>
+                        <h3 class="mb-0">$<%=avgOrder%></h3>
+                        <p class="text-success mb-0">
+                          <i class="bi bi-arrow-up"></i> $12.75 increase
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h6 class="card-title">Commission Paid</h6>
+                        <h3 class="mb-0">$<%=commission%></h3>
+                        <p class="text-muted mb-0">15% of revenue</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="vendor-chart-container">
+                <div class="vendor-chart-header">
+                  <h3 class="vendor-chart-title">Payment Methods</h3>
+                </div>
+                <div class="vendor-finance-list">
+                  <div class="vendor-finance-item">
+                    <div>
+                      <strong>Bank Transfer</strong>
+                      <div class="text-muted small">Chase Bank ****1234</div>
+                    </div>
+                    <span class="badge bg-success">Primary</span>
+                  </div>
+                  <div class="vendor-finance-item">
+                    <div>
+                      <strong>PayPal</strong>
+                      <div class="text-muted small">vendor@techgadgets.com</div>
+                    </div>
+                    <span class="badge bg-secondary">Verified</span>
+                  </div>
+                  <div class="vendor-finance-item">
+                    <div>
+                      <strong>Stripe</strong>
+                      <div class="text-muted small">Connected</div>
+                    </div>
+                    <span class="badge bg-secondary">Active</span>
+                  </div>
+                </div>
+                <div class="text-center mt-3">
+                  <button class="btn btn-outline-primary btn-sm">Manage Payment Methods</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="../assets/js/vendor.js"></script>
+  </body>
+</html>

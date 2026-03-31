@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marketplace - ProcurePro</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <!-- Company CSS -->
+    <link rel="stylesheet" href="../assets/css/company-style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body class="company-dashboard">
+    <!-- Header (Same as dashboard) -->
+    <header class="company-header">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="company-logo">
+          <i class="bi bi-building"></i>
+          <span>ProcurePro</span>
+        </div>
+
+        <button class="mobile-menu-btn d-lg-none">
+          <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="company-nav d-none d-lg-flex">
+          <a href="/dashboard" class="company-nav-link">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+          </a>
+          <a href="/marketplace" class="company-nav-link active">
+            <i class="bi bi-shop me-1"></i> Marketplace
+          </a>
+          <a href="/rfq" class="company-nav-link">
+            <i class="bi bi-megaphone me-1"></i> RFQ Center
+          </a>
+          <a href="/orders" class="company-nav-link">
+            <i class="bi bi-cart-check me-1"></i> Orders
+          </a>
+          <a href="/profile" class="company-nav-link">
+            <i class="bi bi-person-circle me-1"></i> Profile
+          </a>
+        </nav>
+
+        <div class="company-actions">
+          <div class="search-box-company d-none d-md-block">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search products, suppliers..." />
+          </div>
+
+          <button class="notification-btn">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+
+          <div class="company-profile">
+            <div class="company-avatar">
+              <%= name.name.split(' ').map(word => word[0]).join('').toUpperCase() %>
+            </div>
+            <div class="d-none d-md-block">
+              <div class="company-name"><%=name.name%></div>
+              <div class="text-muted small">Buyer Account</div>
+            </div>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-nav-mobile d-lg-none">
+        <a href="/dashboard" class="company-nav-link">
+          <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+        <a href="/marketplace" class="company-nav-link active">
+          <i class="bi bi-shop me-2"></i> Marketplace
+        </a>
+        <a href="/rfq" class="company-nav-link">
+          <i class="bi bi-megaphone me-2"></i> RFQ Center
+        </a>
+        <a href="/orders" class="company-nav-link">
+          <i class="bi bi-cart-check me-2"></i> Orders
+        </a>
+        <a href="/profile" class="company-nav-link">
+          <i class="bi bi-person-circle me-2"></i> Profile
+        </a>
+      </div>
+
+      <div class="mobile-overlay"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="company-main">
+      <div class="container-fluid py-4">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="h2 mb-1">Marketplace</h1>
+            <p class="text-muted mb-0">Browse products from verified suppliers</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRFQModal">
+              <i class="bi bi-megaphone me-2"></i> Create RFQ
+            </button>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="marketplace-filters">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="filter-section">
+                <h6>Categories</h6>
+                <div class="filter-tags">
+                  <span class="filter-tag active">All</span>
+                  <span class="filter-tag">Machinery</span>
+                  <span class="filter-tag">Tools & Equipment</span>
+                  <span class="filter-tag">Raw Materials</span>
+                  <span class="filter-tag">Components</span>
+                  <span class="filter-tag">Services</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="filter-section">
+                <h6>Price Range</h6>
+                <div class="price-range">
+                  <input type="number" class="form-control price-min" placeholder="Min" value="0" />
+                  <span>to</span>
+                  <input
+                    type="number"
+                    class="form-control price-max"
+                    placeholder="Max"
+                    value="10000"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="filter-section">
+                <h6>Location</h6>
+                <select class="form-select">
+                  <option>Any Location</option>
+                  <option>North America</option>
+                  <option>Europe</option>
+                  <option>Asia</option>
+                  <option>Local (Within 100km)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="filter-section">
+                <h6>Supplier Rating</h6>
+                <select class="form-select">
+                  <option>Any Rating</option>
+                  <option>4+ Stars</option>
+                  <option>3+ Stars</option>
+                  <option>Verified Only</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <button class="btn btn-outline-secondary btn-sm me-2">
+                    <i class="bi bi-funnel me-1"></i> More Filters
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm clear-filters">
+                    <i class="bi bi-x-circle me-1"></i> Clear All
+                  </button>
+                </div>
+                <div>
+                  <span class="text-muted me-3">245 products found</span>
+                  <select class="form-select form-select-sm d-inline-block w-auto">
+                    <option>Sort by: Popularity</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Rating</option>
+                    <option>Newest</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+          <% products.forEach(product => { %>
+
+          <div class="product-card">
+            <div class="product-image">
+              <i class="bi <%= product.icon || 'bi-box' %> display-4 text-muted"></i>
+            </div>
+
+            <div class="product-details">
+              <div class="product-category"><%= product.category %></div>
+
+              <h3 class="product-title"><%= product.name %></h3>
+
+              <p class="product-description"><%= product.description %></p>
+
+              <div class="product-specs">
+                <span>
+                  <i class="bi bi-geo-alt me-1"></i>
+                  <%= product.country %>
+                </span>
+
+                <span>
+                  <i class="bi bi-check-circle me-1"></i>
+                  <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %>
+                </span>
+              </div>
+
+              <div class="product-price">$<%= product.price %></div>
+
+              <div class="product-moq">MOQ: <%= product.moq %> units</div>
+
+              <div class="product-supplier">
+                <div class="supplier-avatar">
+                  <%= product.supplier.split(' ').map(w => w[0]).join('').toUpperCase() %>
+                </div>
+
+                <div class="supplier-info">
+                  <h6 class="mb-0"><%= product.supplier %></h6>
+
+                  <p class="mb-0"><%= product.rating %> ★ (<%= product.reviews %> reviews)</p>
+                </div>
+              </div>
+
+              <div class="product-actions">
+                <button class="btn btn-primary flex-fill">
+                  <i class="bi bi-cart me-2"></i> Request Quote
+                </button>
+
+                <button class="btn btn-outline-primary">
+                  <i class="bi bi-info-circle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <% }) %>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="mt-5">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-0">&copy; 2023 ProcurePro. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a href="#" class="text-muted me-3">Help & Support</a>
+            <a href="#" class="text-muted me-3">Privacy Policy</a>
+            <a href="#" class="text-muted">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Company JS -->
+    <script src="../assets/js/company.js"></script>
+  </body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Product Detail</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="../assets/css/vendor.css" />
+
+    <!-- Product Detail CSS -->
+    <link rel="stylesheet" href="../assets/css/product-detail.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="vendor-container">
+      <!-- Sidebar -->
+      <aside class="vendor-sidebar">
+        <div class="vendor-sidebar-header">
+          <div class="vendor-logo">
+            <i class="bi bi-shop vendor-logo-icon"></i>
+            <span class="vendor-logo-text">VendorHub</span>
+          </div>
+          <button class="vendor-toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="vendor-sidebar-menu">
+          <ul>
+            <li>
+              <a href="/vendor/dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="vendor-menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/products">
+                <i class="bi bi-box-seam"></i>
+                <span class="vendor-menu-text">Products</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="vendor-menu-text">Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/rfqs">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="vendor-menu-text">RFQs</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/finance">
+                <i class="bi bi-credit-card"></i>
+                <span class="vendor-menu-text">Finance</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/profile">
+                <i class="bi bi-person-circle"></i>
+                <span class="vendor-menu-text">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="vendor-sidebar-footer">
+          <p>TechGadgets Ltd</p>
+          <small>Vendor Account</small>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="vendor-mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="vendor-main-content">
+        <!-- Topbar -->
+        <header class="vendor-topbar">
+          <button class="vendor-mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <div class="vendor-page-header">
+            <h1 class="vendor-page-title">Product Detail</h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/vendor/products">Products</a></li>
+                <li class="breadcrumb-item active">Wireless Bluetooth Headphones</li>
+              </ol>
+            </nav>
+          </div>
+
+          <div class="vendor-topbar-actions">
+            <div class="vendor-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search products..." />
+            </div>
+
+            <div class="vendor-notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="vendor-user-profile">
+              <div class="vendor-user-avatar">
+                <span>TG</span>
+              </div>
+              <span class="vendor-user-name">TechGadgets Ltd</span>
+              <i class="bi bi-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="vendor-content-wrapper vendor-product-detail-page">
+          <!-- Product Header with Actions -->
+          <div class="product-detail-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h1 class="product-title">Wireless Bluetooth Headphones</h1>
+                <div class="product-meta">
+                  <span class="badge bg-primary">SKU: WH-001</span>
+                  <span class="badge bg-secondary">Electronics</span>
+                  <span class="badge bg-success">Active</span>
+                  <span class="badge bg-info">48 in Stock</span>
+                </div>
+              </div>
+              <div class="product-actions">
+                <button class="btn btn-outline-secondary" id="previewProduct">
+                  <i class="bi bi-eye me-2"></i>Preview
+                </button>
+                <button class="btn btn-primary" id="saveProduct">
+                  <i class="bi bi-save me-2"></i>Save Changes
+                </button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                  <i class="bi bi-trash me-2"></i>Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <!-- Left Column - Product Images & Basic Info -->
+            <div class="col-lg-8">
+              <!-- Product Images -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Product Images</h5>
+                </div>
+                <div class="card-body">
+                  <div class="product-images-container">
+                    <div class="main-product-image">
+                      <img
+                        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop"
+                        alt="Wireless Bluetooth Headphones"
+                        class="img-fluid rounded"
+                        id="mainProductImage"
+                      />
+                    </div>
+                    <div class="product-image-thumbnails">
+                      <div
+                        class="thumbnail active"
+                        data-image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop"
+                      >
+                        <img
+                          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=150&fit=crop"
+                          alt="Thumbnail 1"
+                        />
+                      </div>
+                      <div
+                        class="thumbnail"
+                        data-image="https://images.unsplash.com/photo-1484704849700-f032a568e944?w=200&h=150&fit=crop"
+                      >
+                        <img
+                          src="https://images.unsplash.com/photo-1484704849700-f032a568e944?w=200&h=150&fit=crop"
+                          alt="Thumbnail 2"
+                        />
+                      </div>
+                      <div
+                        class="thumbnail"
+                        data-image="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200&h=150&fit=crop"
+                      >
+                        <img
+                          src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200&h=150&fit=crop"
+                          alt="Thumbnail 3"
+                        />
+                      </div>
+                      <div
+                        class="thumbnail"
+                        data-image="https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=200&h=150&fit=crop"
+                      >
+                        <img
+                          src="https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=200&h=150&fit=crop"
+                          alt="Thumbnail 4"
+                        />
+                      </div>
+                      <div
+                        class="thumbnail upload-thumbnail"
+                        data-bs-toggle="modal"
+                        data-bs-target="#uploadImageModal"
+                      >
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Add Image</span>
+                      </div>
+                    </div>
+                    <div class="image-actions mt-3">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#uploadImageModal"
+                      >
+                        <i class="bi bi-upload me-1"></i>Upload New Images
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" id="removeImages">
+                        <i class="bi bi-trash me-1"></i>Remove Selected
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Description -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Description</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Product Description</label>
+                    <textarea class="form-control" rows="8" id="productDescription">
+Premium wireless Bluetooth headphones with noise cancellation. Features include:
+• 40 hours of battery life
+• Active Noise Cancellation (ANC)
+• Quick Charge (5 min = 4 hours playtime)
+• Foldable design with carrying case
+• Built-in microphone for calls
+• Compatible with all Bluetooth devices
+
+Technical Specifications:
+• Driver Unit: 40mm
+• Frequency Response: 4Hz-40kHz
+• Impedance: 32Ω
+• Weight: 254g
+• Charging: USB-C
+• Wireless Range: 10m
+
+Package Includes:
+• Wireless Headphones
+• USB-C Charging Cable
+• Carrying Case
+• 3.5mm Audio Cable
+• User Manual
+                                    </textarea
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Specifications -->
+              <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="card-title mb-0">Specifications</h5>
+                  <button class="btn btn-sm btn-primary" id="addSpecification">
+                    <i class="bi bi-plus-circle me-1"></i>Add Specification
+                  </button>
+                </div>
+                <div class="card-body">
+                  <div class="specifications-list" id="specificationsList">
+                    <!-- Specifications will be loaded here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column - Product Settings & Info -->
+            <div class="col-lg-4">
+              <!-- Product Status & Inventory -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Status & Inventory</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Product Status</label>
+                    <select class="form-select" id="productStatus">
+                      <option value="active" selected>Active</option>
+                      <option value="inactive">Inactive</option>
+                      <option value="draft">Draft</option>
+                      <option value="archived">Archived</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Stock Quantity</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="stockQuantity"
+                      value="48"
+                      min="0"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Low Stock Threshold</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="lowStockThreshold"
+                      value="10"
+                      min="0"
+                    />
+                    <div class="form-text">Get notified when stock falls below this number</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Manage Stock</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="manageStock" checked />
+                      <label class="form-check-label" for="manageStock">
+                        Enable stock management
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Backorders</label>
+                    <select class="form-select" id="backorderSetting">
+                      <option value="no">Do not allow</option>
+                      <option value="notify">Allow, but notify customer</option>
+                      <option value="allow">Allow</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pricing -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Pricing</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Regular Price ($)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="regularPrice"
+                      value="129.99"
+                      step="0.01"
+                      min="0"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Sale Price ($)</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="salePrice"
+                        value="109.99"
+                        step="0.01"
+                        min="0"
+                      />
+                      <button class="btn btn-outline-secondary" type="button" id="scheduleSale">
+                        <i class="bi bi-calendar"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Cost Price ($)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="costPrice"
+                      value="89.99"
+                      step="0.01"
+                      min="0"
+                    />
+                    <div class="form-text">Your cost for this product</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Tax Status</label>
+                    <select class="form-select" id="taxStatus">
+                      <option value="taxable" selected>Taxable</option>
+                      <option value="shipping">Shipping only</option>
+                      <option value="none">None</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Tax Class</label>
+                    <select class="form-select" id="taxClass">
+                      <option value="standard" selected>Standard</option>
+                      <option value="reduced">Reduced rate</option>
+                      <option value="zero">Zero rate</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipping -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Shipping</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Weight (kg)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="weight"
+                      value="0.254"
+                      step="0.001"
+                      min="0"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Dimensions (cm)</label>
+                    <div class="row g-2">
+                      <div class="col-4">
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Length"
+                          id="dimensionLength"
+                          value="20.5"
+                          step="0.1"
+                        />
+                      </div>
+                      <div class="col-4">
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Width"
+                          id="dimensionWidth"
+                          value="18.7"
+                          step="0.1"
+                        />
+                      </div>
+                      <div class="col-4">
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="Height"
+                          id="dimensionHeight"
+                          value="8.3"
+                          step="0.1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Shipping Class</label>
+                    <select class="form-select" id="shippingClass">
+                      <option value="">No shipping class</option>
+                      <option value="small" selected>Small items</option>
+                      <option value="medium">Medium items</option>
+                      <option value="large">Large items</option>
+                      <option value="fragile">Fragile items</option>
+                    </select>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="virtualProduct" />
+                    <label class="form-check-label" for="virtualProduct">
+                      This is a virtual product
+                    </label>
+                  </div>
+
+                  <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="downloadableProduct" />
+                    <label class="form-check-label" for="downloadableProduct">
+                      This is a downloadable product
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Categories & Tags -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Categories & Tags</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Categories</label>
+                    <select class="form-select" id="productCategories" multiple>
+                      <option value="electronics" selected>Electronics</option>
+                      <option value="audio">Audio</option>
+                      <option value="wearables">Wearables</option>
+                      <option value="accessories">Accessories</option>
+                    </select>
+                    <div class="form-text">Hold Ctrl/Cmd to select multiple</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Tags</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="productTags"
+                      value="wireless, bluetooth, headphones, noise-cancelling, audio"
+                    />
+                    <div class="form-text">Separate tags with commas</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <input type="text" class="form-control" id="productBrand" value="AudioTech" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Analytics -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Product Performance</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="stat-card">
+                    <div class="stat-icon bg-primary">
+                      <i class="bi bi-eye"></i>
+                    </div>
+                    <div class="stat-content">
+                      <h4>1,248</h4>
+                      <p>Total Views</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-card">
+                    <div class="stat-icon bg-success">
+                      <i class="bi bi-cart-check"></i>
+                    </div>
+                    <div class="stat-content">
+                      <h4>89</h4>
+                      <p>Orders</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-card">
+                    <div class="stat-icon bg-info">
+                      <i class="bi bi-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                      <h4>45</h4>
+                      <p>Wishlists</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-card">
+                    <div class="stat-icon bg-warning">
+                      <i class="bi bi-star"></i>
+                    </div>
+                    <div class="stat-content">
+                      <h4>4.8</h4>
+                      <p>Average Rating</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Product</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete <strong>"Wireless Bluetooth Headphones"</strong>?</p>
+            <p class="text-danger">
+              <small
+                >This action cannot be undone. All product data, including orders and reviews, will
+                be permanently deleted.</small
+              >
+            </p>
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" id="deleteMedia" />
+              <label class="form-check-label" for="deleteMedia">
+                Also delete all product images and media
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDelete">Delete Product</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Image Modal -->
+    <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Product Images</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="upload-area" id="dropZone">
+              <i class="bi bi-cloud-arrow-up upload-icon"></i>
+              <h5>Drop images here or click to upload</h5>
+              <p class="text-muted">Supported formats: JPG, PNG, WebP up to 5MB each</p>
+              <input type="file" id="imageUpload" multiple accept="image/*" style="display: none" />
+              <button class="btn btn-primary mt-3" id="browseImages">Browse Files</button>
+            </div>
+            <div class="upload-preview mt-4" id="uploadPreview" style="display: none">
+              <h6>Upload Preview</h6>
+              <div class="preview-images" id="previewImages"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="uploadImages">Upload</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule Sale Modal -->
+    <div class="modal fade" id="scheduleSaleModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Schedule Sale Price</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Sale Price ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="scheduledSalePrice"
+                value="109.99"
+                step="0.01"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Start Date</label>
+                  <input type="datetime-local" class="form-control" id="saleStartDate" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">End Date</label>
+                  <input type="datetime-local" class="form-control" id="saleEndDate" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="saveSchedule">Schedule Sale</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="../assets/js/vendor.js"></script>
+
+    <!-- Product Detail JS -->
+    <script src="../assets/js/product-detail.js"></script>
+  </body>
+</html>

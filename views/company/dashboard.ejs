@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Dashboard - Buyer Portal</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+
+    <!-- Company CSS -->
+    <link rel="stylesheet" href="/assets/css/company-style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+  </head>
+  <body class="company-dashboard">
+    <!-- Header -->
+    <header class="company-header">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Logo -->
+        <div class="company-logo">
+          <i class="bi bi-building"></i>
+          <span>ProcurePro</span>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn d-lg-none">
+          <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Desktop Navigation -->
+        <nav class="company-nav d-none d-lg-flex">
+          <a href="/dashboard" class="company-nav-link active">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+          </a>
+          <a href="/marketplace" class="company-nav-link">
+            <i class="bi bi-shop me-1"></i> Marketplace
+          </a>
+          <a href="/rfq" class="company-nav-link">
+            <i class="bi bi-megaphone me-1"></i> RFQ Center
+          </a>
+          <a href="/orders" class="company-nav-link">
+            <i class="bi bi-cart-check me-1"></i> Orders
+          </a>
+          <a href="/profile" class="company-nav-link">
+            <i class="bi bi-person-circle me-1"></i> Profile
+          </a>
+        </nav>
+
+        <!-- Actions -->
+        <div class="company-actions">
+          <div class="search-box-company d-none d-md-block">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search products, suppliers..." />
+          </div>
+
+          <button class="notification-btn">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+
+          <div class="company-profile">
+            <div class="company-avatar">
+              <%= name.name.split(' ').map(word => word[0]).join('').toUpperCase() %>
+            </div>
+            <div class="d-none d-md-block">
+              <div class="company-name"><%= name.name%></div>
+              <div class="text-muted small">Buyer Account</div>
+            </div>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <div class="company-nav-mobile d-lg-none">
+        <a href="/dashboard" class="company-nav-link active">
+          <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+        <a href="/marketplace" class="company-nav-link">
+          <i class="bi bi-shop me-2"></i> Marketplace
+        </a>
+        <a href="/rfq" class="company-nav-link">
+          <i class="bi bi-megaphone me-2"></i> RFQ Center
+        </a>
+        <a href="/orders" class="company-nav-link">
+          <i class="bi bi-cart-check me-2"></i> Orders
+        </a>
+        <a href="/profile" class="company-nav-link">
+          <i class="bi bi-person-circle me-2"></i> Profile
+        </a>
+      </div>
+
+      <!-- Mobile Overlay -->
+      <div class="mobile-overlay"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="company-main">
+      <div class="container-fluid py-4">
+        <!-- Welcome Section -->
+        <div class="dashboard-welcome">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <div class="welcome-content">
+                <h1>
+                  Welcome back,
+                  <%=name.name%>
+                </h1>
+                <p>Track your procurement activities, manage RFQs, and discover new suppliers.</p>
+                <div class="quick-actions">
+                  <a href="/marketplace" class="btn btn-light">
+                    <i class="bi bi-search me-2"></i> Browse Marketplace
+                  </a>
+                  <a
+                    href="/rfq"
+                    class="btn btn-outline-light"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createRFQModal"
+                  >
+                    <i class="bi bi-plus-circle me-2"></i> Create RFQ
+                  </a>
+                  <a href="/orders" class="btn btn-outline-light">
+                    <i class="bi bi-cart me-2"></i> View Orders
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 d-none d-md-block">
+              <div class="text-center">
+                <i class="bi bi-graph-up-arrow display-1 opacity-25"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card-company spend">
+            <div class="kpi-icon spend">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <div class="kpi-value">$<%=stats.totalSpend%></div>
+            <div class="kpi-label">Total Spend This Month</div>
+            <div class="kpi-change positive">
+              <i class="bi bi-arrow-up"></i> 12% from last month
+            </div>
+          </div>
+
+          <div class="kpi-card-company rfq">
+            <div class="kpi-icon rfq">
+              <i class="bi bi-megaphone"></i>
+            </div>
+            <div class="kpi-value"><%=stats.activeRFQs%></div>
+            <div class="kpi-label">Active RFQs / Tenders</div>
+            <div class="kpi-change negative"><i class="bi bi-arrow-down"></i> 1 from last week</div>
+          </div>
+
+          <div class="kpi-card-company quotes">
+            <div class="kpi-icon quotes">
+              <i class="bi bi-file-text"></i>
+            </div>
+            <div class="kpi-value"><%=stats.pendingQuotes%></div>
+            <div class="kpi-label">Pending Quotations</div>
+            <div class="kpi-change positive"><i class="bi bi-arrow-up"></i> 3 new today</div>
+          </div>
+
+          <div class="kpi-card-company orders">
+            <div class="kpi-icon orders">
+              <i class="bi bi-cart"></i>
+            </div>
+            <div class="kpi-value"><%=stats.activeOrders%></div>
+            <div class="kpi-label">Current Active Orders</div>
+            <div class="kpi-change positive"><i class="bi bi-arrow-up"></i> 2 new this week</div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <!-- Recent Activity -->
+          <div class="col-lg-8">
+            <div class="card-company p-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Recent Activity</h4>
+                <a href="#" class="btn btn-outline-primary btn-sm">View All</a>
+              </div>
+
+              <div class="recent-activity">
+                <% recentActivities.forEach(activity => { %>
+
+                <div class="activity-item">
+                  <div class="activity-icon">
+                    <% if(activity.type === 'orders'){ %>
+                    <i class="bi bi-cart-check"></i>
+                    <% } else if(activity.type === 'rfqs'){ %>
+                    <i class="bi bi-megaphone"></i>
+                    <% } else { %>
+                    <i class="bi bi-file-text"></i>
+                    <% } %>
+                  </div>
+
+                  <div class="activity-content">
+                    <h6>
+                      <% if(activity.type === 'orders'){ %>
+                      New order placed
+                      <% } else if(activity.type === 'rfqs'){ %>
+                      RFQ created
+                      <% } else { %>
+                      Quote received
+                      <% } %>
+                    </h6>
+
+                    <p><%= activity.message %></p>
+
+                    <span class="activity-time">
+                      <%= new Date(activity.created_at).toLocaleString('en-IN',{ day:'2-digit',
+                      month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) %>
+                    </span>
+                  </div>
+                </div>
+
+                <% }) %>
+              </div>
+            </div>
+          </div>
+          <!-- Quick Links -->
+          <div class="col-lg-4">
+            <div class="card-company p-4">
+              <h4 class="mb-4">Quick Links</h4>
+              <div class="quick-links">
+                <a href="/marketplace?category=machinery" class="quick-link-item">
+                  <div class="quick-link-icon bg-primary">
+                    <i class="bi bi-gear"></i>
+                  </div>
+                  <div class="quick-link-content">
+                    <h6>Browse Machinery</h6>
+                    <p class="text-muted small">Industrial equipment & tools</p>
+                  </div>
+                </a>
+                <a href="/rfq" class="quick-link-item">
+                  <div class="quick-link-icon bg-success">
+                    <i class="bi bi-megaphone"></i>
+                  </div>
+                  <div class="quick-link-content">
+                    <h6>Manage RFQs</h6>
+                    <p class="text-muted small">View and create tender requests</p>
+                  </div>
+                </a>
+                <a href="/orders" class="quick-link-item">
+                  <div class="quick-link-icon bg-warning">
+                    <i class="bi bi-truck"></i>
+                  </div>
+                  <div class="quick-link-content">
+                    <h6>Track Orders</h6>
+                    <p class="text-muted small">Monitor shipment & delivery</p>
+                  </div>
+                </a>
+                <a href="/profile" class="quick-link-item">
+                  <div class="quick-link-icon bg-info">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="quick-link-content">
+                    <h6>Team Management</h6>
+                    <p class="text-muted small">Manage team members & permissions</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent RFQs -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card-company p-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Recent RFQs</h4>
+                <a href="/rfq" class="btn btn-outline-primary btn-sm">View All RFQs</a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>RFQ #</th>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Deadline</th>
+                      <th>Bids</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <% recentRFQs.forEach(rfq => { %>
+
+                    <tr>
+                      <td>
+                        <strong>#RFQ-<%= String(rfq.id).padStart(3,'0') %></strong>
+                      </td>
+
+                      <td><%= rfq.title %></td>
+
+                      <td>
+                        <span class="badge bg-primary"> <%= rfq.category %> </span>
+                      </td>
+
+                      <td>
+                        <%= new Date(rfq.deadline).toLocaleDateString('en-IN') %>
+                      </td>
+
+                      <td><%= rfq.bids %></td>
+
+                      <td>
+                        <span
+                          class="badge <%= rfq.status === 'active' ? 'bg-success' : rfq.status === 'closed' ? 'bg-danger' : 'bg-warning' %>"
+                        >
+                          <%= rfq.status %>
+                        </span>
+                      </td>
+
+                      <td>
+                        <% if(rfq.status === 'awarded'){ %>
+                        <button class="btn btn-sm btn-outline-secondary">View Award</button>
+                        <% } else { %>
+                        <button class="btn btn-sm btn-outline-primary">View Bids</button>
+                        <% } %>
+                      </td>
+                    </tr>
+
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-0">&copy; 2023 ProcurePro. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a href="#" class="text-muted me-3">Help & Support</a>
+            <a href="#" class="text-muted me-3">Privacy Policy</a>
+            <a href="#" class="text-muted">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Company JS -->
+    <script src="../assets/js/company.js"></script>
+  </body>
+</html>

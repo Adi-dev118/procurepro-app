@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - System Settings</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <i class="bi bi-shop logo-icon"></i>
+            <span class="logo-text">AdminPanel</span>
+          </div>
+          <button class="toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="sidebar-menu">
+          <ul>
+            <li>
+              <a href="/admin/dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/users">
+                <i class="bi bi-people"></i>
+                <span class="menu-text">User Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/suppliers">
+                <i class="bi bi-truck"></i>
+                <span class="menu-text">Supplier Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/products">
+                <i class="bi bi-box-seam"></i>
+                <span class="menu-text">Product Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="menu-text">Order Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/disputes">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span class="menu-text">Dispute Center</span>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/settings" class="active">
+                <i class="bi bi-gear"></i>
+                <span class="menu-text">System Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>AdminPanel v1.0</p>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+          <button class="mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <h1 class="page-title">System Settings</h1>
+
+          <div class="topbar-actions">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <div class="notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="user-profile dropdown" style="position: relative">
+              <button
+                id="adminDropdownBtn"
+                class="d-flex align-items-center gap-2 btn border-0"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="user-avatar"><span>AD</span></div>
+                <span class="user-name">Admin User</span>
+                <i class="bi bi-chevron-down"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end mt-2" style="min-width: 220px">
+                <li class="px-3 py-2 border-bottom">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="user-avatar"><span>AD</span></div>
+                    <div>
+                      <div class="fw-medium">Admin User</div>
+                      <small class="text-muted">admin@panel.com</small>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/profile">
+                    <i class="bi bi-person me-2"></i>My Profile</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/settings">
+                    <i class="bi bi-gear me-2"></i>System Settings</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="/company/login" id="signoutButton">
+                    <i class="bi bi-box-arrow-right me-2"></i>Sign Out</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper settings-page">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="section-title">System Settings</h1>
+            <div>
+              <button class="btn btn-primary me-2">
+                <i class="bi bi-save me-2"></i>
+                Save All Changes
+              </button>
+              <button class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-clockwise me-2"></i>
+                Restore Defaults
+              </button>
+            </div>
+          </div>
+
+          <!-- Settings Navigation -->
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="settings-nav">
+                <div class="list-group">
+                  <a
+                    href="#platform-config"
+                    class="list-group-item list-group-item-action active"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-globe me-2"></i> Platform Configuration
+                  </a>
+                  <a
+                    href="#payment-gateway"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-credit-card me-2"></i> Payment Gateway
+                  </a>
+                  <a
+                    href="#email-templates"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-envelope me-2"></i> Email Templates
+                  </a>
+                  <a
+                    href="#role-access"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-shield-lock me-2"></i> Role-Based Access
+                  </a>
+                  <a
+                    href="#backup-security"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-hdd me-2"></i> Backup & Security
+                  </a>
+                  <a
+                    href="#api-settings"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-plug me-2"></i> API Settings
+                  </a>
+                  <a
+                    href="#maintenance"
+                    class="list-group-item list-group-item-action"
+                    data-bs-toggle="list"
+                  >
+                    <i class="bi bi-tools me-2"></i> Maintenance
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-9">
+              <div class="tab-content">
+                <!-- Platform Configuration -->
+                <div class="tab-pane fade show active" id="platform-config">
+                  <div class="form-section">
+                    <h3 class="section-title mb-4">Platform Configuration</h3>
+
+                    <div class="row mb-4">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label for="platformName" class="form-label">Platform Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="platformName"
+                            value="AdminPanel Marketplace"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label for="platformEmail" class="form-label">Platform Email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="platformEmail"
+                            value="support@adminpanel.com"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label for="platformCurrency" class="form-label">Default Currency</label>
+                          <select class="form-select" id="platformCurrency">
+                            <option value="USD" selected>US Dollar (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="GBP">British Pound (GBP)</option>
+                            <option value="JPY">Japanese Yen (JPY)</option>
+                            <option value="CAD">Canadian Dollar (CAD)</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label for="platformLanguage" class="form-label">Default Language</label>
+                          <select class="form-select" id="platformLanguage">
+                            <option value="en" selected>English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="zh">Chinese</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label for="platformTimezone" class="form-label">Timezone</label>
+                          <select class="form-select" id="platformTimezone">
+                            <option value="UTC-5" selected>UTC-5 (Eastern Time)</option>
+                            <option value="UTC-8">UTC-8 (Pacific Time)</option>
+                            <option value="UTC+0">UTC+0 (GMT)</option>
+                            <option value="UTC+1">UTC+1 (Central European)</option>
+                            <option value="UTC+8">UTC+8 (China Standard)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="platformLogo" class="form-label">Platform Logo</label>
+                      <div class="d-flex align-items-center">
+                        <div
+                          class="logo-preview me-3"
+                          style="
+                            width: 100px;
+                            height: 100px;
+                            background-color: #f8f9fa;
+                            border: 1px dashed #dee2e6;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                          "
+                        >
+                          <i class="bi bi-shop fs-1 text-muted"></i>
+                        </div>
+                        <div>
+                          <input type="file" class="form-control" id="platformLogo" />
+                          <div class="form-text">Recommended size: 200x200px, PNG format</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Commission Settings</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="input-group mb-3">
+                            <span class="input-group-text">Default Commission</span>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="15"
+                              min="0"
+                              max="50"
+                              step="0.5"
+                            />
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="enableCustomCommission"
+                              checked
+                            />
+                            <label class="form-check-label" for="enableCustomCommission">
+                              Allow custom commission per supplier
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Platform Status</label>
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="platformActive"
+                          checked
+                        />
+                        <label class="form-check-label" for="platformActive">
+                          Platform is active and accepting orders
+                        </label>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="maintenanceMode" />
+                        <label class="form-check-label" for="maintenanceMode">
+                          Enable maintenance mode
+                        </label>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary">Save Platform Settings</button>
+                  </div>
+                </div>
+
+                <!-- Payment Gateway -->
+                <div class="tab-pane fade" id="payment-gateway">
+                  <div class="form-section">
+                    <h3 class="section-title mb-4">Payment Gateway Configuration</h3>
+
+                    <div class="mb-4">
+                      <label class="form-label">Active Payment Methods</label>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="card payment-method-card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Stripe</h6>
+                                <div class="form-check form-switch">
+                                  <input class="form-check-input" type="checkbox" checked />
+                                </div>
+                              </div>
+                              <p class="text-muted small">Credit card payments</p>
+                              <button class="btn btn-sm btn-outline-primary w-100">
+                                Configure
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card payment-method-card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">PayPal</h6>
+                                <div class="form-check form-switch">
+                                  <input class="form-check-input" type="checkbox" checked />
+                                </div>
+                              </div>
+                              <p class="text-muted small">PayPal payments</p>
+                              <button class="btn btn-sm btn-outline-primary w-100">
+                                Configure
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card payment-method-card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Bank Transfer</h6>
+                                <div class="form-check form-switch">
+                                  <input class="form-check-input" type="checkbox" />
+                                </div>
+                              </div>
+                              <p class="text-muted small">Manual bank transfers</p>
+                              <button class="btn btn-sm btn-outline-primary w-100">
+                                Configure
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <h5>Stripe Configuration</h5>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="stripePublishKey" class="form-label">Publishable Key</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="stripePublishKey"
+                              value="pk_test_1234567890"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="stripeSecretKey" class="form-label">Secret Key</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="stripeSecretKey"
+                              value="••••••••••••••••"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="stripeWebhook" class="form-label">Webhook Secret</label>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="stripeWebhook"
+                          value="••••••••••••••••"
+                        />
+                      </div>
+                      <div class="form-check mb-3">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="stripeTestMode"
+                          checked
+                        />
+                        <label class="form-check-label" for="stripeTestMode">
+                          Test mode (use test keys)
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <h5>Payment Settings</h5>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="paymentTimeout" class="form-label">Payment Timeout</label>
+                            <div class="input-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="paymentTimeout"
+                                value="30"
+                              />
+                              <span class="input-group-text">minutes</span>
+                            </div>
+                            <div class="form-text">Time before pending payments expire</div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="autoCapture" class="form-label">Payment Capture</label>
+                            <select class="form-select" id="autoCapture">
+                              <option value="auto" selected>Capture automatically</option>
+                              <option value="manual">Manual capture required</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary">Save Payment Settings</button>
+                  </div>
+                </div>
+
+                <!-- Email Templates -->
+                <div class="tab-pane fade" id="email-templates">
+                  <div class="form-section">
+                    <h3 class="section-title mb-4">Email Template Management</h3>
+
+                    <div class="mb-4">
+                      <label class="form-label">Select Template</label>
+                      <select class="form-select" id="emailTemplateSelect">
+                        <option value="welcome">Welcome Email</option>
+                        <option value="order-confirmation">Order Confirmation</option>
+                        <option value="shipping-notification">Shipping Notification</option>
+                        <option value="password-reset">Password Reset</option>
+                        <option value="dispute-notification">Dispute Notification</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="emailSubject" class="form-label">Email Subject</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="emailSubject"
+                        value="Welcome to AdminPanel Marketplace!"
+                      />
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="emailContent" class="form-label">Email Content</label>
+                      <div class="border rounded p-3 mb-3 bg-light">
+                        <h5>Welcome Email Template Preview</h5>
+                        <p>Hello {customer_name},</p>
+                        <p>
+                          Welcome to AdminPanel Marketplace! We're excited to have you join our
+                          community.
+                        </p>
+                        <p>
+                          Your account has been successfully created. You can now start shopping
+                          from thousands of products from trusted suppliers.
+                        </p>
+                        <p>
+                          Get started by browsing our categories or use the search feature to find
+                          exactly what you're looking for.
+                        </p>
+                        <p>If you have any questions, feel free to contact our support team.</p>
+                        <p>Best regards,<br />The AdminPanel Team</p>
+                      </div>
+                      <textarea class="form-control" id="emailContent" rows="10">
+Hello {customer_name},
+
+Welcome to AdminPanel Marketplace! We're excited to have you join our community.
+
+Your account has been successfully created. You can now start shopping from thousands of products from trusted suppliers.
+
+Get started by browsing our categories or use the search feature to find exactly what you're looking for.
+
+If you have any questions, feel free to contact our support team.
+
+Best regards,
+The AdminPanel Team</textarea
+                      >
+                      <div class="form-text mt-2">
+                        <strong>Available variables:</strong> {customer_name}, {order_id},
+                        {tracking_number}, {reset_link}, {platform_name}
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Email Settings</label>
+                      <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="enableEmail" checked />
+                        <label class="form-check-label" for="enableEmail">
+                          Enable this email template
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="emailHTML" />
+                        <label class="form-check-label" for="emailHTML"> Send as HTML email </label>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary me-2">Save Template</button>
+                    <button class="btn btn-outline-secondary">Send Test Email</button>
+                  </div>
+                </div>
+
+                <!-- Role-Based Access -->
+                <div class="tab-pane fade" id="role-access">
+                  <div class="form-section">
+                    <h3 class="section-title mb-4">Role-Based Access Control (RBAC)</h3>
+
+                    <div class="mb-4">
+                      <label class="form-label">User Roles</label>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Role</th>
+                              <th>Users</th>
+                              <th>Permissions</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <strong>Super Admin</strong>
+                                <div class="text-muted small">Full system access</div>
+                              </td>
+                              <td>2</td>
+                              <td>All permissions</td>
+                              <td>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Admin</strong>
+                                <div class="text-muted small">Full management access</div>
+                              </td>
+                              <td>5</td>
+                              <td>Manage users, products, orders</td>
+                              <td>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Moderator</strong>
+                                <div class="text-muted small">Content moderation</div>
+                              </td>
+                              <td>8</td>
+                              <td>Review products, disputes</td>
+                              <td>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Support</strong>
+                                <div class="text-muted small">Customer support</div>
+                              </td>
+                              <td>12</td>
+                              <td>View orders, handle disputes</td>
+                              <td>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <button
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addRoleModal"
+                      >
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add New Role
+                      </button>
+                    </div>
+
+                    <div class="mb-4">
+                      <h5>Permission Matrix</h5>
+                      <div class="table-responsive">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Permission</th>
+                              <th class="text-center">Super Admin</th>
+                              <th class="text-center">Admin</th>
+                              <th class="text-center">Moderator</th>
+                              <th class="text-center">Support</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>View Dashboard</td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Manage Users</td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Manage Products</td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Manage Orders</td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>System Settings</td>
+                              <td class="text-center">
+                                <i class="bi bi-check-circle text-success"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                              <td class="text-center">
+                                <i class="bi bi-x-circle text-danger"></i>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Backup & Security -->
+                <div class="tab-pane fade" id="backup-security">
+                  <div class="form-section">
+                    <h3 class="section-title mb-4">Backup & Security Settings</h3>
+
+                    <div class="mb-4">
+                      <h5>Backup Configuration</h5>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="backupFrequency" class="form-label">Backup Frequency</label>
+                            <select class="form-select" id="backupFrequency">
+                              <option value="daily">Daily</option>
+                              <option value="weekly" selected>Weekly</option>
+                              <option value="monthly">Monthly</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="backupRetention" class="form-label">Retention Period</label>
+                            <div class="input-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="backupRetention"
+                                value="30"
+                              />
+                              <span class="input-group-text">days</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Backup Components</label>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="backupDatabase"
+                            checked
+                          />
+                          <label class="form-check-label" for="backupDatabase"> Database </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="backupFiles"
+                            checked
+                          />
+                          <label class="form-check-label" for="backupFiles"> Uploaded files </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="backupLogs" />
+                          <label class="form-check-label" for="backupLogs"> System logs </label>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="backupStorage" class="form-label">Storage Location</label>
+                        <select class="form-select" id="backupStorage">
+                          <option value="local" selected>Local Server</option>
+                          <option value="s3">Amazon S3</option>
+                          <option value="google">Google Cloud Storage</option>
+                          <option value="ftp">FTP Server</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-outline-primary me-2">
+                        <i class="bi bi-download me-2"></i>
+                        Run Backup Now
+                      </button>
+                      <button class="btn btn-outline-secondary">
+                        <i class="bi bi-clock-history me-2"></i>
+                        View Backup History
+                      </button>
+                    </div>
+
+                    <div class="mb-4">
+                      <h5>Security Settings</h5>
+                      <div class="mb-3">
+                        <label for="loginAttempts" class="form-label">Failed Login Attempts</label>
+                        <div class="input-group">
+                          <input type="number" class="form-control" id="loginAttempts" value="5" />
+                          <span class="input-group-text">attempts before lockout</span>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="lockoutDuration" class="form-label">Lockout Duration</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="lockoutDuration"
+                            value="30"
+                          />
+                          <span class="input-group-text">minutes</span>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="sessionTimeout" class="form-label">Session Timeout</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="sessionTimeout"
+                            value="60"
+                          />
+                          <span class="input-group-text">minutes of inactivity</span>
+                        </div>
+                      </div>
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="enable2FA" />
+                        <label class="form-check-label" for="enable2FA">
+                          Enable Two-Factor Authentication for admins
+                        </label>
+                      </div>
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="forceSSL" checked />
+                        <label class="form-check-label" for="forceSSL">
+                          Force SSL/HTTPS connections
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <h5>Security Logs</h5>
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Timestamp</th>
+                              <th>Event</th>
+                              <th>IP Address</th>
+                              <th>User</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>2023-11-05 14:30</td>
+                              <td>Failed login attempt</td>
+                              <td>192.168.1.105</td>
+                              <td>admin_user</td>
+                            </tr>
+                            <tr>
+                              <td>2023-11-05 13:15</td>
+                              <td>Password changed</td>
+                              <td>192.168.1.101</td>
+                              <td>john.doe</td>
+                            </tr>
+                            <tr>
+                              <td>2023-11-05 11:45</td>
+                              <td>Role permissions updated</td>
+                              <td>192.168.1.100</td>
+                              <td>super_admin</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <button class="btn btn-outline-secondary btn-sm">
+                        View All Security Logs
+                      </button>
+                    </div>
+
+                    <button class="btn btn-primary">Save Security Settings</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Add Role Modal -->
+    <div
+      class="modal fade"
+      id="addRoleModal"
+      tabindex="-1"
+      aria-labelledby="addRoleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addRoleForm">
+              <div class="mb-3">
+                <label for="roleName" class="form-label">Role Name</label>
+                <input type="text" class="form-control" id="roleName" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="roleDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="roleDescription" rows="2"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Permissions</label>
+                <div class="permissions-list">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="permDashboard" />
+                    <label class="form-check-label" for="permDashboard"> View Dashboard </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="permUsers" />
+                    <label class="form-check-label" for="permUsers"> Manage Users </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="permProducts" />
+                    <label class="form-check-label" for="permProducts"> Manage Products </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="permOrders" />
+                    <label class="form-check-label" for="permOrders"> Manage Orders </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="permSettings" />
+                    <label class="form-check-label" for="permSettings"> System Settings </label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" form="addRoleForm" class="btn btn-primary">Create Role</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

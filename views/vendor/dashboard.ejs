@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Overview</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="../assets/css/vendor.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="vendor-container">
+      <!-- Sidebar -->
+      <aside class="vendor-sidebar">
+        <div class="vendor-sidebar-header">
+          <div class="vendor-logo">
+            <i class="bi bi-shop vendor-logo-icon"></i>
+            <span class="vendor-logo-text">VendorHub</span>
+          </div>
+          <button class="vendor-toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="vendor-sidebar-menu">
+          <ul>
+            <li>
+              <a href="/vendor/dashboard" class="active">
+                <i class="bi bi-speedometer2"></i>
+                <span class="vendor-menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/products">
+                <i class="bi bi-box-seam"></i>
+                <span class="vendor-menu-text">Products</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="vendor-menu-text">Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/rfqs">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="vendor-menu-text">RFQs</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/finance">
+                <i class="bi bi-credit-card"></i>
+                <span class="vendor-menu-text">Finance</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/profile">
+                <i class="bi bi-person-circle"></i>
+                <span class="vendor-menu-text">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="vendor-sidebar-footer">
+          <p><%=name%></p>
+          <small>Vendor Account</small>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="vendor-mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="vendor-main-content">
+        <!-- Topbar -->
+        <header class="vendor-topbar">
+          <button class="vendor-mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <h1 class="vendor-page-title">Vendor Dashboard</h1>
+
+          <div class="vendor-topbar-actions">
+            <div class="vendor-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <div class="vendor-notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="vendor-user-profile" id="profileTrigger">
+              <div class="vendor-user-avatar">
+                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+              </div>
+              <span class="vendor-user-name"><%=name%></span>
+              <i class="bi bi-chevron-down" id="profileChevron"></i>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="vendor-profile-dropdown" id="profileDropdown">
+              <div class="vendor-profile-dropdown-header">
+                <div class="vendor-profile-dropdown-avatar">
+                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+                </div>
+                <div class="vendor-profile-dropdown-info">
+                  <strong><%=name%></strong>
+                  <small><%=email%></small>
+                </div>
+              </div>
+              <div class="vendor-profile-dropdown-divider"></div>
+              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
+                <i class="bi bi-box-arrow-right"></i>
+                Sign Out
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="vendor-content-wrapper vendor-dashboard-page">
+          <!-- Welcome Section -->
+          <div class="row mb-4">
+            <div class="col-lg-8">
+              <div class="vendor-form-section">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h2 class="vendor-section-title mb-2">Welcome back, <%=name%>!</h2>
+                    <p class="text-muted">Here's what's happening with your store today.</p>
+                  </div>
+                  <div class="mt-2">
+                    <% if(status === 'approved'){ %>
+                    <span class="vendor-status-badge active me-2">Verified</span>
+
+                    <% } else if(status === 'pending'){ %>
+                    <span class="vendor-status-badge pending me-2">Pending</span>
+
+                    <% } else if(status === 'suspended'){ %>
+                    <span class="vendor-status-badge cancelled me-2">Suspended</span>
+
+                    <% } %>
+
+                    <span class="text-warning"
+                      ><%=rating.avgRating%>
+                      ★ (<%=rating.totalReviews%>)</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="vendor-stats-cards">
+            <div class="vendor-stat-card sales">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">Total Sales</h3>
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <div class="vendor-stat-card-value">$ <%=totalEarned%></div>
+              <div class="vendor-stat-card-change positive">↑ 12% from last month</div>
+            </div>
+
+            <div class="vendor-stat-card orders">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">Total Orders</h3>
+                <i class="bi bi-cart"></i>
+              </div>
+              <div class="vendor-stat-card-value"><%=totalOrders%></div>
+              <div class="vendor-stat-card-change positive">↑ 8% from last week</div>
+            </div>
+
+            <div class="vendor-stat-card products">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">Active Products</h3>
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="vendor-stat-card-value"><%=totalProducts%></div>
+              <div class="vendor-stat-card-change positive">↑ 5 from last month</div>
+            </div>
+
+            <div class="vendor-stat-card customers">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">New Customers</h3>
+                <i class="bi bi-people"></i>
+              </div>
+              <div class="vendor-stat-card-value"><%=newCustomers%></div>
+              <div class="vendor-stat-card-change positive">↑ 15% from last month</div>
+            </div>
+
+            <div class="vendor-stat-card rating">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">Average Rating</h3>
+                <i class="bi bi-star"></i>
+              </div>
+              <div class="vendor-stat-card-value"><%=rating.avgRating%> ★</div>
+              <div class="vendor-stat-card-change positive">↑ 0.2 from last month</div>
+            </div>
+
+            <div class="vendor-stat-card revenue">
+              <div class="vendor-stat-card-header">
+                <h3 class="vendor-stat-card-title">Pending Payout</h3>
+                <i class="bi bi-wallet2"></i>
+              </div>
+              <div class="vendor-stat-card-value">$ <%=pendingPayout.total%></div>
+              <div class="vendor-stat-card-change negative">↓ 2% from last week</div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="vendor-charts-section">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="vendor-chart-container">
+                  <div class="vendor-chart-header">
+                    <h3 class="vendor-chart-title">Sales Performance</h3>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                      >
+                        Last 30 days
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 90 days</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="vendor-chart-placeholder">
+                    <i class="bi bi-bar-chart me-2"></i>
+                    Sales Performance Chart (Placeholder)
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="vendor-chart-container">
+                  <div class="vendor-chart-header">
+                    <h3 class="vendor-chart-title">Order Status</h3>
+                  </div>
+                  <div class="vendor-chart-placeholder">
+                    <i class="bi bi-pie-chart me-2"></i>
+                    Order Status Distribution (Placeholder)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="vendor-table-container">
+                <div class="vendor-table-header">
+                  <h3 class="vendor-section-title">Recent Orders</h3>
+                  <a href="/vendor/orders" class="btn btn-outline-primary btn-sm">View All</a>
+                </div>
+                <div class="vendor-table-responsive">
+                  <table class="vendor-table">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%activities.forEach(activity=> {%>
+                      <tr>
+                        <td>#ORD-<%=activity.id%></td>
+                        <td><%=activity.customer%></td>
+                        <td><%=activity.date%></td>
+                        <td>
+                          $
+                          <%=activity.amount%>
+                        </td>
+                        <td>
+                          <span
+                            class="vendor-status-badge <%= activity.status === 'pending' ? 'pending' : activity.status === 'delivered' ? 'completed' : activity.status === 'cancelled' ? 'cancelled': 'shipped' %>"
+                            ><%=activity.status%></span
+                          >
+                        </td>
+                        <td>
+                          <div class="vendor-action-buttons">
+                            <button
+                              class="btn btn-primary btn-sm btn-process-order"
+                              data-order-id="7842"
+                            >
+                              <i class="bi bi-check-circle me-1"></i> Process
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <%})%>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="vendor-chart-container">
+                <div class="vendor-chart-header">
+                  <h3 class="vendor-chart-title">Stock Alerts</h3>
+                  <span class="badge bg-danger"><%=alerts%></span>
+                </div>
+                <% stocks.forEach(stock => { %>
+                <div class="vendor-finance-item">
+                  <div>
+                    <strong><%= stock.name %></strong>
+                    <div class="text-muted small">SKU: <%= stock.sku %></div>
+                  </div>
+
+                  <% if(stock.stock_status === 'out_of_stock'){ %>
+                  <span class="vendor-stock-badge out-of-stock">Out of Stock</span>
+                  <% } else { %>
+                  <span class="vendor-stock-badge low-stock">Low Stock</span>
+                  <% } %>
+                </div>
+                <% }) %>
+                <div class="text-center mt-3">
+                  <a href="/vendor/products" class="btn btn-outline-primary btn-sm"
+                    >Manage Inventory</a
+                  >
+                </div>
+              </div>
+
+              <div class="vendor-chart-container mt-4">
+                <div class="vendor-chart-header">
+                  <h3 class="vendor-chart-title">Active RFQs</h3>
+                  <span class="badge bg-warning">2</span>
+                </div>
+                <div class="vendor-finance-list">
+                  <div class="vendor-finance-item">
+                    <div>
+                      <strong>Electronics Components</strong>
+                      <div class="text-muted small">Deadline: Nov 10</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm btn-submit-quote" data-rfq-id="001">
+                      Quote
+                    </button>
+                  </div>
+                  <div class="vendor-finance-item">
+                    <div>
+                      <strong>Gadget Accessories</strong>
+                      <div class="text-muted small">Deadline: Nov 12</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm btn-submit-quote" data-rfq-id="002">
+                      Quote
+                    </button>
+                  </div>
+                </div>
+                <div class="text-center mt-3">
+                  <a href="/vendor/rfqs" class="btn btn-outline-primary btn-sm">View All RFQs</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Product</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- Form content would go here -->
+              <p>Product creation form would appear here.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Product</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Product editing form would appear here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="submitQuoteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Submit Quote</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Quote submission form would appear here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="../assets/js/vendor.js"></script>
+  </body>
+</html>

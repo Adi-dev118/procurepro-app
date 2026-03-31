@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Products</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="../assets/css/vendor.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="vendor-container">
+      <!-- Sidebar -->
+      <aside class="vendor-sidebar">
+        <div class="vendor-sidebar-header">
+          <div class="vendor-logo">
+            <i class="bi bi-shop vendor-logo-icon"></i>
+            <span class="vendor-logo-text">VendorHub</span>
+          </div>
+          <button class="vendor-toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+
+        <nav class="vendor-sidebar-menu">
+          <ul>
+            <li>
+              <a href="/vendor/dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="vendor-menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/products" class="active">
+                <i class="bi bi-box-seam"></i>
+                <span class="vendor-menu-text">Products</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/orders">
+                <i class="bi bi-cart-check"></i>
+                <span class="vendor-menu-text">Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/rfqs">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="vendor-menu-text">RFQs</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/finance">
+                <i class="bi bi-credit-card"></i>
+                <span class="vendor-menu-text">Finance</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vendor/profile">
+                <i class="bi bi-person-circle"></i>
+                <span class="vendor-menu-text">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="vendor-sidebar-footer">
+          <p>TechGadgets Ltd</p>
+          <small>Vendor Account</small>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="vendor-mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="vendor-main-content">
+        <!-- Topbar -->
+        <header class="vendor-topbar">
+          <button class="vendor-mobile-menu-btn">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <h1 class="vendor-page-title">Product Management</h1>
+
+          <div class="vendor-topbar-actions">
+            <div class="vendor-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search products..." />
+            </div>
+
+            <div class="vendor-notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="vendor-user-profile" id="profileTrigger">
+              <div class="vendor-user-avatar">
+                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+              </div>
+              <span class="vendor-user-name"><%=name%></span>
+              <i class="bi bi-chevron-down" id="profileChevron"></i>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="vendor-profile-dropdown" id="profileDropdown">
+              <div class="vendor-profile-dropdown-header">
+                <div class="vendor-profile-dropdown-avatar">
+                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
+                </div>
+                <div class="vendor-profile-dropdown-info">
+                  <strong><%=name%></strong>
+                  <small><%=email%></small>
+                </div>
+              </div>
+              <div class="vendor-profile-dropdown-divider"></div>
+              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
+                <i class="bi bi-box-arrow-right"></i>
+                Sign Out
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Wrapper -->
+        <div class="vendor-content-wrapper vendor-products-page">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="vendor-section-title">Product Management</h1>
+            <button
+              class="btn btn-primary btn-add-product"
+              data-bs-toggle="modal"
+              data-bs-target="#addProductModal"
+            >
+              <i class="bi bi-plus-circle me-2"></i>
+              Add New Product
+            </button>
+          </div>
+
+          <!-- Product Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Total Products</h6>
+                      <h3 class="mb-0"><%=totalProducts%></h3>
+                    </div>
+                    <div class="stat-icon bg-primary">
+                      <i class="bi bi-box"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 5 from last month
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Active Listings</h6>
+                      <h3 class="mb-0"><%=activeProducts%></h3>
+                    </div>
+                    <div class="stat-icon bg-success">
+                      <i class="bi bi-check-circle"></i>
+                    </div>
+                  </div>
+                  <p class="text-success mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 3 from last week
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Low Stock</h6>
+                      <h3 class="mb-0"><%=lowStock%></h3>
+                    </div>
+                    <div class="stat-icon bg-warning">
+                      <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                  </div>
+                  <p class="text-danger mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 2 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted">Out of Stock</h6>
+                      <h3 class="mb-0"><%=outOfStock%></h3>
+                    </div>
+                    <div class="stat-icon bg-danger">
+                      <i class="bi bi-x-circle"></i>
+                    </div>
+                  </div>
+                  <p class="text-danger mt-2 mb-0">
+                    <i class="bi bi-arrow-up"></i> 1 from yesterday
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <ul class="nav nav-tabs vendor-nav-tabs" id="productTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="all-products-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#all-products"
+                type="button"
+              >
+                All Products
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="active-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#active"
+                type="button"
+              >
+                Active
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="inactive-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#inactive"
+                type="button"
+              >
+                Inactive
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="low-stock-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#low-stock"
+                type="button"
+              >
+                Low Stock
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="out-of-stock-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#out-of-stock"
+                type="button"
+              >
+                Out of Stock
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="productTabsContent">
+            <!-- All Products Tab -->
+            <div class="tab-pane fade show active" id="all-products" role="tabpanel">
+              <div class="vendor-product-grid mt-4">
+                <% products.forEach(product => { %>
+
+                <div class="vendor-product-card">
+                  <div class="vendor-product-image">
+                    <i class="bi <%=product.icon || 'bi-box' %>"></i>
+                  </div>
+
+                  <div class="vendor-product-content">
+                    <h5 class="vendor-product-title"><%=product.name%></h5>
+
+                    <div class="vendor-product-meta">
+                      <span
+                        >SKU:
+                        <%=product.sku%></span
+                      >
+                      <span
+                        >Category:
+                        <%=product.category%></span
+                      >
+                    </div>
+
+                    <div class="vendor-product-price">$<%=product.price%></div>
+
+                    <div class="vendor-product-stock">
+                      <% if(Number(product.stock) === 0){ %>
+                      <span class="vendor-stock-badge out-of-stock">Out of Stock</span>
+
+                      <% } else if(Number(product.stock) <= 50){ %>
+                      <span class="vendor-stock-badge low-stock">Low Stock</span>
+
+                      <% } else { %>
+                      <span class="vendor-stock-badge in-stock">In Stock</span>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+
+                <% }) %>
+              </div>
+
+              <!-- Pagination -->
+              <div class="vendor-pagination-container">
+                <div>Showing 1 to 6 of 89 products</div>
+                <nav>
+                  <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+            <!-- Other tabs would have filtered content -->
+          </div>
+
+          <!-- Bulk Actions -->
+          <div class="vendor-form-section mt-5">
+            <h3 class="vendor-section-title mb-4">Bulk Product Management</h3>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Update Stock</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" placeholder="Quantity" />
+                    <button class="btn btn-outline-primary">Apply to Selected</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Update Price</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" class="form-control" placeholder="Price" />
+                    <button class="btn btn-outline-primary">Apply to Selected</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Update Status</label>
+                  <div class="input-group">
+                    <select class="form-select">
+                      <option>Active</option>
+                      <option>Inactive</option>
+                    </select>
+                    <button class="btn btn-outline-primary">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Product</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="vendor-needs-validation" novalidate>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control" required />
+                    <div class="invalid-feedback">Please enter a product name.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">SKU</label>
+                    <input type="text" class="form-control" required />
+                    <div class="invalid-feedback">Please enter a SKU.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" required>
+                      <option value="">Select Category</option>
+                      <option>Electronics</option>
+                      <option>Accessories</option>
+                      <option>Wearables</option>
+                      <option>Home & Office</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <input type="number" class="form-control" step="0.01" required />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Stock Quantity</label>
+                    <input type="number" class="form-control" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-control" step="0.01" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="4" required></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Product Images</label>
+                <input type="file" class="form-control" multiple accept="image/*" />
+                <div class="form-text">
+                  Upload up to 5 images. First image will be used as main.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" checked />
+                  <label class="form-check-label">
+                    Product is active and visible to customers
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Add Product</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="../assets/js/vendor.js"></script>
+  </body>
+</html>
