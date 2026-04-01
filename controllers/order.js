@@ -200,7 +200,7 @@ LEFT JOIN users u ON u.id = o.user_id
 LEFT JOIN order_items oi ON oi.order_id = o.id
 GROUP BY o.id 
     `;
-
+// Add this test case
     let params = [];
 
     // 🔍 Search (by order id or customer name)
