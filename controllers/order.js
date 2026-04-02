@@ -1,5 +1,4 @@
 const db = require('./../config/db');
-
 exports.newOrder = async (req, res) => {
   const connection = await db.getConnection();
 
@@ -168,9 +167,21 @@ exports.getOrderManagement = async (req, res) => {
 
     const status = req.query.status;
     const payment = req.query.payment;
+    const dateRange = req.query.dateRange;
+
+    function applyDateFilter(q) {
+      if (dateRange === 'today') return q + ` AND DATE(o.created_at) = CURDATE()`;
+      if (dateRange === '7days') return q + ` AND o.created_at >= NOW() - INTERVAL 7 DAY`;
+      if (dateRange === '30days') return q + ` AND o.created_at >= NOW() - INTERVAL 30 DAY`;
+      if (dateRange === 'month')
+        return (
+          q + ` AND MONTH(o.created_at) = MONTH(CURDATE()) AND YEAR(o.created_at) = YEAR(CURDATE())`
+        );
+      return q;
+    }
 
     let query = `
-      SELECT 
+SELECT 
   o.id,
   CONCAT('#ORD-', o.id) AS orderId,
 
@@ -183,24 +194,22 @@ exports.getOrderManagement = async (req, res) => {
   o.status,
   o.payment_status,
 
-  -- Order Type
   CASE 
     WHEN o.rfq_id IS NOT NULL THEN 'RFQ'
     ELSE 'Direct'
   END AS orderType,
 
-  -- Items (still from order_items)
   COALESCE(SUM(oi.quantity), 0) AS items,
 
-  -- ✅ Use stored total
   o.total_amount AS total
 
 FROM orders o
 LEFT JOIN users u ON u.id = o.user_id
 LEFT JOIN order_items oi ON oi.order_id = o.id
-GROUP BY o.id 
-    `;
-// Add this test case
+
+WHERE 1=1
+`;
+    // Add this test case
     let params = [];
 
     // 🔍 Search (by order id or customer name)
@@ -220,8 +229,9 @@ GROUP BY o.id
       query += ` AND o.payment_status = ?`;
       params.push(payment);
     }
-
-    query += ` ORDER BY o.created_at DESC LIMIT ? OFFSET ?`;
+    // Date
+    applyDateFilter(query);
+    query += ` GROUP BY o.id ORDER BY o.created_at DESC LIMIT ? OFFSET ?`;
     params.push(limit, offset);
 
     const [orders] = await db.query(query, params);
@@ -251,6 +261,7 @@ GROUP BY o.id
       countParams.push(payment);
     }
 
+    applyDateFilter(countQuery);
     const [countResult] = await db.query(countQuery, countParams);
 
     const total = countResult[0].total;

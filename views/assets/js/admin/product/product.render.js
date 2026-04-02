@@ -1,4 +1,5 @@
-import { productState } from "./product.state.js";
+import { productState } from './product.state.js';
+
 function renderProducts(products) {
   const tbody = document.getElementById('product-body');
 
@@ -26,11 +27,29 @@ function renderProducts(products) {
       stockBadge = `<span class="badge bg-success">In Stock</span>`;
     }
 
+    // Category Badge Logic
+    let categoryBatch = '';
+    if (product.category === 'Furniture') {
+      categoryBatch = `<span class="badge bg-danger">Furniture</span>`;
+    } else if (product.category === 'Electronics') {
+      categoryBatch = `<span class="badge bg-primary">Electronics</span>`;
+    } else if (product.category === 'Computer Parts') {
+      categoryBatch = `<span class="badge bg-secondary">Computer Parts</span>`;
+    } else if (product.category === 'Home & Kitchen') {
+      categoryBatch = `<span class="badge bg-warning">Home & Kitchen</span>`;
+    }else if (product.category === 'Stationery') {
+      categoryBatch = `<span class="badge bg-success">Stationery</span>`;
+    }
+
     // 🔹 Status Badge
     const statusBadge =
       product.verification_status === 'approved'
         ? `<span class="status-badge active">Active</span>`
-        : `<span class="status-badge suspended">Inactive</span>`;
+        : product.verification_status === 'suspended'
+        ? `<span class="status-badge suspended">Suspended</span>`
+        : product.verification_status === 'pending'
+        ? `<span class="status-badge pending">Pending</span>`
+        : `<span class="status-badge suspended">Rejected</span>`
 
     tbody.innerHTML += `
       <tr>
@@ -65,9 +84,7 @@ function renderProducts(products) {
         <td>${product.sku}</td>
 
         <td>
-          <span class="badge ${product.badge_color || 'bg-secondary'}">
-            ${product.category || 'N/A'}
-          </span>
+         ${categoryBatch}
         </td>
 
         <td>${product.company || 'N/A'}</td>
@@ -188,6 +205,8 @@ function renderCategoryFilters(categories) {
   `;
 
   categories.forEach((cat) => {
+   
+    
     html += `
       <li>
         <a 

@@ -70,23 +70,35 @@ exports.getProducts = async (req, res) => {
     const category = req.query.category;
     const stock = req.query.stock;
 
-    let query = `
-      SELECT 
-        p.id,
-        p.name,
-        p.description,
-        p.icon,
-        p.sku,
-        p.final_price,
-        p.stock,
-        p.verification_status,
-        c.name AS category,
-        s.business_name AS company
-      FROM products p
-      LEFT JOIN categories c ON p.category_id = c.id
-      LEFT JOIN suppliers s ON p.supplier_id = s.id
-      WHERE 1=1
-    `;
+    let query = `SELECT 
+  o.id,
+  CONCAT('#ORD-', o.id) AS orderId,
+
+  u.name AS customer,
+  u.email,
+
+  DATE_FORMAT(o.created_at, '%Y-%m-%d') AS date,
+  DATE_FORMAT(o.created_at, '%h:%i %p') AS time,
+
+  o.status,
+  o.payment_status,
+
+  -- 🔥 Order Type
+  CASE 
+    WHEN o.rfq_id IS NOT NULL THEN 'RFQ'
+    ELSE 'Direct'
+  END AS orderType,
+
+  -- Items count
+  COALESCE(SUM(oi.quantity), 0) AS items,
+
+  -- Total
+  o.total_amount AS total
+FROM orders o
+LEFT JOIN users u ON u.id = o.user_id
+LEFT JOIN order_items oi ON oi.order_id = o.id
+
+GROUP BY o.id;`;
 
     let params = [];
 
@@ -145,26 +157,24 @@ exports.getProducts = async (req, res) => {
     }
 
     if (stock === 'in') {
-      countQuery += ` AND p.stock > 0`;
+      countQuery += ` AND p.stock > 50`;
     } else if (stock === 'out') {
       countQuery += ` AND p.stock = 0`;
     } else if (stock === 'low') {
       countQuery += ` AND p.stock BETWEEN 1 AND 50`;
     }
-
     const [[{ total }]] = await db.query(countQuery, countParams);
 
     const totalPages = Math.ceil(total / limit);
     const [categories] = await db.query(`
       SELECT id, name FROM categories
     `);
-
     res.status(200).json({
       currentPage: page,
       products,
       totalPages,
       total,
-      categories
+      categories,
     });
   } catch (error) {
     console.error(error);

@@ -267,7 +267,7 @@
                       type="text"
                       name="search"
                       class="form-control"
-                      placeholder="Search users..."
+                      placeholder="Search products..."
                     />
                     <button class="btn btn-outline-secondary search-btn" type="button">
                       <i class="bi bi-search"></i>
@@ -303,16 +303,6 @@
                         >Rejected</a
                       >
                     </li>
-                    <li>
-                      <a class="dropdown-item status-filter" href="#" data-status="In Stock"
-                        >In Stock</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item status-filter" href="#" data-status="Out of Stock"
-                        >Out of Stock</a
-                      >
-                    </li>
                   </ul>
                 </div>
                 <div class="btn-group">
@@ -326,6 +316,32 @@
                   </button>
 
                   <ul class="dropdown-menu" id="category-filter"></ul>
+                </div>
+                <div class="btn-group">
+                  <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-filter me-1"></i> Stock
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item stock-filter" href="#" data-stock="in"
+                        >In Stock</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item stock-filter" href="#" data-stock="low"
+                        >Low Stock</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item stock-filter" href="#" data-stock="out"
+                        >Out of Stock</a
+                      >
+                    </li>
+                  </ul>
                 </div>
                 <button class="btn btn-outline-secondary">
                   <i class="bi bi-download me-2"></i>

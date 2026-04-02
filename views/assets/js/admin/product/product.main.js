@@ -3,23 +3,27 @@ import { fetchProducts } from './product.api.js';
 
 // 🔹 STATUS FILTER
 function setStatusFilter(status) {
+  if(status === 'active') 
+    {status = 'approved'}
   if (productState.status === status) {
     productState.status = ''; // toggle off
   } else {
     productState.status = status;
   }
-
+  
   productState.page = 1;
   fetchProducts();
 }
 
 // 🔹 STOCK FILTER
 function setStockFilter(stock) {
+
   if (productState.stock === stock) {
     productState.stock = '';
   } else {
     productState.stock = stock;
   }
+  console.log(stock)
 
   productState.page = 1;
   fetchProducts();
