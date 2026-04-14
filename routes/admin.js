@@ -3,7 +3,8 @@ const adminController = require('./../controllers/admin');
 const authController = require('./../controllers/authentication');
 const userController = require('./../controllers/users');
 const productController = require('./../controllers/product');
-const orderController = require('./../controllers/order')
+const orderController = require('./../controllers/order');
+const disputeController = require('./../controllers/disputes');
 const { route } = require('./users');
 const router = express.Router();
 
@@ -15,15 +16,11 @@ router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/suppliers-pending', userController.getPendingSuppliers);
 router.get('/admin/user/users-suspended', userController.getSuspendedUsers);
 router.get('/admin/user/users-data', userController.getAllUsers);
-
 router.get('/admin/supplier/supplier-data', userController.getSupplierManagement);
 
 router.get('/admin/order/order-data', orderController.getOrderManagement);
-
-router.get('/admin/product/product-data', (req, res) => {
-  console.log('API HIT');
-  productController.getProducts(req, res);
-});
+router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
+router.get('/admin/product/product-data', productController.getProducts);
 
 router.get(
   '/admin/suppliers',

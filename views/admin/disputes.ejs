@@ -358,85 +358,13 @@
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <%disputesData.forEach(dispute => {%>
-                      <tr>
-                        <td>
-                          <strong
-                            >#DSP
-                            <%=String(dispute.disputeId).padStart(4,'0')%></strong
-                          >
-                          <div class="text-muted small">Click to view details</div>
-                        </td>
-                        <td>
-                          <div>#ORD-<%=String(dispute.orderId).padStart(4,'0')%></div>
-                          <div class="text-muted small"><%=dispute.productName%></div>
-                        </td>
-                        <td>
-                          <div>
-                            <strong>Buyer: </strong>
-                            <%=dispute.customerName%>
-                          </div>
-                          <div>
-                            <strong>Supplier:</strong>
-                            <%=dispute.supplierName%>
-                          </div>
-                        </td>
-                        <td>
-                          <span
-                            class="badge <%= dispute.type === 'Counterfied Item' ? 'bg-danger' : dispute.type === 'Late Delivery' ? 'bg-primary' : dispute.type === 'Item not Received'? 'bg-success' : dispute.type === 'Counterfied Item'? 'bg-warning' : 'bg-secondary' %>"
-                            ><%=dispute.type%></span
-                          >
-                        </td>
-                        <td>
-                          <%=dispute.date.toISOString().slice(0,10) %><br /><span
-                            class="text-muted small"
-                            ><%=
-                            dispute.date.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})
-                            %></span
-                          >
-                        </td>
-                        <td>
-                          <span
-                            class="badge <%= dispute.priority === 'high' ? 'bg-danger' : dispute.priority === 'medium' ? 'bg-warning' : 'bg-success' %>"
-                            ><%=dispute.priority%></span
-                          >
-                        </td>
-                        <td>
-                          <span
-                            class="status-badge <%= dispute.status === 'in progress' ? 'suspended' : dispute.status === 'resolved' ? 'active' : dispute.status === 'open'? 'pending' : inactive %>"
-                            ><%=dispute.status%></span
-                          >
-                        </td>
-                        <td>
-                          <div class="action-buttons">
-                            <button
-                              class="btn btn-info btn-sm me-1"
-                              data-bs-toggle="modal"
-                              data-bs-target="#viewDisputeModal"
-                            >
-                              View
-                            </button>
-                            <button class="btn btn-primary btn-sm">Assign</button>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <%})%>
-                    </tbody>
+                    <tbody id="dispute-body"></tbody>
                   </table>
                 </div>
-
                 <div class="pagination-container">
-                  <div>Showing 1 to 5 of 18 disputes</div>
+                  <div class="pagination-info"></div>
                   <nav>
-                    <ul class="pagination">
-                      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
+                    <ul class="pagination" id="pagination"></ul>
                   </nav>
                 </div>
               </div>
@@ -729,5 +657,6 @@
 
     <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/admin/dispute/dispute.main.js"></script>
   </body>
 </html>
