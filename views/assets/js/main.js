@@ -1,10 +1,11 @@
 // Main JavaScript for Admin Dashboard
 
+
+
 document.addEventListener('DOMContentLoaded', function () {
   // Initialize all components
   initSidebarToggle();
   initMobileMenu();
-  initSearchBox();
   initTabs();
   initDataTables();
   initCharts();
@@ -67,47 +68,6 @@ function initMobileMenu() {
   }
 }
 
-// Search box functionality
-function initSearchBox() {
-  const searchInputs = document.querySelectorAll('input[name="search"]');
-
-  searchInputs.forEach((searchInput) => {
-    const searchBtn = searchInput.parentElement.querySelector('.search-btn');
-
-    // Focus UI effect (keep this)
-    searchInput.addEventListener('focus', function () {
-      this.parentElement.classList.add('focused');
-    });
-
-    searchInput.addEventListener('blur', function () {
-      if (!this.value) {
-        this.parentElement.classList.remove('focused');
-      }
-    });
-
-    // ❌ REMOVE this (VERY IMPORTANT)
-    // searchInput.addEventListener('input', ...)
-
-    // ✅ Search on button click
-    if (searchBtn) {
-      searchBtn.addEventListener('click', function () {
-        state.search = searchInput.value;
-        state.page = 1;
-        performSearch(state.search);
-      });
-    }
-
-    // ✅ Search on Enter key
-    searchInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        state.search = this.value;
-        state.page = 1;
-        performSearch(state.search);
-      }
-    });
-  });
-}
 // Tab functionality
 function initTabs() {
   const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');

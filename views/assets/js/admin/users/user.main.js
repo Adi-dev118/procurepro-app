@@ -103,6 +103,7 @@ function resetSearch() {
   // clear ALL search inputs (because multiple tabs)
   document.querySelectorAll('input[name="search"]').forEach((input) => {
     input.value = '';
+    performSearch('')
   });
 }
 
@@ -155,6 +156,23 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
     const page = Number(pageBtn.dataset.page);
     changePage(page);
+  }
+});
+
+document.querySelectorAll('input[name="search"]').forEach(input => {
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch(input.value.trim()); // 🔥 ALSO HERE
+    }
+  });
+});
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.search-btn');
+
+  if (btn) {
+    const input = btn.closest('.input-group').querySelector('input[name="search"]');
+    performSearch(input.value.trim());
   }
 });
 
