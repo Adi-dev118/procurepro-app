@@ -64,16 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchOrders();
 });
 
-// 🔹 SEARCH
-document.querySelector('.search-btn')?.addEventListener('click', () => {
-  const input = document.querySelector('input[name="search"]');
-
-  orderState.search = input.value;
-  orderState.page = 1;
-
-  fetchOrders();
-});
-
 // 🔹 STATUS FILTER
 // 🔹 STATUS FILTER CLICK
 document.addEventListener('click', (e) => {

@@ -1,6 +1,26 @@
 import { disputeState } from './dispute.state.js';
-import { fetchDisputes } from './dispute.api.js';
+import {
+  fetchAllDisputes,
+  fetchOpenDisputes,
+  fetchInProgressDisputes,
+  fetchResolvedDisputes,
+} from './dispute.api.js';
 
+function loadDisputes() {
+  switch (disputeState.tab) {
+    case 'open':
+      fetchOpenDisputes();
+      break;
+    case 'in_progress':
+      fetchInProgressDisputes();
+      break;
+    case 'resolved':
+      fetchResolvedDisputes();
+      break;
+    default:
+      fetchAllDisputes();
+  }
+}
 // 🔹 STATUS FILTER
 function setStatusFilter(status) {
   if (disputeState.status === status) {
@@ -10,7 +30,7 @@ function setStatusFilter(status) {
   }
 
   disputeState.page = 1;
-  fetchDisputes();
+  loadDisputes();
 }
 
 // 🔹 PRIORITY FILTER
@@ -22,7 +42,7 @@ function setPriorityFilter(priority) {
   }
 
   disputeState.page = 1;
-  fetchDisputes();
+  loadDisputes();
 }
 
 // 🔹 TYPE FILTER
@@ -34,7 +54,7 @@ function setTypeFilter(type) {
   }
 
   disputeState.page = 1;
-  fetchDisputes();
+  loadDisputes();
 }
 
 // 🔹 CLEAR FILTERS
@@ -49,12 +69,50 @@ function clearFilters() {
     input.value = '';
   });
 
-  fetchDisputes();
+  loadDisputes();
+}
+
+async function performSearch(query) {
+  try {
+    disputeState.search = query;
+    disputeState.page = 1;
+    loadDisputes();
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // 🔹 INITIAL LOAD
 document.addEventListener('DOMContentLoaded', () => {
-  fetchDisputes();
+  loadDisputes();
+});
+
+document.getElementById('all-disputes-tab').addEventListener('click', () => {
+  disputeState.tab = '';
+  disputeState.page = 1;
+  disputeState.search = '';
+  loadDisputes();
+});
+
+document.getElementById('open-tab').addEventListener('click', () => {
+  disputeState.tab = 'open';
+  disputeState.page = 1;
+  disputeState.search = '';
+  loadDisputes();
+});
+
+document.getElementById('in-progress-tab').addEventListener('click', () => {
+  disputeState.tab = 'in_progress';
+  disputeState.page = 1;
+  disputeState.search = '';
+  loadDisputes();
+});
+
+document.getElementById('resolved-tab').addEventListener('click', () => {
+  disputeState.tab = 'resolved';
+  disputeState.page = 1;
+  disputeState.search = '';
+  loadDisputes();
 });
 
 // 🔹 PAGINATION
@@ -68,51 +126,24 @@ document.addEventListener('click', (e) => {
     if (!page) return;
 
     disputeState.page = page;
-    fetchDisputes();
+    loadDisputes();
   }
 });
 
-// 🔹 SEARCH
+document.querySelectorAll('input[name="search"]').forEach((input) => {
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch(input.value.trim()); // 🔥 ALSO HERE
+    }
+  });
+});
+
 document.querySelector('.search-btn')?.addEventListener('click', () => {
   const input = document.querySelector('input[name="search"]');
-
   disputeState.search = input.value;
   disputeState.page = 1;
-
-  fetchDisputes();
-});
-
-// 🔹 STATUS FILTER CLICK
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.status-filter');
-
-  if (btn) {
-    e.preventDefault();
-    const status = btn.dataset.status;
-    setStatusFilter(status);
-  }
-});
-
-// 🔹 PRIORITY FILTER CLICK
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.priority-filter');
-
-  if (btn) {
-    e.preventDefault();
-    const priority = btn.dataset.priority;
-    setPriorityFilter(priority);
-  }
-});
-
-// 🔹 TYPE FILTER CLICK
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.type-filter');
-
-  if (btn) {
-    e.preventDefault();
-    const type = btn.dataset.type;
-    setTypeFilter(type);
-  }
+  loadDisputes();
 });
 
 // 🔹 CLEAR FILTER BUTTON
@@ -121,4 +152,8 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
     clearFilters();
   }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadDisputes();
 });

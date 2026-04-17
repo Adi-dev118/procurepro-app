@@ -3,5 +3,6 @@ export const disputeState = {
   search: '',
   priority: '',
   type: '',
-  status: ''
+  status: '',
+  tab: ''
 };

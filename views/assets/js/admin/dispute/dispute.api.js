@@ -1,41 +1,38 @@
 import { disputeState } from './dispute.state.js';
 import { renderDisputes, renderPagination, updateDisputeCount } from './dispute.render.js';
 
-export async function fetchDisputes() {
-  try {
-    const query = new URLSearchParams({
-      page: disputeState.page,
-      search: disputeState.search,
-      status: disputeState.status,
-      priority: disputeState.priority,
-      type: disputeState.type
-    });
 
-    const res = await fetch(`/admin/dispute/dispute-data?${query}`);
-    const data = await res.json();
+async function fetchDisputesBase(status) {
+  const query = new URLSearchParams({
+    page: disputeState.page,
+    search: disputeState.search,
+    priority: disputeState.priority,
+    type: disputeState.type,
+    status: status || disputeState.status
+  });
 
-    if (!res.ok) {
-      throw new Error(data.message || 'Failed to fetch disputes');
-    }
+  const res = await fetch(`/admin/dispute/dispute-data?${query}`);
+  const data = await res.json();
 
-    disputeState.page = data.currentPage;
+  disputeState.page = data.currentPage;
 
-    renderDisputes(data.disputes);
-    renderPagination(data.totalPages);
-    updateDisputeCount(data.currentPage, data.total);
+  renderDisputes(data.disputes);
+  renderPagination(data.totalPages);
+  updateDisputeCount(data.currentPage, data.total);
+}
 
-  } catch (error) {
-    console.error('Fetch Disputes Error:', error);
+export async function fetchAllDisputes() {
+  return fetchDisputesBase('');
+}
 
-    const tbody = document.getElementById('dispute-body');
-    if (tbody) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" class="text-center text-danger">
-            Failed to load disputes
-          </td>
-        </tr>
-      `;
-    }
-  }
+export async function fetchOpenDisputes() {
+  return fetchDisputesBase('open');
+}
+
+export async function fetchInProgressDisputes() {
+  return fetchDisputesBase('in progress');
+}
+
+export async function fetchResolvedDisputes() {
+  return fetchDisputesBase('resolved');
 }

@@ -1,7 +1,20 @@
 import { disputeState } from "./dispute.state.js";
 
+function getCurrentTableBody() {
+  switch (disputeState.tab) {
+    case 'open':
+      return document.getElementById('open-body');
+    case 'in_progress':
+      return document.getElementById('progress-body');
+    case 'resolved':
+      return document.getElementById('resolved-body');
+    default:
+      return document.getElementById('all-body');
+  }
+}
+
 function renderDisputes(disputes) {
-  const tbody = document.getElementById('dispute-body');
+  const tbody = getCurrentTableBody();
 
   if (!tbody) return;
 
