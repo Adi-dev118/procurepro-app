@@ -41,6 +41,18 @@ function setCategoryFilter(category) {
   fetchProducts();
 }
 
+async function performSearch(query) {
+  try {
+    productState.search = query;
+    productState.page = 1;
+    fetchProducts();
+    
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
 // 🔹 CLEAR FILTERS
 function clearFilters() {
   productState.status = '';
@@ -76,15 +88,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// 🔹 SEARCH
-document.querySelector('.search-btn')?.addEventListener('click', () => {
-  const input = document.querySelector('input[name="search"]');
-
-  productState.search = input.value;
-  productState.page = 1;
-
-  fetchProducts();
-});
 
 // 🔹 STATUS FILTER CLICK
 document.addEventListener('click', (e) => {
@@ -117,6 +120,22 @@ document.addEventListener('click', (e) => {
     const category = btn.dataset.category;
     setCategoryFilter(category);
   }
+});
+
+document.querySelectorAll('input[name="search"]').forEach(input => {
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch(input.value.trim()); // 🔥 ALSO HERE
+    }
+  });
+});
+
+document.querySelector('.search-btn')?.addEventListener('click', () => {
+  const input = document.querySelector('input[name="search"]');
+  productState.search = input.value;
+  productState.page = 1;
+  fetchSuppliers();
 });
 
 // 🔹 CLEAR FILTER BUTTON

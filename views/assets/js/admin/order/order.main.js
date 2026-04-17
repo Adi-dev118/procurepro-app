@@ -34,6 +34,19 @@ function setDateFilter(dateRange) {
   orderState.page = 1;
   fetchOrders();
 }
+
+
+async function performSearch(query) {
+  try {
+    orderState.search = query;
+    orderState.page = 1;
+    fetchOrders();
+    
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 function clearFilters() {
   orderState.status = '';
   orderState.payment = '';
@@ -108,6 +121,23 @@ document.addEventListener('click', (e) => {
     fetchOrders();
   }
 });
+
+document.querySelectorAll('input[name="search"]').forEach(input => {
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch(input.value.trim()); // 🔥 ALSO HERE
+    }
+  });
+});
+
+document.querySelector('.search-btn')?.addEventListener('click', () => {
+  const input = document.querySelector('input[name="search"]');
+  orderState.search = input.value;
+  orderState.page = 1;
+  fetchSuppliers();
+});
+
 
 document.addEventListener('click', (e) => {
   if (e.target.closest('.clear-filters')) {

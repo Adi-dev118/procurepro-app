@@ -167,6 +167,7 @@ document.querySelectorAll('input[name="search"]').forEach(input => {
     }
   });
 });
+
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.search-btn');
 
