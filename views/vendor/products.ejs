@@ -289,102 +289,35 @@
 
           <!-- Tab Content -->
           <div class="tab-content" id="productTabsContent">
-            <!-- All Products Tab -->
-            <div class="tab-pane fade show active" id="all-products" role="tabpanel">
-              <div class="vendor-product-grid mt-4">
-                <% products.forEach(product => { %>
-
-                <div class="vendor-product-card">
-                  <div class="vendor-product-image">
-                    <i class="bi <%=product.icon || 'bi-box' %>"></i>
-                  </div>
-
-                  <div class="vendor-product-content">
-                    <h5 class="vendor-product-title"><%=product.name%></h5>
-
-                    <div class="vendor-product-meta">
-                      <span
-                        >SKU:
-                        <%=product.sku%></span
-                      >
-                      <span
-                        >Category:
-                        <%=product.category%></span
-                      >
-                    </div>
-
-                    <div class="vendor-product-price">$<%=product.price%></div>
-
-                    <div class="vendor-product-stock">
-                      <% if(Number(product.stock) === 0){ %>
-                      <span class="vendor-stock-badge out-of-stock">Out of Stock</span>
-
-                      <% } else if(Number(product.stock) <= 50){ %>
-                      <span class="vendor-stock-badge low-stock">Low Stock</span>
-
-                      <% } else { %>
-                      <span class="vendor-stock-badge in-stock">In Stock</span>
-                      <% } %>
-                    </div>
-                  </div>
-                </div>
-
-                <% }) %>
-              </div>
-
-              <!-- Pagination -->
-              <div class="vendor-pagination-container">
-                <div>Showing 1 to 6 of 89 products</div>
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                  </ul>
-                </nav>
-              </div>
+            <!-- ALL PRODUCTS -->
+            <div class="tab-pane fade show active" id="all-products">
+              <div id="all-products-container" class="vendor-product-grid mt-4"></div>
             </div>
 
-            <!-- Other tabs would have filtered content -->
-          </div>
+            <!-- ACTIVE -->
+            <div class="tab-pane fade" id="active">
+              <div id="active-container" class="vendor-product-grid mt-4"></div>
+            </div>
 
-          <!-- Bulk Actions -->
-          <div class="vendor-form-section mt-5">
-            <h3 class="vendor-section-title mb-4">Bulk Product Management</h3>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Update Stock</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Quantity" />
-                    <button class="btn btn-outline-primary">Apply to Selected</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Update Price</label>
-                  <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" class="form-control" placeholder="Price" />
-                    <button class="btn btn-outline-primary">Apply to Selected</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Update Status</label>
-                  <div class="input-group">
-                    <select class="form-select">
-                      <option>Active</option>
-                      <option>Inactive</option>
-                    </select>
-                    <button class="btn btn-outline-primary">Apply</button>
-                  </div>
-                </div>
-              </div>
+            <!-- INACTIVE -->
+            <div class="tab-pane fade" id="inactive">
+              <div id="inactive-container" class="vendor-product-grid mt-4"></div>
+            </div>
+
+            <!-- LOW STOCK -->
+            <div class="tab-pane fade" id="low-stock">
+              <div id="low-stock-container" class="vendor-product-grid mt-4"></div>
+            </div>
+
+            <!-- OUT OF STOCK -->
+            <div class="tab-pane fade" id="out-of-stock">
+              <div id="out-of-stock-container" class="vendor-product-grid mt-4"></div>
+            </div>
+            <div class="vendor-pagination-container mt-4">
+              <div class="pagination-info"></div>
+              <nav>
+                <ul class="pagination" id="pagination"></ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -498,5 +431,6 @@
 
     <!-- Vendor JS -->
     <script src="../assets/js/vendor.js"></script>
+    <script src="../assets/js/vendor/product/product.main.js" type="module"></script>
   </body>
 </html>

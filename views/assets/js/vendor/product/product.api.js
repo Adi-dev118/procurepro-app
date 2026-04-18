@@ -5,10 +5,16 @@ async function fetchProductsBase(status) {
   const query = new URLSearchParams({
     page: productState.page,
     search: productState.search,
-    status: status || productState.status
+    status: status || productState.status,
+    stock:
+      productState.stock === 'low_stock'
+        ? 'low'
+        : productState.stock === 'out_of_stock'
+          ? 'out'
+          : '',
   });
 
-  const res = await fetch(`/vendor/products-data?${query}`);
+  const res = await fetch(`/vendor/product/products-data?${query}`);
   const data = await res.json();
 
   productState.page = data.currentPage;

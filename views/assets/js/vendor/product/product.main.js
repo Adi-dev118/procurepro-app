@@ -4,52 +4,39 @@ import {
   fetchActiveProducts,
   fetchInactiveProducts,
   fetchLowStockProducts,
-  fetchOutOfStockProducts
+  fetchOutOfStockProducts,
 } from './product.api.js';
-
 function loadProducts() {
-  switch (productState.tab) {
-    case 'active': fetchActiveProducts(); break;
-    case 'inactive': fetchInactiveProducts(); break;
-    case 'low_stock': fetchLowStockProducts(); break;
-    case 'out_of_stock': fetchOutOfStockProducts(); break;
-    default: fetchAllProducts();
-  }
+  fetchAllProducts();
 }
 
 document.addEventListener('DOMContentLoaded', loadProducts);
+document.querySelectorAll('[data-bs-toggle="tab"]').forEach((tab) => {
+  tab.addEventListener('shown.bs.tab', (e) => {
+    const id = e.target.id;
 
-// Tabs
-document.getElementById('all-products-tab').onclick = () => {
-  productState.tab = '';
-  productState.page = 1;
-  loadProducts();
-};
+    // RESET BOTH
+    productState.status = '';
+    productState.stock = '';
 
-document.getElementById('active-tab').onclick = () => {
-  productState.tab = 'active';
-  productState.page = 1;
-  loadProducts();
-};
+    if (id === 'active-tab') {
+      productState.status = 'active'; // 🔥 verification
+    } else if (id === 'inactive-tab') {
+      productState.status = 'inactive'; // 🔥 verification
+    } else if (id === 'low-stock-tab') {
+      productState.stock = 'low_stock'; // 🔥 stock
+    } else if (id === 'out-of-stock-tab') {
+      productState.stock = 'out_of_stock'; // 🔥 stock
+    }
 
-document.getElementById('inactive-tab').onclick = () => {
-  productState.tab = 'inactive';
-  productState.page = 1;
-  loadProducts();
-};
+    productState.page = 1;
 
-document.getElementById('low-stock-tab').onclick = () => {
-  productState.tab = 'low_stock';
-  productState.page = 1;
-  loadProducts();
-};
+    console.log('STATUS:', productState.status);
+    console.log('STOCK:', productState.stock);
 
-document.getElementById('out-of-stock-tab').onclick = () => {
-  productState.tab = 'out_of_stock';
-  productState.page = 1;
-  loadProducts();
-};
-
+    loadProducts();
+  });
+});
 // Pagination
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.page-link');
