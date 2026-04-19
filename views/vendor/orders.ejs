@@ -224,217 +224,93 @@
           </div>
 
           <!-- Tabs -->
-          <ul class="nav nav-tabs vendor-nav-tabs" id="orderTabs" role="tablist">
-            <li class="nav-item" role="presentation">
+          <ul class="nav nav-tabs vendor-nav-tabs">
+            <li class="nav-item">
               <button
+                type="button"
                 class="nav-link active"
                 id="all-orders-tab"
                 data-bs-toggle="tab"
-                data-bs-target="#all-orders"
-                type="button"
+                data-bs-target="#all"
               >
                 All Orders
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item">
               <button
+                type="button"
                 class="nav-link"
                 id="new-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#new"
-                type="button"
               >
-                New Orders
+                New
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item">
               <button
+                type="button"
                 class="nav-link"
                 id="processing-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#processing"
-                type="button"
               >
                 Processing
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item">
               <button
-                class="nav-link"
-                id="shipped-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#shipped"
                 type="button"
-              >
-                Shipped
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
                 class="nav-link"
                 id="completed-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#completed"
-                type="button"
               >
                 Completed
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="returns-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#returns"
-                type="button"
-              >
-                Returns & Refunds
               </button>
             </li>
           </ul>
 
           <!-- Tab Content -->
-          <div class="tab-content" id="orderTabsContent">
-            <!-- All Orders Tab -->
-            <div class="tab-pane fade show active" id="all-orders" role="tabpanel">
-              <div class="vendor-table-container mt-3">
-                <div class="vendor-table-header">
-                  <div class="vendor-table-actions">
-                    <div class="input-group" style="width: 300px">
-                      <input type="text" class="form-control" placeholder="Search orders..." />
-                      <button class="btn btn-outline-secondary" type="button">
-                        <i class="bi bi-search"></i>
-                      </button>
-                    </div>
+          <!-- Tabs -->
+          <ul class="nav nav-tabs vendor-nav-tabs">
+            ...
+          </ul>
 
-                    <div class="btn-group">
-                      <button
-                        class="btn btn-outline-secondary dropdown-toggle"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                      >
-                        <i class="bi bi-filter me-1"></i> Filter
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Today</a></li>
-                        <li><a class="dropdown-item" href="#">Last 7 days</a></li>
-                        <li><a class="dropdown-item" href="#">Last 30 days</a></li>
-                        <li><a class="dropdown-item" href="#">This month</a></li>
-                      </ul>
-                    </div>
-
-                    <button class="btn btn-outline-secondary">
-                      <i class="bi bi-printer me-2"></i>
-                      Print
-                    </button>
-                  </div>
-                </div>
-
-                <div class="vendor-table-responsive">
-                  <table class="vendor-table" data-sortable="true">
-                    <thead>
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% allOrders.forEach(order => { %>
-
-                      <tr>
-                        <td>
-                          <strong>#ORD-<%= order.id %></strong>
-                          <div class="text-muted small">Click to view details</div>
-                        </td>
-
-                        <td>
-                          <div><%= order.name %></div>
-                          <div class="text-muted small"><%= order.email %></div>
-                        </td>
-
-                        <td>
-                          <%= new Date(order.date).toLocaleDateString() %><br />
-                          <span class="text-muted small">
-                            <%= new Date(order.date).toLocaleTimeString([], {hour:'2-digit',
-                            minute:'2-digit'}) %>
-                          </span>
-                        </td>
-
-                        <td>
-                          <%= order.items %>
-                          items
-                        </td>
-
-                        <td>$<%= order.total %></td>
-
-                        <td>
-                          <% if(order.status === 'pending'){ %>
-                          <span class="vendor-status-badge pending">Pending</span>
-
-                          <% } else if(order.status === 'processing'){ %>
-                          <span class="vendor-status-badge processing">Processing</span>
-
-                          <% } else if(order.status === 'shipped'){ %>
-                          <span class="vendor-status-badge shipped">Shipped</span>
-
-                          <% } else if(order.status === 'delivered'){ %>
-                          <span class="vendor-status-badge completed">Completed</span>
-
-                          <% } %>
-                        </td>
-
-                        <td>
-                          <div class="vendor-action-buttons">
-                            <% if(order.status === 'pending'){ %>
-
-                            <button
-                              class="btn btn-primary btn-sm btn-process-order"
-                              data-order-id="<%= order.id %>"
-                            >
-                              <i class="bi bi-check-circle me-1"></i> Process
-                            </button>
-
-                            <% } else if(order.status === 'processing'){ %>
-
-                            <button class="btn btn-info btn-sm" data-order-id="<%= order.id %>">
-                              <i class="bi bi-truck me-1"></i> Ship
-                            </button>
-
-                            <% } %>
-
-                            <button class="btn btn-outline-secondary btn-sm">
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <% }) %>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="vendor-pagination-container">
-                  <div>Showing 1 to 6 of 245 orders</div>
-                  <nav>
-                    <ul class="pagination">
-                      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                  </nav>
+          <!-- TABLE ALWAYS VISIBLE -->
+          <div class="vendor-table-container mt-3">
+            <div class="vendor-table-header">
+              <div class="vendor-table-actions">
+                <div class="input-group" style="width: 300px">
+                  <input type="text" class="form-control" placeholder="Search orders..." />
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                  </button>
                 </div>
               </div>
             </div>
 
-            <!-- Other tabs would have filtered content -->
+            <div class="vendor-table-responsive">
+              <table class="vendor-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-body"></tbody>
+              </table>
+            </div>
+
+            <div class="pagination-container">
+              <div class="pagination-info"></div>
+              <ul class="pagination" id="pagination"></ul>
+            </div>
           </div>
 
           <!-- Order Processing Section -->
@@ -514,5 +390,6 @@
 
     <!-- Vendor JS -->
     <script src="../assets/js/vendor.js"></script>
+    <script type="module" src="../assets/js/vendor/order/order.main.js"></script>
   </body>
 </html>

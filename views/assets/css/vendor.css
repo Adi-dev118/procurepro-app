@@ -886,7 +886,16 @@ body {
 .vendor-profile-dropdown.open {
   display: block;
 }
+.pagination-container {
+  display: flex;
+  justify-content: space-between; /* 🔥 KEY */
+  align-items: center;
+  margin: 20px;
+}
 
+.pagination {
+  margin: 0;
+}
 @keyframes dropdownFadeIn {
   from {
     opacity: 0;
