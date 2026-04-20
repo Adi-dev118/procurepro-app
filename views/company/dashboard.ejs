@@ -1024,31 +1024,7 @@
                 </div>
                 <a href="#" class="btn-link">View all <i class="bi bi-arrow-right"></i></a>
               </div>
-              <div class="activity-feed">
-                <% recentActivities.forEach(activity => { %>
-                <div class="activity-item">
-                  <div
-                    class="activity-dot <%= activity.type === 'orders' ? 'order' : activity.type === 'rfqs' ? 'rfq' : 'quote' %>"
-                  >
-                    <% if(activity.type === 'orders') { %><i class="bi bi-cart-check"></i>
-                    <% } else if(activity.type === 'rfqs') { %><i class="bi bi-megaphone"></i>
-                    <% } else { %><i class="bi bi-file-earmark-text"></i
-                    ><% } %>
-                  </div>
-                  <div class="activity-body">
-                    <div class="activity-title">
-                      <%= activity.type === 'orders' ? 'Order Placed' : activity.type === 'rfqs' ?
-                      'RFQ Created' : 'Quote Received' %>
-                    </div>
-                    <div class="activity-desc"><%= activity.message %></div>
-                    <div class="activity-time">
-                      <%= new Date(activity.created_at).toLocaleString('en-IN', { day:'2-digit',
-                      month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) %>
-                    </div>
-                  </div>
-                </div>
-                <% }) %>
-              </div>
+              <div class="activity-feed" id="order-feed"></div>
             </div>
 
             <!-- Quick Links -->
@@ -1126,51 +1102,7 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <% recentRFQs.forEach(rfq => { %>
-                  <tr>
-                    <td
-                      class="bold"
-                      style="
-                        font-family: 'DM Mono', monospace;
-                        font-size: 12px;
-                        color: var(--col-text-muted);
-                      "
-                    >
-                      #RFQ-<%= String(rfq.id).padStart(3,'0') %>
-                    </td>
-                    <td class="bold"><%= rfq.title %></td>
-                    <td><span class="badge cat"><%= rfq.category %></span></td>
-                    <td><%= new Date(rfq.deadline).toLocaleDateString('en-IN') %></td>
-                    <td style="text-align: center; font-weight: 600"><%= rfq.bids %></td>
-                    <td>
-                      <span
-                        class="badge <%= rfq.status === 'active' ? 'active' : rfq.status === 'closed' ? 'closed' : 'awarded' %>"
-                      >
-                        <span
-                          style="
-                            display: inline-block;
-                            width: 5px;
-                            height: 5px;
-                            border-radius: 50%;
-                            background: currentColor;
-                            margin-right: 5px;
-                            opacity: 0.8;
-                          "
-                        ></span>
-                        <%= rfq.status.charAt(0).toUpperCase() + rfq.status.slice(1) %>
-                      </span>
-                    </td>
-                    <td>
-                      <% if(rfq.status === 'awarded') { %>
-                      <button class="btn-sm-action">View Award</button>
-                      <% } else { %>
-                      <button class="btn-sm-action primary">View Bids</button>
-                      <% } %>
-                    </td>
-                  </tr>
-                  <% }) %>
-                </tbody>
+                <tbody id="rfq-body"></tbody>
               </table>
             </div>
           </div>
@@ -1182,6 +1114,7 @@
     <!-- /shell -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../assets/js/company/dashboard/dashboard.main.js"></script>
     <script>
       const menuToggle = document.getElementById('menuToggle');
       const sidebar = document.getElementById('sidebar');

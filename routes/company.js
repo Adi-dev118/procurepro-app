@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const companyController = require('./../controllers/company');
+const userController = require('./../controllers/users');
 const { render } = require('../app');
 
 router.get('/dashboard', companyController.companyDashboard);
 
 router.get('/marketplace', companyController.marketplaceDashboard);
+
+router.get('/company/dashboard/dashboard-data', userController.getRecentOrdersRFQS);
 
 router.get('/rfq', companyController.rfqsDashboard);
 
