@@ -3,458 +3,1085 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RFQ Center - ProcurePro</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <title>RFQ Center — ProcurePro</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
-
-    <!-- Shared CSS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../assets/css/style.css" />
-
-    <!-- Company CSS -->
     <link rel="stylesheet" href="../assets/css/company-style.css" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+    <style>
+      :root {
+        --col-bg: #eef2f9;
+        --col-surface: #f7f9fd;
+        --col-surface-2: #edf1f8;
+        --col-border: #cdd8ee;
+        --col-border-strong: #b3c3e0;
+        --col-text-primary: #0f1e3d;
+        --col-text-secondary: #3d5070;
+        --col-text-muted: #7a90b8;
+        --col-accent: #1d6bf3;
+        --col-accent-light: #dce8fd;
+        --col-accent-hover: #1558d6;
+        --col-success: #0f9960;
+        --col-success-light: #d6f0e6;
+        --col-warning: #b45309;
+        --col-warning-light: #fef3d9;
+        --col-danger: #dc2626;
+        --col-danger-light: #fde8e8;
+        --col-purple: #5b21b6;
+        --col-purple-light: #ede9fe;
+        --nav-w: 240px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: var(--nav-w);
+        background: #0f1e3d;
+        border-right: 1px solid #1a3060;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform 0.25s ease;
+      }
+      .sidebar-logo {
+        padding: 24px 20px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        background: var(--col-accent);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .logo-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.3px;
+      }
+      .logo-badge {
+        font-size: 10px;
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+      .sidebar-section-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 18px 20px 6px;
+      }
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 10px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+      }
+      .nav-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+      .nav-item.active {
+        background: rgba(29, 107, 243, 0.25);
+        color: #ffffff;
+        font-weight: 600;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--col-danger);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
+      }
+      .nav-badge.warning {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .sidebar-footer {
+        padding: 16px 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.07);
+        cursor: pointer;
+      }
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #ffffff;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .main {
+        margin-left: var(--nav-w);
+        flex: 1;
+      }
+      .topbar {
+        background: #f7f9fd;
+        border-bottom: 1px solid #cdd8ee;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.07);
+      }
+      .topbar-title {
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+      }
+      .topbar-search {
+        display: flex;
+        align-items: center;
+        background: var(--col-bg);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 12px;
+        gap: 8px;
+        width: 260px;
+        transition: all 0.15s;
+      }
+      .topbar-search:focus-within {
+        border-color: var(--col-accent);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
+      }
+      .topbar-search i {
+        color: var(--col-text-muted);
+        font-size: 13px;
+      }
+      .topbar-search input {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 13px;
+        font-family: inherit;
+        color: var(--col-text-primary);
+        width: 100%;
+      }
+      .topbar-search input::placeholder {
+        color: var(--col-text-muted);
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        background: var(--col-bg);
+      }
+      .icon-btn .dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--col-danger);
+        border: 1.5px solid var(--col-surface);
+      }
+      .btn-primary-action {
+        background: var(--col-accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 16px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .btn-primary-action:hover {
+        background: var(--col-accent-hover);
+      }
+      .btn-ghost {
+        background: none;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 14px;
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-ghost:hover {
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+      }
+      .page-content {
+        padding: 28px;
+      }
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      .page-title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+      }
+      .page-subtitle {
+        font-size: 13px;
+        color: var(--col-text-muted);
+        margin-top: 3px;
+      }
+      /* Tabs */
+      .tab-nav {
+        display: flex;
+        gap: 2px;
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        padding: 4px;
+        margin-bottom: 22px;
+        width: fit-content;
+      }
+      .tab-btn {
+        padding: 8px 18px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .tab-btn.active {
+        background: var(--col-accent-light) !important;
+        color: var(--col-accent);
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(29, 107, 243, 0.12);
+      }
+      .tab-btn:hover:not(.active) {
+        background: var(--col-surface-2);
+        color: var(--col-text-primary);
+      }
+      .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--col-bg);
+        color: var(--col-text-muted);
+        font-size: 10px;
+        font-weight: 700;
+        width: 18px;
+        height: 18px;
+        border-radius: 20px;
+        margin-left: 5px;
+        border: 1px solid var(--col-border);
+      }
+      .tab-btn.active .tab-count {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+        border-color: transparent;
+      }
+      /* RFQ Card */
+      .rfq-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+      .rfq-card-header {
+        padding: 20px 22px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid var(--col-border);
+      }
+      .rfq-id {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        color: var(--col-text-muted);
+        margin-bottom: 4px;
+      }
+      .rfq-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .rfq-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .rfq-meta-item {
+        font-size: 12.5px;
+        color: var(--col-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .rfq-meta-item i {
+        font-size: 12px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 11px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .badge.open {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .badge.awarded {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .badge.awaiting {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .badge.draft {
+        background: var(--col-bg);
+        color: var(--col-text-muted);
+        border: 1px solid var(--col-border);
+      }
+      .dot-indicator {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+        margin-right: 5px;
+        opacity: 0.8;
+      }
+      .rfq-body {
+        padding: 20px 22px;
+      }
+      .rfq-description {
+        font-size: 13.5px;
+        color: var(--col-text-secondary);
+        line-height: 1.6;
+        margin-bottom: 18px;
+      }
+      .rfq-specs-box {
+        background: #edf1f8;
+        border: 1px solid #cdd8ee;
+        border-radius: var(--radius-md);
+        padding: 16px;
+        margin-bottom: 18px;
+      }
+      .rfq-specs-title {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--col-text-muted);
+        margin-bottom: 10px;
+      }
+      .rfq-specs-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 6px;
+      }
+      .rfq-specs-list li {
+        font-size: 12.5px;
+        color: var(--col-text-secondary);
+        display: flex;
+        gap: 6px;
+        align-items: baseline;
+      }
+      .rfq-specs-list li::before {
+        content: '';
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        flex-shrink: 0;
+        margin-top: 5px;
+      }
+      .bids-section-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 14px;
+        color: var(--col-text-primary);
+      }
+      /* Bid Card */
+      .bid-card {
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        margin-bottom: 10px;
+        background: var(--col-surface);
+        transition: all 0.2s;
+      }
+      .bid-card:hover {
+        border-color: var(--col-accent);
+        box-shadow: 0 2px 12px rgba(29, 107, 243, 0.12);
+      }
+      .bid-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .bid-supplier-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .bid-sup-ava {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .bid-sup-name {
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .bid-sup-rating {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .bid-price-tag {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: var(--col-text-primary);
+      }
+      .bid-details-row {
+        font-size: 12.5px;
+        color: var(--col-text-secondary);
+        margin-bottom: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .bid-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .bid-detail-item i {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .bid-notes {
+        font-size: 12.5px;
+        color: var(--col-text-secondary);
+        background: var(--col-surface-2);
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        border-left: 3px solid var(--col-accent);
+      }
+      .bid-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-accept {
+        background: var(--col-success);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 16px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+      .btn-accept:hover {
+        background: #15803d;
+      }
+      .btn-outline-sm {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 14px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+      .btn-outline-sm:hover {
+        border-color: var(--col-accent);
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+      }
+      .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        color: var(--col-text-muted);
+      }
+      .empty-state i {
+        font-size: 40px;
+        margin-bottom: 14px;
+        display: block;
+        opacity: 0.4;
+      }
+      .empty-state h5 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--col-text-secondary);
+        margin-bottom: 6px;
+      }
+      .empty-state p {
+        font-size: 13px;
+      }
+      /* Award banner */
+      .award-banner {
+        background: var(--col-success-light);
+        border: 1px solid rgba(15, 153, 96, 0.2);
+        border-radius: var(--radius-md);
+        padding: 16px 18px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .award-banner i {
+        font-size: 22px;
+        color: var(--col-success);
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .award-banner h6 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--col-success);
+        margin-bottom: 4px;
+      }
+      .award-banner p {
+        font-size: 12.5px;
+        color: #166534;
+        margin: 0;
+      }
+      /* Stats row */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-top: 28px;
+      }
+      .stat-mini-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.06);
+      }
+      .stat-mini-icon {
+        font-size: 28px;
+        margin-bottom: 10px;
+        display: block;
+      }
+      .stat-mini-val {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .stat-mini-lbl {
+        font-size: 12px;
+        color: var(--col-text-muted);
+        margin-top: 4px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .page-content {
+          padding: 16px;
+        }
+        .tab-nav {
+          overflow-x: auto;
+          width: 100%;
+        }
+        .stats-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
   </head>
-  <body class="company-dashboard">
-    <!-- Header (Same as dashboard) -->
-    <header class="company-header">
-      <div class="container-fluid d-flex justify-content-between align-items-center">
-        <div class="company-logo">
-          <i class="bi bi-building"></i>
-          <span>ProcurePro</span>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-mark">P</div>
+          <div>
+            <div class="logo-name">ProcurePro</div>
+            <div class="logo-badge">BUYER</div>
+          </div>
         </div>
-
-        <button class="mobile-menu-btn d-lg-none">
-          <i class="bi bi-list"></i>
-        </button>
-
-        <nav class="company-nav d-none d-lg-flex">
-          <a href="/dashboard" class="company-nav-link">
-            <i class="bi bi-speedometer2 me-1"></i> Dashboard
-          </a>
-          <a href="/marketplace" class="company-nav-link">
-            <i class="bi bi-shop me-1"></i> Marketplace
-          </a>
-          <a href="/rfq" class="company-nav-link active">
-            <i class="bi bi-megaphone me-1"></i> RFQ Center
-          </a>
-          <a href="/orders" class="company-nav-link">
-            <i class="bi bi-cart-check me-1"></i> Orders
-          </a>
-          <a href="/profile" class="company-nav-link">
-            <i class="bi bi-person-circle me-1"></i> Profile
-          </a>
+        <nav class="sidebar-nav">
+          <div class="sidebar-section-label">Main</div>
+          <a href="/dashboard" class="nav-item"
+            ><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a
+          >
+          <a href="/marketplace" class="nav-item"
+            ><i class="bi bi-shop"></i><span>Marketplace</span></a
+          >
+          <a href="/rfq" class="nav-item active"
+            ><i class="bi bi-megaphone"></i><span>RFQ Center</span
+            ><span class="nav-badge warning">5</span></a
+          >
+          <div class="sidebar-section-label">Procurement</div>
+          <a href="/orders" class="nav-item"
+            ><i class="bi bi-cart-check"></i><span>Orders</span><span class="nav-badge">3</span></a
+          >
+          <a href="/contracts" class="nav-item"
+            ><i class="bi bi-file-earmark-text"></i><span>Contracts</span></a
+          >
+          <a href="/invoices" class="nav-item"
+            ><i class="bi bi-receipt"></i><span>Invoices</span></a
+          >
+          <a href="/suppliers" class="nav-item"
+            ><i class="bi bi-people"></i><span>Suppliers</span></a
+          >
+          <div class="sidebar-section-label">Account</div>
+          <a href="/analytics" class="nav-item"
+            ><i class="bi bi-bar-chart-line"></i><span>Analytics</span></a
+          >
+          <a href="/profile" class="nav-item"
+            ><i class="bi bi-person-circle"></i><span>Profile & Team</span></a
+          >
+          <a href="/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
         </nav>
-
-        <div class="company-actions">
-          <div class="search-box-company d-none d-md-block">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Search RFQs..." />
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">
+              <%= name.name.split(' ').map(w=>w[0]).join('').toUpperCase() %>
+            </div>
+            <div>
+              <div class="user-name"><%= name.name %></div>
+              <div class="user-role">Buyer Account</div>
+            </div>
+            <i
+              class="bi bi-three-dots-vertical"
+              style="margin-left: auto; color: rgba(255, 255, 255, 0.35); font-size: 13px"
+            ></i>
           </div>
+        </div>
+      </aside>
 
-          <button class="notification-btn">
-            <i class="bi bi-bell"></i>
-            <span class="notification-badge">3</span>
+      <div class="main">
+        <header class="topbar">
+          <button class="icon-btn d-lg-none" id="menuToggle" style="border: none">
+            <i class="bi bi-list" style="font-size: 18px"></i>
           </button>
-
-          <div class="company-profile">
-            <div class="company-avatar">
-              <%= name.name.split(' ').map(word => word[0]).join('').toUpperCase() %>
+          <span class="topbar-title d-none d-md-block">RFQ Center</span>
+          <div class="topbar-search ms-auto ms-md-0">
+            <i class="bi bi-search"></i><input type="text" placeholder="Search RFQs, tenders…" />
+          </div>
+          <div class="topbar-actions">
+            <div class="icon-btn">
+              <i class="bi bi-bell" style="font-size: 15px"></i><span class="dot"></span>
             </div>
-            <div class="d-none d-md-block">
-              <div class="company-name"><%=name.name%></div>
-              <div class="text-muted small">Buyer Account</div>
+            <button class="btn-primary-action create-rfq-btn">
+              <i class="bi bi-plus"></i> Create RFQ
+            </button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div class="page-header">
+            <div>
+              <div class="page-title">RFQ Center</div>
+              <div class="page-subtitle">Manage your requests for quotation and tenders</div>
             </div>
-            <i class="bi bi-chevron-down"></i>
           </div>
-        </div>
-      </div>
 
-      <div class="company-nav-mobile d-lg-none">
-        <a href="/dashboard" class="company-nav-link">
-          <i class="bi bi-speedometer2 me-2"></i> Dashboard
-        </a>
-        <a href="/marketplace" class="company-nav-link">
-          <i class="bi bi-shop me-2"></i> Marketplace
-        </a>
-        <a href="/rfq" class="company-nav-link active">
-          <i class="bi bi-megaphone me-2"></i> RFQ Center
-        </a>
-        <a href="/orders" class="company-nav-link">
-          <i class="bi bi-cart-check me-2"></i> Orders
-        </a>
-        <a href="/profile" class="company-nav-link">
-          <i class="bi bi-person-circle me-2"></i> Profile
-        </a>
-      </div>
-
-      <div class="mobile-overlay"></div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="company-main">
-      <div class="container-fluid py-4">
-        <!-- Page Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div>
-            <h1 class="h2 mb-1">RFQ Center</h1>
-            <p class="text-muted mb-0">Manage your Request for Quotations and Tenders</p>
+          <!-- Tabs -->
+          <div class="tab-nav" id="rfqTabs">
+            <button class="tab-btn active" data-tab="active">
+              Active<span class="tab-count"><%=activeRFQs.length%></span>
+            </button>
+            <button class="tab-btn" data-tab="pending">
+              Pending Review<span class="tab-count"><%=pendingRFQs.length%></span>
+            </button>
+            <button class="tab-btn" data-tab="closed">
+              Closed / Awarded<span class="tab-count"><%=closedRFQs.length%></span>
+            </button>
+            <button class="tab-btn" data-tab="draft">Drafts<span class="tab-count">1</span></button>
           </div>
-          <div>
-            <button class="btn btn-primary create-rfq-btn">
-              <i class="bi bi-plus-circle me-2"></i> Create New RFQ
-            </button>
-          </div>
-        </div>
 
-        <!-- RFQ Tabs -->
-        <ul class="nav nav-tabs mb-4" id="rfqTabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link active"
-              id="active-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#active"
-              type="button"
-            >
-              Active RFQs (<%=activeRFQs.length%>)
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              id="pending-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#pending"
-              type="button"
-            >
-              Pending Review (<%=pendingRFQs.length%>)
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              id="closed-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#closed"
-              type="button"
-            >
-              Closed/Awarded (<%=closedRFQs.length%>)
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              id="draft-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#draft"
-              type="button"
-            >
-              Drafts (1)
-            </button>
-          </li>
-        </ul>
-
-        <!-- RFQ Tab Content -->
-
-        <div class="tab-content" id="rfqTabsContent">
-          <%currentRFQs.forEach(rfq => {%>
-          <!-- Active RFQs -->
-          <div class="tab-pane fade show active" id="active" role="tabpanel">
-            <!-- RFQ Card 1 -->
-            <%if(rfq.status === 'active'){%>
+          <!-- Tab Panels -->
+          <div id="tab-active">
+            <%currentRFQs.forEach(rfq => {%>
+            <%if(rfq.status==='active'){%>
             <div class="rfq-card">
-              <div class="rfq-header">
+              <div class="rfq-card-header">
                 <div>
-                  <h4 class="mb-1"><%=rfq.title%> - <%=rfq.quantity%> Units</h4>
+                  <div class="rfq-id">#RFQ-00<%=rfq.id%></div>
+                  <div class="rfq-title"><%=rfq.title%> — <%=rfq.quantity%> Units</div>
                   <div class="rfq-meta">
-                    <span>#RFQ-00<%=rfq.id%></span>
-                    <span
-                      ><i class="bi bi-calendar"></i> Deadline:
-                      <%= new Date(rfq.deadline).toLocaleDateString('en-US', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    year: 'numeric'
-                        }) %></span
+                    <span class="rfq-meta-item"
+                      ><i class="bi bi-calendar3"></i>Deadline:
+                      <%= new Date(rfq.deadline).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span
                     >
-                    <span
-                      ><i class="bi bi-people"></i>
-                      <%=rfq.suppliers_invited%>
-                      Suppliers Invited</span
+                    <span class="rfq-meta-item"
+                      ><i class="bi bi-people"></i
+                      ><%=rfq.suppliers_invited%>
+                      suppliers invited</span
                     >
-                    <span
-                      ><i class="bi bi-file-text"></i>
-                      <%=rfq.bids_received%>
-                      Bids Received</span
+                    <span class="rfq-meta-item"
+                      ><i class="bi bi-file-text"></i
+                      ><%=rfq.bids_received%>
+                      bids received</span
                     >
                   </div>
                 </div>
-                <div>
-                  <span class="rfq-status open">Open for Bids</span>
-                </div>
+                <span class="badge open"><span class="dot-indicator"></span>Open for Bids</span>
               </div>
-
-              <div class="rfq-details">
+              <div class="rfq-body">
                 <p class="rfq-description"><%=rfq.description%></p>
-
-                <div class="rfq-specs">
-                  <h6>Specifications:</h6>
-                  <ul class="mb-0">
-                    <%rfq.specifications.forEach(spec=> {%>
+                <div class="rfq-specs-box">
+                  <div class="rfq-specs-title">Specifications</div>
+                  <ul class="rfq-specs-list">
+                    <%rfq.specifications.forEach(spec=>{%>
                     <li>
-                      <%=spec.spec_name%>:
+                      <strong><%=spec.spec_name%>:</strong>
                       <%=spec.spec_value%>
                     </li>
                     <%})%>
                   </ul>
                 </div>
-
-                <div class="rfq-bids">
-                  <h6 class="mb-3">Received Bids:</h6>
-
-                  <!-- Bid 1 -->
-                  <%rfq.quotes.forEach(quote=> {%>
-                  <div class="bid-card">
-                    <div class="bid-header">
-                      <div class="bid-supplier">
-                        <div class="supplier-avatar">
-                          <%= quote.company.split(' ').map(word => word[0]).join('').toUpperCase()
-                          %>
-                        </div>
-                        <div>
-                          <h6 class="mb-0"><%=quote.company%></h6>
-                          <p class="text-muted small mb-0">
-                            <%=quote.rating%> ★ (<%=quote.review_count%> reviews)
-                          </p>
+                <div class="bids-section-title">Received Bids (<%=rfq.quotes.length%>)</div>
+                <%rfq.quotes.forEach(quote=>{%>
+                <div class="bid-card">
+                  <div class="bid-card-header">
+                    <div class="bid-supplier-row">
+                      <div class="bid-sup-ava">
+                        <%= quote.company.split(' ').map(w=>w[0]).join('').toUpperCase() %>
+                      </div>
+                      <div>
+                        <div class="bid-sup-name"><%=quote.company%></div>
+                        <div class="bid-sup-rating">
+                          <%=quote.rating%> ★ · <%=quote.review_count%> reviews
                         </div>
                       </div>
-                      <div class="bid-price">$<%=quote.price%></div>
                     </div>
-                    <div class="bid-details">
-                      <p class="mb-2">
-                        Delivery: <%=quote.delivery_days%> days | Warranty: <%=quote.warranty%>
-                        years | Payment: <%=quote.payment_terms%>
-                      </p>
-                      <p class="mb-0">
-                        <strong>Notes:</strong>
-                        <%=quote.message%>
-                      </p>
-                    </div>
-                    <div class="bid-actions">
-                      <button class="btn btn-success btn-sm accept-bid-btn" data-bid-id="bid1">
-                        <i class="bi bi-check-circle me-1"></i> Accept Bid
-                      </button>
-                      <button class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-chat-left-text me-1"></i> Message
-                      </button>
-                      <button class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-eye me-1"></i> View Details
-                      </button>
-                    </div>
+                    <div class="bid-price-tag">$<%=quote.price%></div>
                   </div>
-                  <%})%>
+                  <div class="bid-details-row">
+                    <span class="bid-detail-item"
+                      ><i class="bi bi-truck"></i>Delivery:
+                      <%=quote.delivery_days%>
+                      days</span
+                    >
+                    <span class="bid-detail-item"
+                      ><i class="bi bi-shield-check"></i>Warranty:
+                      <%=quote.warranty%>
+                      yr</span
+                    >
+                    <span class="bid-detail-item"
+                      ><i class="bi bi-credit-card"></i
+                      ><%=quote.payment_terms%></span
+                    >
+                  </div>
+                  <div class="bid-notes"><%=quote.message%></div>
+                  <div class="bid-actions">
+                    <button class="btn-accept accept-bid-btn" data-bid-id="<%=quote.id%>">
+                      <i class="bi bi-check-circle"></i> Accept Bid
+                    </button>
+                    <button class="btn-outline-sm">
+                      <i class="bi bi-chat-left-text"></i> Message
+                    </button>
+                    <button class="btn-outline-sm"><i class="bi bi-eye"></i> Details</button>
+                  </div>
                 </div>
+                <%})%>
               </div>
             </div>
-            <%}%>
+            <%}%><%})%>
           </div>
 
-          <!-- Pending Review -->
-          <%if(rfq.status=== 'expired'){%>
-          <div class="tab-pane fade" id="pending" role="tabpanel">
-            <!-- RFQ Card for Pending -->
+          <div id="tab-pending" style="display: none">
+            <%currentRFQs.forEach(rfq=>{%><%if(rfq.status==='expired'){%>
             <div class="rfq-card">
-              <div class="rfq-header">
+              <div class="rfq-card-header">
                 <div>
-                  <h4 class="mb-1"><%=rfq.title%></h4>
+                  <div class="rfq-id">#RFQ-00<%=rfq.id%></div>
+                  <div class="rfq-title"><%=rfq.title%></div>
                   <div class="rfq-meta">
-                    <span><i class="bi bi-hash"></i> #RFQ-00<%=rfq.id%></span>
-                    <span><i class="bi bi-calendar"></i> Posted: Nov 6, 2023</span>
-                    <span
-                      ><i class="bi bi-people"></i>
-                      <%=rfq.suppliers_invited%>
-                      Suppliers Invited</span
-                    >
-                    <span><i class="bi bi-clock"></i> 2 Days Remaining</span>
+                    <span class="rfq-meta-item"
+                      ><i class="bi bi-people"></i
+                      ><%=rfq.suppliers_invited%>
+                      suppliers invited</span
+                    ><span class="rfq-meta-item"><i class="bi bi-clock"></i>2 Days Remaining</span>
                   </div>
                 </div>
-                <div>
-                  <span class="rfq-status open">Awaiting Bids</span>
-                </div>
+                <span class="badge awaiting"><span class="dot-indicator"></span>Awaiting Bids</span>
               </div>
-
-              <div class="rfq-details">
+              <div class="rfq-body">
                 <p class="rfq-description"><%=rfq.description%></p>
-
-                <div class="text-center py-4">
-                  <i class="bi bi-clock display-4 text-muted mb-3"></i>
+                <div class="empty-state">
+                  <i class="bi bi-hourglass-split"></i>
                   <h5>Awaiting Supplier Bids</h5>
-                  <p class="text-muted">No bids received yet. Check back after the deadline.</p>
+                  <p>No bids received yet. Check back after the deadline.</p>
                 </div>
               </div>
             </div>
+            <%}%><%})%>
           </div>
-          <%}%>
 
-          <!-- Closed/Awarded -->
-          <%if(rfq.status === 'closed') {%>
-          <div class="tab-pane fade" id="closed" role="tabpanel">
-            <!-- RFQ Card for Closed -->
+          <div id="tab-closed" style="display: none">
+            <%currentRFQs.forEach(rfq=>{%><%if(rfq.status==='closed'){%>
             <div class="rfq-card">
-              <div class="rfq-header">
+              <div class="rfq-card-header">
                 <div>
-                  <h4 class="mb-1"><%=rfq.title%></h4>
+                  <div class="rfq-id">#RFQ-<%=rfq.id%></div>
+                  <div class="rfq-title"><%=rfq.title%></div>
                   <div class="rfq-meta">
-                    <span><i class="bi bi-hash"></i> #RFQ-<%=rfq.id%></span>
-                    <span
-                      ><i class="bi bi-calendar"></i> Closed:
-                      <%= new Date(rfq.deadline).toLocaleDateString('en-US', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    year: 'numeric'
-                        }) %></span
-                    >
-                    <span
-                      ><i class="bi bi-people"></i>
-                      <%=rfq.suppliers_invited%>
-                      Suppliers Invited</span
-                    >
-                    <span
-                      ><i class="bi bi-file-text"></i>
-                      <%=rfq.bids_received%>
-                      Bids Received</span
+                    <span class="rfq-meta-item"
+                      ><i class="bi bi-calendar3"></i>Closed:
+                      <%= new Date(rfq.deadline).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span
+                    ><span class="rfq-meta-item"
+                      ><i class="bi bi-file-text"></i
+                      ><%=rfq.bids_received%>
+                      bids</span
                     >
                   </div>
                 </div>
-                <div>
-                  <span class="rfq-status awarded">Awarded</span>
-                </div>
+                <span class="badge awarded"><span class="dot-indicator"></span>Awarded</span>
               </div>
-
-              <div class="rfq-details">
+              <div class="rfq-body">
                 <p class="rfq-description"><%=rfq.description%></p>
-
-                <div class="alert alert-success">
-                  <div class="d-flex">
-                    <i class="bi bi-check-circle-fill me-3 fs-4"></i>
-                    <div>
-                      <%rfq.quotes.forEach(quote=> {%>
-                      <%if(quote.status === 'won'){%>
-                      <h6 class="alert-heading">Awarded to: <%=quote.company%></h6>
-                      <p class="mb-1">Winning Bid: $<%=quote.price%> | Delivery: <%=quote.delivery_days%> days</p>
-                      <p class="mb-0">Order #ORD-<%=quote.order_id%> created from this RFQ</p>
-                      <%}%>
-                      <%})%>
-                    </div>
+                <%rfq.quotes.forEach(quote=>{%><%if(quote.status==='won'){%>
+                <div class="award-banner">
+                  <i class="bi bi-trophy-fill"></i>
+                  <div>
+                    <h6>
+                      Awarded to
+                      <%=quote.company%>
+                    </h6>
+                    <p>
+                      Winning bid: $<%=quote.price%> · Delivery: <%=quote.delivery_days%> days ·
+                      Order #ORD-<%=quote.order_id%> created from this RFQ
+                    </p>
                   </div>
                 </div>
+                <%}%><%})%>
               </div>
             </div>
+            <%}%><%})%>
           </div>
-          <%}%>
 
-          <!-- Drafts -->
-          <div class="tab-pane fade" id="draft" role="tabpanel">
+          <div id="tab-draft" style="display: none">
             <div class="rfq-card">
-              <div class="rfq-header">
+              <div class="rfq-card-header">
                 <div>
-                  <h4 class="mb-1">Industrial Pumps - Draft</h4>
-                  <div class="rfq-meta">
-                    <span><i class="bi bi-save"></i> Last saved: Today, 10:30 AM</span>
-                  </div>
+                  <div class="rfq-id">Draft · Last saved today, 10:30 AM</div>
+                  <div class="rfq-title">Industrial Pumps — Draft</div>
                 </div>
-                <div>
-                  <span class="badge bg-secondary">Draft</span>
-                </div>
+                <span class="badge draft">Draft</span>
               </div>
-
-              <div class="rfq-details">
-                <p class="rfq-description">
-                  Need centrifugal pumps for water treatment facility...
-                </p>
-
-                <div class="d-flex gap-2">
-                  <button class="btn btn-primary">
-                    <i class="bi bi-pencil me-2"></i> Continue Editing
+              <div class="rfq-body">
+                <p class="rfq-description">Need centrifugal pumps for water treatment facility…</p>
+                <div class="bid-actions">
+                  <button class="btn-primary-action">
+                    <i class="bi bi-pencil"></i> Continue Editing
                   </button>
-                  <button class="btn btn-outline-primary">
-                    <i class="bi bi-eye me-2"></i> Preview
-                  </button>
-                  <button class="btn btn-outline-danger">
-                    <i class="bi bi-trash me-2"></i> Delete Draft
+                  <button class="btn-outline-sm"><i class="bi bi-eye"></i> Preview</button>
+                  <button class="btn-outline-sm" style="color: var(--col-danger)">
+                    <i class="bi bi-trash"></i> Delete
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <%})%>
-        </div>
 
-        <!-- RFQ Statistics -->
-        <div class="row mt-5">
-          <div class="col-md-3">
-            <div class="card-company text-center p-4">
-              <i class="bi bi-megaphone display-4 text-primary mb-3"></i>
-              <h3>12</h3>
-              <p class="text-muted mb-0">Total RFQs Created</p>
+          <!-- Stats -->
+          <div class="stats-row">
+            <div class="stat-mini-card">
+              <span class="stat-mini-icon" style="color: var(--col-accent)">📋</span>
+              <div class="stat-mini-val">12</div>
+              <div class="stat-mini-lbl">Total RFQs Created</div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card-company text-center p-4">
-              <i class="bi bi-clock display-4 text-warning mb-3"></i>
-              <h3>5</h3>
-              <p class="text-muted mb-0">Avg. Bids per RFQ</p>
+            <div class="stat-mini-card">
+              <span class="stat-mini-icon" style="color: var(--col-warning)">⏱</span>
+              <div class="stat-mini-val">5</div>
+              <div class="stat-mini-lbl">Avg. Bids per RFQ</div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card-company text-center p-4">
-              <i class="bi bi-currency-dollar display-4 text-success mb-3"></i>
-              <h3>18%</h3>
-              <p class="text-muted mb-0">Avg. Cost Savings</p>
+            <div class="stat-mini-card">
+              <span class="stat-mini-icon" style="color: var(--col-success)">💰</span>
+              <div class="stat-mini-val">18%</div>
+              <div class="stat-mini-lbl">Avg. Cost Savings</div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card-company text-center p-4">
-              <i class="bi bi-check-circle display-4 text-info mb-3"></i>
-              <h3>92%</h3>
-              <p class="text-muted mb-0">RFQ Success Rate</p>
+            <div class="stat-mini-card">
+              <span class="stat-mini-icon" style="color: var(--col-purple)">✅</span>
+              <div class="stat-mini-val">92%</div>
+              <div class="stat-mini-lbl">RFQ Success Rate</div>
             </div>
           </div>
         </div>
       </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="mb-0">&copy; 2023 ProcurePro. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-md-end">
-            <a href="#" class="text-muted me-3">Help & Support</a>
-            <a href="#" class="text-muted me-3">Privacy Policy</a>
-            <a href="#" class="text-muted">Terms of Service</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle -->
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Company JS -->
     <script src="../assets/js/company.js"></script>
+    <script>
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target))
+            sidebar.classList.remove('open');
+        });
+      }
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          ['active', 'pending', 'closed', 'draft'].forEach((t) => {
+            const el = document.getElementById('tab-' + t);
+            if (el) el.style.display = 'none';
+          });
+          const panel = document.getElementById('tab-' + btn.dataset.tab);
+          if (panel) panel.style.display = 'block';
+        });
+      });
+    </script>
   </body>
 </html>

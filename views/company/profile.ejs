@@ -1,853 +1,1905 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - ProcurePro</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
-    <!-- Shared CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    
-    <!-- Company CSS -->
-    <link rel="stylesheet" href="../assets/css/company-style.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
-</head>
-<body class="company-dashboard">
-    <!-- Header (Same as dashboard) -->
-    <header class="company-header">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="company-logo">
-                <i class="bi bi-building"></i>
-                <span>ProcurePro</span>
-            </div>
-            
-            <button class="mobile-menu-btn d-lg-none">
-                <i class="bi bi-list"></i>
-            </button>
-            
-            <nav class="company-nav d-none d-lg-flex">
-                <a href="/dashboard" class="company-nav-link">
-                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
-                </a>
-                <a href="/marketplace" class="company-nav-link">
-                    <i class="bi bi-shop me-1"></i> Marketplace
-                </a>
-                <a href="/rfq" class="company-nav-link">
-                    <i class="bi bi-megaphone me-1"></i> RFQ Center
-                </a>
-                <a href="/orders" class="company-nav-link">
-                    <i class="bi bi-cart-check me-1"></i> Orders
-                </a>
-                <a href="/profile" class="company-nav-link active">
-                    <i class="bi bi-person-circle me-1"></i> Profile
-                </a>
-            </nav>
-            
-            <div class="company-actions">
-                <div class="search-box-company d-none d-md-block">
-                    <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
-                
-                <button class="notification-btn">
-                    <i class="bi bi-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                
-                <div class="company-profile">
-                    <div class="company-avatar">IB</div>
-                    <div class="d-none d-md-block">
-                        <div class="company-name">Industrial Buyers Inc.</div>
-                        <div class="text-muted small">Buyer Account</div>
-                    </div>
-                    <i class="bi bi-chevron-down"></i>
-                </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile — ProcurePro</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/company-style.css" />
+    <style>
+      :root {
+        --col-bg: #eef2f9;
+        --col-surface: #f7f9fd;
+        --col-surface-2: #edf1f8;
+        --col-border: #cdd8ee;
+        --col-border-strong: #b3c3e0;
+        --col-text-primary: #0f1e3d;
+        --col-text-secondary: #3d5070;
+        --col-text-muted: #7a90b8;
+        --col-accent: #1d6bf3;
+        --col-accent-light: #dce8fd;
+        --col-accent-hover: #1558d6;
+        --col-success: #0f9960;
+        --col-success-light: #d6f0e6;
+        --col-warning: #b45309;
+        --col-warning-light: #fef3d9;
+        --col-danger: #dc2626;
+        --col-danger-light: #fde8e8;
+        --col-purple: #5b21b6;
+        --col-purple-light: #ede9fe;
+        --nav-w: 240px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --radius-xl: 20px;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: var(--nav-w);
+        background: #0f1e3d;
+        border-right: 1px solid #1a3060;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform 0.25s ease;
+      }
+      .sidebar-logo {
+        padding: 24px 20px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        background: var(--col-accent);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .logo-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.3px;
+      }
+      .logo-badge {
+        font-size: 10px;
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+      .sidebar-section-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 18px 20px 6px;
+      }
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 10px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+      }
+      .nav-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+      .nav-item.active {
+        background: rgba(29, 107, 243, 0.25);
+        color: #ffffff;
+        font-weight: 600;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--col-danger);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
+      }
+      .nav-badge.warning {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .sidebar-footer {
+        padding: 16px 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.07);
+        cursor: pointer;
+      }
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #ffffff;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .main {
+        margin-left: var(--nav-w);
+        flex: 1;
+      }
+      .topbar {
+        background: #f7f9fd;
+        border-bottom: 1px solid #cdd8ee;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.07);
+      }
+      .topbar-title {
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+      }
+      .topbar-search {
+        display: flex;
+        align-items: center;
+        background: var(--col-bg);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 12px;
+        gap: 8px;
+        width: 240px;
+        transition: all 0.15s;
+      }
+      .topbar-search:focus-within {
+        border-color: var(--col-accent);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
+      }
+      .topbar-search i {
+        color: var(--col-text-muted);
+        font-size: 13px;
+      }
+      .topbar-search input {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 13px;
+        font-family: inherit;
+        color: var(--col-text-primary);
+        width: 100%;
+      }
+      .topbar-search input::placeholder {
+        color: var(--col-text-muted);
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        background: var(--col-bg);
+      }
+      .icon-btn .dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--col-danger);
+        border: 1.5px solid var(--col-surface);
+      }
+      .btn-ghost {
+        background: none;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 14px;
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-ghost:hover {
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+      }
+      .btn-primary-action {
+        background: var(--col-accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 16px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.15s;
+      }
+      .btn-primary-action:hover {
+        background: var(--col-accent-hover);
+      }
+      .page-content {
+        padding: 28px;
+      }
+      /* Profile Banner */
+      .profile-banner {
+        background: linear-gradient(135deg, #0f1e3d 0%, #1a3a7a 60%, #1d6bf3 100%);
+        border-radius: var(--radius-xl);
+        padding: 28px 32px;
+        color: #fff;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(29, 107, 243, 0.25);
+      }
+      .profile-banner::before {
+        content: '';
+        position: absolute;
+        right: -60px;
+        top: -80px;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        pointer-events: none;
+      }
+      .profile-banner-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+      }
+      .profile-banner-info {
+        flex: 1;
+      }
+      .profile-banner-name {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        margin-bottom: 4px;
+      }
+      .profile-banner-sub {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 16px;
+      }
+      .profile-stats {
+        display: flex;
+        gap: 28px;
+      }
+      .p-stat-val {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .p-stat-lbl {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 3px;
+      }
+      /* Profile Layout */
+      .profile-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 20px;
+      }
+      /* Side Tab Nav */
+      .side-tab-nav {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        position: sticky;
+        top: 76px;
+        box-shadow: 0 2px 8px rgba(29, 107, 243, 0.06);
+      }
+      .side-tab-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        color: var(--col-text-secondary);
+        font-size: 13.5px;
+        font-weight: 500;
+        border-bottom: 1px solid var(--col-border);
+        cursor: pointer;
+        transition: all 0.15s;
+        text-decoration: none;
+      }
+      .side-tab-item:last-child {
+        border-bottom: none;
+      }
+      .side-tab-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        color: var(--col-text-muted);
+      }
+      .side-tab-item:hover {
+        background: var(--col-surface-2);
+        color: var(--col-text-primary);
+      }
+      .side-tab-item.active {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+        font-weight: 600;
+      }
+      .side-tab-item.active i {
+        color: var(--col-accent);
+      }
+      /* Section Card */
+      .section-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 18px;
+        overflow: hidden;
+      }
+      .section-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--col-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .section-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .section-subtitle {
+        font-size: 12px;
+        color: var(--col-text-muted);
+        margin-top: 1px;
+      }
+      .section-body {
+        padding: 22px;
+      }
+      /* Form styles */
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .form-grid.single {
+        grid-template-columns: 1fr;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--col-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .form-input {
+        padding: 9px 12px;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 13.5px;
+        color: var(--col-text-primary);
+        background: var(--col-bg);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .form-input:focus {
+        border-color: var(--col-accent);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
+      }
+      .form-select {
+        padding: 9px 30px 9px 12px;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 13.5px;
+        color: var(--col-text-primary);
+        background: var(--col-bg);
+        outline: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%239B9B94' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+        width: 100%;
+        transition: border-color 0.15s;
+        cursor: pointer;
+      }
+      .form-select:focus {
+        border-color: var(--col-accent);
+        background-color: #fff;
+      }
+      textarea.form-input {
+        resize: vertical;
+        min-height: 90px;
+      }
+      /* Status checklist */
+      .status-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .status-dot.green {
+        background: var(--col-success);
+      }
+      .status-dot.yellow {
+        background: var(--col-warning);
+      }
+      .status-label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .status-sub {
+        font-size: 11.5px;
+        color: var(--col-text-muted);
+      }
+      /* Payments */
+      .payment-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-md);
+        margin-bottom: 10px;
+        transition: all 0.2s;
+      }
+      .payment-card:hover {
+        border-color: var(--col-accent);
+        box-shadow: 0 2px 8px rgba(29, 107, 243, 0.1);
+      }
+      .payment-card-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .payment-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: var(--radius-sm);
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .payment-name {
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .payment-detail {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .payment-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-sm-link {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--col-accent);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .btn-sm-danger {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--col-danger);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      /* Team */
+      .team-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--col-border);
+      }
+      .team-row:last-child {
+        border-bottom: none;
+      }
+      .team-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .team-ava {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .team-name {
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .team-role {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .role-badge {
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .role-badge.owner {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .role-badge.senior {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .role-badge.junior {
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+      }
+      .role-badge.finance {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      /* Permissions table */
+      table.perm-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.perm-table th {
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--col-text-muted);
+        background: var(--col-surface-2);
+        border-bottom: 1px solid var(--col-border);
+        text-align: left;
+      }
+      table.perm-table th:not(:first-child) {
+        text-align: center;
+      }
+      table.perm-table td {
+        padding: 12px 14px;
+        font-size: 13px;
+        border-bottom: 1px solid var(--col-border);
+        color: var(--col-text-secondary);
+      }
+      table.perm-table td:not(:first-child) {
+        text-align: center;
+      }
+      table.perm-table tr:last-child td {
+        border-bottom: none;
+      }
+      .perm-check {
+        color: var(--col-success);
+        font-size: 16px;
+      }
+      .perm-x {
+        color: var(--col-danger);
+        font-size: 16px;
+        opacity: 0.7;
+      }
+      /* Toggle switches */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--col-border);
+      }
+      .toggle-row:last-child {
+        border-bottom: none;
+      }
+      .toggle-info {
+      }
+      .toggle-label {
+        font-size: 13.5px;
+        font-weight: 500;
+      }
+      .toggle-desc {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .toggle-switch {
+        position: relative;
+        width: 40px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #b3c3e0;
+        border-radius: 22px;
+        transition: all 0.2s;
+      }
+      .toggle-slider:before {
+        position: absolute;
+        content: '';
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        bottom: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+      .toggle-switch input:checked + .toggle-slider {
+        background: var(--col-accent);
+      }
+      .toggle-switch input:checked + .toggle-slider:before {
+        transform: translateX(18px);
+      }
+      /* Documents */
+      .doc-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .doc-card {
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        transition: all 0.15s;
+      }
+      .doc-card:hover {
+        border-color: var(--col-accent);
+        box-shadow: 0 2px 8px rgba(29, 107, 243, 0.1);
+      }
+      .doc-icon {
+        width: 38px;
+        height: 38px;
+        background: var(--col-accent-light);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--col-accent);
+        flex-shrink: 0;
+      }
+      .doc-name {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .doc-date {
+        font-size: 11px;
+        color: var(--col-text-muted);
+        margin-bottom: 6px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .badge.verified {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .badge.pending {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      /* Login activity */
+      table.data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.data-table th {
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--col-text-muted);
+        background: var(--col-surface-2);
+        border-bottom: 1px solid var(--col-border);
+        text-align: left;
+      }
+      table.data-table td {
+        padding: 12px 14px;
+        font-size: 13px;
+        border-bottom: 1px solid var(--col-border);
+        color: var(--col-text-secondary);
+      }
+      table.data-table tr:last-child td {
+        border-bottom: none;
+      }
+      table.data-table tbody tr:hover td {
+        background: var(--col-surface-2);
+      }
+      .badge.success-sm {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .badge.warn-sm {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      /* Alert box */
+      .alert-box {
+        background: var(--col-warning-light);
+        border: 1px solid rgba(180, 83, 9, 0.2);
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+      }
+      .alert-box-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--col-warning);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .alert-box ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .alert-box li {
+        font-size: 12.5px;
+        color: #92400e;
+        margin-bottom: 3px;
+      }
+      /* Checkbox list */
+      .check-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .check-item input[type='checkbox'] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--col-accent);
+        cursor: pointer;
+      }
+      .check-item label {
+        font-size: 13.5px;
+        color: var(--col-text-primary);
+        cursor: pointer;
+      }
+      /* Billing table */
+      .save-btn {
+        background: var(--col-accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 9px 20px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        margin-top: 4px;
+      }
+      .save-btn:hover {
+        background: var(--col-accent-hover);
+      }
+      @media (max-width: 900px) {
+        .profile-layout {
+          grid-template-columns: 1fr;
+        }
+        .side-tab-nav {
+          display: flex;
+          overflow-x: auto;
+          position: static;
+        }
+        .side-tab-item {
+          border-bottom: none;
+          border-right: 1px solid var(--col-border);
+          white-space: nowrap;
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .page-content {
+          padding: 16px;
+        }
+        .profile-banner {
+          flex-direction: column;
+          text-align: center;
+        }
+        .profile-stats {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .doc-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-mark">P</div>
+          <div>
+            <div class="logo-name">ProcurePro</div>
+            <div class="logo-badge">BUYER</div>
+          </div>
         </div>
-        
-        <div class="company-nav-mobile d-lg-none">
-            <a href="/dashboard" class="company-nav-link">
-                <i class="bi bi-speedometer2 me-2"></i> Dashboard
-            </a>
-            <a href="/marketplace" class="company-nav-link">
-                <i class="bi bi-shop me-2"></i> Marketplace
-            </a>
-            <a href="/rfq" class="company-nav-link">
-                <i class="bi bi-megaphone me-2"></i> RFQ Center
-            </a>
-            <a href="/orders" class="company-nav-link">
-                <i class="bi bi-cart-check me-2"></i> Orders
-            </a>
-            <a href="/profile" class="company-nav-link active">
-                <i class="bi bi-person-circle me-2"></i> Profile
-            </a>
-        </div>
-        
-        <div class="mobile-overlay"></div>
-    </header>
-    
-    <!-- Main Content -->
-    <main class="company-main">
-        <div class="container-fluid py-4">
-            <!-- Profile Header -->
-            <div class="profile-header">
-                <div class="row align-items-center">
-                    <div class="col-md-3 text-center">
-                        <div class="profile-avatar">IB</div>
-                    </div>
-                    <div class="col-md-9">
-                        <h1 class="text-white mb-2">Industrial Buyers Inc.</h1>
-                        <p class="text-white mb-3 opacity-75">
-                            Manufacturing Company • Since 2010 • Member since March 2022
-                        </p>
-                        <div class="d-flex gap-3">
-                            <div class="text-white">
-                                <div class="h4 mb-1">24</div>
-                                <div class="small">Total Orders</div>
-                            </div>
-                            <div class="text-white">
-                                <div class="h4 mb-1">$245,850</div>
-                                <div class="small">Total Spend</div>
-                            </div>
-                            <div class="text-white">
-                                <div class="h4 mb-1">12</div>
-                                <div class="small">RFQs Created</div>
-                            </div>
-                            <div class="text-white">
-                                <div class="h4 mb-1">8</div>
-                                <div class="small">Active Suppliers</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-section-label">Main</div>
+          <a href="/dashboard" class="nav-item"
+            ><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a
+          >
+          <a href="/marketplace" class="nav-item"
+            ><i class="bi bi-shop"></i><span>Marketplace</span></a
+          >
+          <a href="/rfq" class="nav-item"
+            ><i class="bi bi-megaphone"></i><span>RFQ Center</span
+            ><span class="nav-badge warning">5</span></a
+          >
+          <div class="sidebar-section-label">Procurement</div>
+          <a href="/orders" class="nav-item"
+            ><i class="bi bi-cart-check"></i><span>Orders</span><span class="nav-badge">3</span></a
+          >
+          <a href="/contracts" class="nav-item"
+            ><i class="bi bi-file-earmark-text"></i><span>Contracts</span></a
+          >
+          <a href="/invoices" class="nav-item"
+            ><i class="bi bi-receipt"></i><span>Invoices</span></a
+          >
+          <a href="/suppliers" class="nav-item"
+            ><i class="bi bi-people"></i><span>Suppliers</span></a
+          >
+          <div class="sidebar-section-label">Account</div>
+          <a href="/analytics" class="nav-item"
+            ><i class="bi bi-bar-chart-line"></i><span>Analytics</span></a
+          >
+          <a href="/profile" class="nav-item active"
+            ><i class="bi bi-person-circle"></i><span>Profile & Team</span></a
+          >
+          <a href="/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">IB</div>
+            <div>
+              <div class="user-name">Industrial Buyers Inc.</div>
+              <div class="user-role">Buyer Account</div>
             </div>
-            
-            <!-- Profile Tabs -->
-            <ul class="nav nav-tabs profile-tabs" id="profileTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button">
-                        <i class="bi bi-person me-2"></i> Account Info
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="company-tab" data-bs-toggle="tab" data-bs-target="#company" type="button">
-                        <i class="bi bi-building me-2"></i> Company Details
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment" type="button">
-                        <i class="bi bi-credit-card me-2"></i> Payment Methods
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="team-tab" data-bs-toggle="tab" data-bs-target="#team" type="button">
-                        <i class="bi bi-people me-2"></i> Team Management
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button">
-                        <i class="bi bi-shield-lock me-2"></i> Security
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button">
-                        <i class="bi bi-gear me-2"></i> Preferences
-                    </button>
-                </li>
-            </ul>
-            
-            <!-- Profile Tab Content -->
-            <div class="tab-content mt-4" id="profileTabsContent">
-                <!-- Account Info -->
-                <div class="tab-pane fade show active" id="account" role="tabpanel">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="profile-section">
-                                <h5>Primary Account Holder</h5>
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control" value="John">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" value="Smith">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" value="john.smith@industrialbuyers.com">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" value="+1 (555) 123-4567">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Job Title</label>
-                                        <input type="text" class="form-control" value="Procurement Manager">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Department</label>
-                                        <input type="text" class="form-control" value="Procurement & Supply Chain">
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4">
-                            <div class="profile-section">
-                                <h5>Account Status</h5>
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="status-indicator bg-success me-3"></div>
-                                        <div>
-                                            <h6 class="mb-0">Account Verified</h6>
-                                            <p class="text-muted small mb-0">Verified on March 15, 2022</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="status-indicator bg-success me-3"></div>
-                                        <div>
-                                            <h6 class="mb-0">Email Verified</h6>
-                                            <p class="text-muted small mb-0">Verified on March 15, 2022</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="status-indicator bg-success me-3"></div>
-                                        <div>
-                                            <h6 class="mb-0">Phone Verified</h6>
-                                            <p class="text-muted small mb-0">Verified on March 16, 2022</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary">
-                                        <i class="bi bi-envelope me-2"></i> Resend Verification
-                                    </button>
-                                    <button class="btn btn-outline-secondary">
-                                        <i class="bi bi-download me-2"></i> Export Account Data
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <i
+              class="bi bi-three-dots-vertical"
+              style="margin-left: auto; color: rgba(255, 255, 255, 0.35); font-size: 13px"
+            ></i>
+          </div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <button class="icon-btn d-lg-none" id="menuToggle" style="border: none">
+            <i class="bi bi-list" style="font-size: 18px"></i>
+          </button>
+          <span class="topbar-title d-none d-md-block">Profile & Settings</span>
+          <div class="topbar-search ms-auto ms-md-0">
+            <i class="bi bi-search"></i><input type="text" placeholder="Search settings…" />
+          </div>
+          <div class="topbar-actions">
+            <div class="icon-btn">
+              <i class="bi bi-bell" style="font-size: 15px"></i><span class="dot"></span>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <!-- Profile Banner -->
+          <div class="profile-banner">
+            <div class="profile-banner-avatar">IB</div>
+            <div class="profile-banner-info">
+              <div class="profile-banner-name">Industrial Buyers Inc.</div>
+              <div class="profile-banner-sub">
+                Manufacturing Company · Member since March 2022 · Verified Account
+              </div>
+              <div class="profile-stats">
+                <div>
+                  <div class="p-stat-val">24</div>
+                  <div class="p-stat-lbl">Total Orders</div>
                 </div>
-                
-                <!-- Company Details -->
-                <div class="tab-pane fade" id="company" role="tabpanel">
-                    <div class="profile-section">
-                        <h5>Company Information</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-control" value="Industrial Buyers Inc.">
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Company Type</label>
-                                    <select class="form-select">
-                                        <option>Manufacturing</option>
-                                        <option>Wholesale</option>
-                                        <option>Retail</option>
-                                        <option>Service Provider</option>
-                                        <option>Government</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Industry</label>
-                                    <select class="form-select">
-                                        <option>Industrial Manufacturing</option>
-                                        <option>Construction</option>
-                                        <option>Automotive</option>
-                                        <option>Aerospace</option>
-                                        <option>Electronics</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Company Registration Number</label>
-                                <input type="text" class="form-control" value="CORP-123456789">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Tax ID (VAT/GST)</label>
-                                <input type="text" class="form-control" value="TAX-987654321">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Company Address</label>
-                                <textarea class="form-control" rows="3">123 Industrial Park Drive
-Suite 400
-Detroit, MI 48201
-United States</textarea>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Website</label>
-                                <input type="url" class="form-control" value="https://www.industrialbuyers.com">
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label">Company Description</label>
-                                <textarea class="form-control" rows="4">Industrial Buyers Inc. is a leading manufacturing company specializing in automotive parts and industrial components. With over 10 years of experience, we serve clients across North America with high-quality products and reliable supply chain solutions.</textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Update Company Info</button>
-                        </form>
+                <div>
+                  <div class="p-stat-val">$245K</div>
+                  <div class="p-stat-lbl">Total Spend</div>
+                </div>
+                <div>
+                  <div class="p-stat-val">12</div>
+                  <div class="p-stat-lbl">RFQs Created</div>
+                </div>
+                <div>
+                  <div class="p-stat-val">8</div>
+                  <div class="p-stat-lbl">Active Suppliers</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-layout">
+            <!-- Side Tab Nav -->
+            <div class="side-tab-nav" id="profileTabs">
+              <a class="side-tab-item active" data-tab="account" href="#"
+                ><i class="bi bi-person"></i>Account Info</a
+              >
+              <a class="side-tab-item" data-tab="company" href="#"
+                ><i class="bi bi-building"></i>Company Details</a
+              >
+              <a class="side-tab-item" data-tab="payment" href="#"
+                ><i class="bi bi-credit-card"></i>Payments</a
+              >
+              <a class="side-tab-item" data-tab="team" href="#"><i class="bi bi-people"></i>Team</a>
+              <a class="side-tab-item" data-tab="security" href="#"
+                ><i class="bi bi-shield-lock"></i>Security</a
+              >
+              <a class="side-tab-item" data-tab="preferences" href="#"
+                ><i class="bi bi-sliders"></i>Preferences</a
+              >
+            </div>
+
+            <!-- Content Area -->
+            <div>
+              <!-- Account Info -->
+              <div id="tab-account">
+                <div class="section-card">
+                  <div class="section-header">
+                    <div>
+                      <div class="section-title">Primary Account Holder</div>
+                      <div class="section-subtitle">Your personal contact information</div>
                     </div>
-                    
-                    <!-- Business Documents -->
-                    <div class="profile-section">
-                        <h5>Business Documents</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="document-card">
-                                    <div class="document-icon">
-                                        <i class="bi bi-file-text"></i>
-                                    </div>
-                                    <div class="document-info">
-                                        <h6>Business License</h6>
-                                        <p class="text-muted small mb-2">Uploaded: March 15, 2022</p>
-                                        <span class="badge bg-success">Verified</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="document-card">
-                                    <div class="document-icon">
-                                        <i class="bi bi-file-text"></i>
-                                    </div>
-                                    <div class="document-info">
-                                        <h6>Tax Certificate</h6>
-                                        <p class="text-muted small mb-2">Uploaded: March 15, 2022</p>
-                                        <span class="badge bg-success">Verified</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="document-card">
-                                    <div class="document-icon">
-                                        <i class="bi bi-file-text"></i>
-                                    </div>
-                                    <div class="document-info">
-                                        <h6>Bank Details</h6>
-                                        <p class="text-muted small mb-2">Uploaded: March 16, 2022</p>
-                                        <span class="badge bg-warning">Pending Review</span>
-                                    </div>
-                                </div>
-                            </div>
+                  </div>
+                  <div class="section-body">
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label class="form-label">First Name</label
+                        ><input type="text" class="form-input" value="John" />
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Last Name</label
+                        ><input type="text" class="form-input" value="Smith" />
+                      </div>
+                    </div>
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Email Address</label
+                        ><input
+                          type="email"
+                          class="form-input"
+                          value="john.smith@industrialbuyers.com"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label class="form-label">Phone Number</label
+                        ><input type="tel" class="form-input" value="+1 (555) 123-4567" />
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Job Title</label
+                        ><input type="text" class="form-input" value="Procurement Manager" />
+                      </div>
+                    </div>
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Department</label
+                        ><input type="text" class="form-input" value="Procurement & Supply Chain" />
+                      </div>
+                    </div>
+                    <button class="save-btn">Save Changes</button>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <div class="section-title">Account Verification Status</div>
+                  </div>
+                  <div class="section-body">
+                    <div class="status-list" style="margin-bottom: 20px">
+                      <div class="status-row">
+                        <span class="status-dot green"></span>
+                        <div>
+                          <div class="status-label">Account Verified</div>
+                          <div class="status-sub">Verified on March 15, 2022</div>
                         </div>
-                        
-                        <div class="mt-4">
-                            <button class="btn btn-outline-primary">
-                                <i class="bi bi-upload me-2"></i> Upload New Document
+                      </div>
+                      <div class="status-row">
+                        <span class="status-dot green"></span>
+                        <div>
+                          <div class="status-label">Email Verified</div>
+                          <div class="status-sub">Verified on March 15, 2022</div>
+                        </div>
+                      </div>
+                      <div class="status-row">
+                        <span class="status-dot green"></span>
+                        <div>
+                          <div class="status-label">Phone Verified</div>
+                          <div class="status-sub">Verified on March 16, 2022</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                      <button class="btn-ghost">
+                        <i class="bi bi-envelope"></i> Resend Verification
+                      </button>
+                      <button class="btn-ghost">
+                        <i class="bi bi-download"></i> Export Account Data
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company Details -->
+              <div id="tab-company" style="display: none">
+                <div class="section-card">
+                  <div class="section-header">
+                    <div>
+                      <div class="section-title">Company Information</div>
+                      <div class="section-subtitle">Legal and business details</div>
+                    </div>
+                  </div>
+                  <div class="section-body">
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Company Name</label
+                        ><input type="text" class="form-input" value="Industrial Buyers Inc." />
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label class="form-label">Company Type</label
+                        ><select class="form-select">
+                          <option>Manufacturing</option>
+                          <option>Wholesale</option>
+                          <option>Retail</option>
+                          <option>Government</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Industry</label
+                        ><select class="form-select">
+                          <option>Industrial Manufacturing</option>
+                          <option>Construction</option>
+                          <option>Automotive</option>
+                          <option>Electronics</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label class="form-label">Registration Number</label
+                        ><input type="text" class="form-input" value="CORP-123456789" />
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Tax ID (VAT/GST)</label
+                        ><input type="text" class="form-input" value="TAX-987654321" />
+                      </div>
+                    </div>
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Company Address</label
+                        ><textarea class="form-input">
+123 Industrial Park Drive, Suite 400, Detroit, MI 48201, United States</textarea
+                        >
+                      </div>
+                    </div>
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Website</label
+                        ><input
+                          type="url"
+                          class="form-input"
+                          value="https://www.industrialbuyers.com"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Company Description</label
+                        ><textarea class="form-input" style="min-height: 80px">
+Industrial Buyers Inc. is a leading manufacturing company specializing in automotive parts and industrial components.</textarea
+                        >
+                      </div>
+                    </div>
+                    <button class="save-btn">Update Company Info</button>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <div>
+                      <div class="section-title">Business Documents</div>
+                      <div class="section-subtitle">Compliance and verification files</div>
+                    </div>
+                  </div>
+                  <div class="section-body">
+                    <div class="doc-grid">
+                      <div class="doc-card">
+                        <div class="doc-icon"><i class="bi bi-file-text"></i></div>
+                        <div>
+                          <div class="doc-name">Business License</div>
+                          <div class="doc-date">Uploaded: Mar 15, 2022</div>
+                          <span class="badge verified">Verified</span>
+                        </div>
+                      </div>
+                      <div class="doc-card">
+                        <div class="doc-icon"><i class="bi bi-file-earmark-check"></i></div>
+                        <div>
+                          <div class="doc-name">Tax Certificate</div>
+                          <div class="doc-date">Uploaded: Mar 15, 2022</div>
+                          <span class="badge verified">Verified</span>
+                        </div>
+                      </div>
+                      <div class="doc-card">
+                        <div class="doc-icon"><i class="bi bi-bank"></i></div>
+                        <div>
+                          <div class="doc-name">Bank Details</div>
+                          <div class="doc-date">Uploaded: Mar 16, 2022</div>
+                          <span class="badge pending">Pending Review</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn-ghost">
+                      <i class="bi bi-upload"></i> Upload New Document
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment -->
+              <div id="tab-payment" style="display: none">
+                <div class="section-card">
+                  <div class="section-header">
+                    <div><div class="section-title">Payment Methods</div></div>
+                    <button class="btn-primary-action">
+                      <i class="bi bi-plus"></i> Add Method
+                    </button>
+                  </div>
+                  <div class="section-body">
+                    <div class="payment-card">
+                      <div class="payment-card-left">
+                        <div class="payment-icon"><i class="bi bi-credit-card"></i></div>
+                        <div>
+                          <div class="payment-name">Visa ending in 1234</div>
+                          <div class="payment-detail">Expires 12/25 · Primary</div>
+                        </div>
+                      </div>
+                      <div class="payment-actions">
+                        <button class="btn-sm-link">Edit</button
+                        ><button class="btn-sm-danger">Remove</button>
+                      </div>
+                    </div>
+                    <div class="payment-card">
+                      <div class="payment-card-left">
+                        <div
+                          class="payment-icon"
+                          style="background: var(--col-accent-light); color: #003087"
+                        >
+                          <i class="bi bi-paypal"></i>
+                        </div>
+                        <div>
+                          <div class="payment-name">PayPal</div>
+                          <div class="payment-detail">john.smith@industrialbuyers.com</div>
+                        </div>
+                      </div>
+                      <div class="payment-actions">
+                        <button class="btn-sm-link">Edit</button
+                        ><button class="btn-sm-danger">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header"><div class="section-title">Billing History</div></div>
+                  <div style="overflow-x: auto">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Invoice #</th>
+                          <th>Description</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Nov 1, 2023</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            INV-7843
+                          </td>
+                          <td>CNC Machine Parts</td>
+                          <td style="font-weight: 700; color: var(--col-text-primary)">
+                            $8,450.00
+                          </td>
+                          <td><span class="badge verified">Paid</span></td>
+                          <td>
+                            <button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                              <i class="bi bi-download"></i>
                             </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Payment Methods -->
-                <div class="tab-pane fade" id="payment" role="tabpanel">
-                    <div class="profile-section">
-                        <h5>Payment Methods</h5>
-                        <div class="mb-4">
-                            <div class="payment-method">
-                                <div class="payment-method-header">
-                                    <div class="payment-method-info">
-                                        <i class="bi bi-credit-card fs-4 text-primary me-3"></i>
-                                        <div>
-                                            <h6 class="mb-0">Visa ending in 1234</h6>
-                                            <p class="text-muted small mb-0">Expires 12/25 • Primary</p>
-                                        </div>
-                                    </div>
-                                    <div class="payment-method-actions">
-                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="payment-method">
-                                <div class="payment-method-header">
-                                    <div class="payment-method-info">
-                                        <i class="bi bi-paypal fs-4 text-info me-3"></i>
-                                        <div>
-                                            <h6 class="mb-0">PayPal</h6>
-                                            <p class="text-muted small mb-0">john.smith@industrialbuyers.com</p>
-                                        </div>
-                                    </div>
-                                    <div class="payment-method-actions">
-                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPaymentModal">
-                            <i class="bi bi-plus-circle me-2"></i> Add Payment Method
-                        </button>
-                    </div>
-                    
-                    <!-- Billing History -->
-                    <div class="profile-section">
-                        <h5>Billing History</h5>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Invoice #</th>
-                                        <th>Description</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Nov 1, 2023</td>
-                                        <td>INV-7843</td>
-                                        <td>CNC Machine Parts</td>
-                                        <td>$8,450.00</td>
-                                        <td><span class="badge bg-success">Paid</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Oct 28, 2023</td>
-                                        <td>INV-7842</td>
-                                        <td>Wireless Headphones</td>
-                                        <td>$349.97</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Oct 25, 2023</td>
-                                        <td>INV-7841</td>
-                                        <td>Smart Watch Pro</td>
-                                        <td>$249.99</td>
-                                        <td><span class="badge bg-danger">Refunded</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Management -->
-                <div class="tab-pane fade" id="team" role="tabpanel">
-                    <div class="profile-section">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="mb-0">Team Members</h5>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTeamMemberModal">
-                                <i class="bi bi-plus-circle me-2"></i> Add Team Member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Oct 28, 2023</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            INV-7842
+                          </td>
+                          <td>Wireless Headphones</td>
+                          <td style="font-weight: 700; color: var(--col-text-primary)">$349.97</td>
+                          <td><span class="badge pending">Pending</span></td>
+                          <td>
+                            <button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                              <i class="bi bi-download"></i>
                             </button>
-                        </div>
-                        
-                        <div class="team-members">
-                            <div class="team-member">
-                                <div class="member-info">
-                                    <div class="member-avatar">JS</div>
-                                    <div>
-                                        <h6 class="mb-0">John Smith</h6>
-                                        <p class="member-role">Procurement Manager • Primary Account</p>
-                                    </div>
-                                </div>
-                                <div class="member-actions">
-                                    <span class="badge bg-primary">Owner</span>
-                                </div>
-                            </div>
-                            
-                            <div class="team-member">
-                                <div class="member-info">
-                                    <div class="member-avatar">SD</div>
-                                    <div>
-                                        <h6 class="mb-0">Sarah Davis</h6>
-                                        <p class="member-role">Senior Buyer • Can create RFQs and orders</p>
-                                    </div>
-                                </div>
-                                <div class="member-actions">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="team-member">
-                                <div class="member-info">
-                                    <div class="member-avatar">MT</div>
-                                    <div>
-                                        <h6 class="mb-0">Michael Thompson</h6>
-                                        <p class="member-role">Junior Buyer • Can view orders only</p>
-                                    </div>
-                                </div>
-                                <div class="member-actions">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="team-member">
-                                <div class="member-info">
-                                    <div class="member-avatar">EJ</div>
-                                    <div>
-                                        <h6 class="mb-0">Emma Johnson</h6>
-                                        <p class="member-role">Finance Manager • Can view invoices and payments</p>
-                                    </div>
-                                </div>
-                                <div class="member-actions">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Team Permissions -->
-                    <div class="profile-section">
-                        <h5 class="mb-4">Role Permissions</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Permission</th>
-                                        <th class="text-center">Owner</th>
-                                        <th class="text-center">Senior Buyer</th>
-                                        <th class="text-center">Junior Buyer</th>
-                                        <th class="text-center">Finance</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>View Dashboard</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Browse Marketplace</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Create RFQs</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Place Orders</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>View Invoices</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Manage Team</td>
-                                        <td class="text-center"><i class="bi bi-check-circle text-success"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                        <td class="text-center"><i class="bi bi-x-circle text-danger"></i></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Oct 25, 2023</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            INV-7841
+                          </td>
+                          <td>Smart Watch Pro</td>
+                          <td style="font-weight: 700; color: var(--col-text-primary)">$249.99</td>
+                          <td>
+                            <span
+                              class="badge"
+                              style="background: var(--col-danger-light); color: var(--col-danger)"
+                              >Refunded</span
+                            >
+                          </td>
+                          <td>
+                            <button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                              <i class="bi bi-download"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                
-                <!-- Security -->
-                <div class="tab-pane fade" id="security" role="tabpanel">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="profile-section">
-                                <h5>Change Password</h5>
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Current Password</label>
-                                        <input type="password" class="form-control">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">New Password</label>
-                                        <input type="password" class="form-control">
-                                        <div class="form-text">Minimum 8 characters with uppercase, lowercase and number</div>
-                                    </div>
-                                    
-                                    <div class="mb-4">
-                                        <label class="form-label">Confirm New Password</label>
-                                        <input type="password" class="form-control">
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary">Update Password</button>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4">
-                            <div class="profile-section">
-                                <h5>Security Settings</h5>
-                                <div class="mb-4">
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="twoFactorAuth" checked>
-                                        <label class="form-check-label" for="twoFactorAuth">
-                                            Two-Factor Authentication
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="loginAlerts" checked>
-                                        <label class="form-check-label" for="loginAlerts">
-                                            Login Alerts
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="sessionTimeout">
-                                        <label class="form-check-label" for="sessionTimeout">
-                                            Auto-logout after 30 minutes
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="alert alert-warning">
-                                    <h6><i class="bi bi-shield-exclamation me-2"></i> Security Tips</h6>
-                                    <ul class="mb-0 small">
-                                        <li>Use a strong, unique password</li>
-                                        <li>Enable two-factor authentication</li>
-                                        <li>Regularly review login activity</li>
-                                        <li>Log out from shared devices</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+              </div>
+
+              <!-- Team -->
+              <div id="tab-team" style="display: none">
+                <div class="section-card">
+                  <div class="section-header">
+                    <div>
+                      <div class="section-title">Team Members</div>
+                      <div class="section-subtitle">4 members</div>
                     </div>
-                    
-                    <!-- Login Activity -->
-                    <div class="profile-section">
-                        <h5>Recent Login Activity</h5>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Date & Time</th>
-                                        <th>Device</th>
-                                        <th>Location</th>
-                                        <th>IP Address</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Nov 5, 2023 14:30</td>
-                                        <td>Chrome on Windows</td>
-                                        <td>Detroit, MI, USA</td>
-                                        <td>192.168.1.101</td>
-                                        <td><span class="badge bg-success">Success</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nov 5, 2023 10:15</td>
-                                        <td>Safari on iPhone</td>
-                                        <td>Detroit, MI, USA</td>
-                                        <td>192.168.1.105</td>
-                                        <td><span class="badge bg-success">Success</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nov 4, 2023 18:45</td>
-                                        <td>Firefox on Mac</td>
-                                        <td>Chicago, IL, USA</td>
-                                        <td>203.0.113.45</td>
-                                        <td><span class="badge bg-warning">Unusual Location</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nov 3, 2023 09:20</td>
-                                        <td>Chrome on Windows</td>
-                                        <td>Detroit, MI, USA</td>
-                                        <td>192.168.1.101</td>
-                                        <td><span class="badge bg-success">Success</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <button class="btn-primary-action">
+                      <i class="bi bi-plus"></i> Add Member
+                    </button>
+                  </div>
+                  <div>
+                    <div class="team-row">
+                      <div class="team-left">
+                        <div class="team-ava">JS</div>
+                        <div>
+                          <div class="team-name">John Smith</div>
+                          <div class="team-role">Procurement Manager · Primary Account</div>
                         </div>
-                        
-                        <button class="btn btn-outline-secondary">
-                            <i class="bi bi-clock-history me-2"></i> View All Activity
+                      </div>
+                      <span class="role-badge owner">Owner</span>
+                    </div>
+                    <div class="team-row">
+                      <div class="team-left">
+                        <div
+                          class="team-ava"
+                          style="background: var(--col-success-light); color: var(--col-success)"
+                        >
+                          SD
+                        </div>
+                        <div>
+                          <div class="team-name">Sarah Davis</div>
+                          <div class="team-role">Senior Buyer · Can create RFQs and orders</div>
+                        </div>
+                      </div>
+                      <div style="display: flex; gap: 8px; align-items: center">
+                        <span class="role-badge senior">Senior Buyer</span
+                        ><button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                          Edit</button
+                        ><button
+                          style="
+                            background: none;
+                            border: none;
+                            color: var(--col-danger);
+                            font-size: 12px;
+                            cursor: pointer;
+                            font-family: inherit;
+                          "
+                        >
+                          Remove
                         </button>
+                      </div>
                     </div>
-                </div>
-                
-                <!-- Preferences -->
-                <div class="tab-pane fade" id="preferences" role="tabpanel">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="profile-section">
-                                <h5>Notification Preferences</h5>
-                                <div class="mb-4">
-                                    <h6 class="mb-3">Email Notifications</h6>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="emailOrders" checked>
-                                        <label class="form-check-label" for="emailOrders">
-                                            Order updates and tracking
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="emailRFQ" checked>
-                                        <label class="form-check-label" for="emailRFQ">
-                                            RFQ and bid notifications
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="emailMarketing">
-                                        <label class="form-check-label" for="emailMarketing">
-                                            Marketing and promotional offers
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="emailSecurity" checked>
-                                        <label class="form-check-label" for="emailSecurity">
-                                            Security and account alerts
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <h6 class="mb-3">In-App Notifications</h6>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="appOrders" checked>
-                                        <label class="form-check-label" for="appOrders">
-                                            New order updates
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="appQuotes" checked>
-                                        <label class="form-check-label" for="appQuotes">
-                                            New quote alerts
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="appMessages" checked>
-                                        <label class="form-check-label" for="appMessages">
-                                            Supplier messages
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-primary">Save Preferences</button>
-                            </div>
+                    <div class="team-row">
+                      <div class="team-left">
+                        <div class="team-ava">MT</div>
+                        <div>
+                          <div class="team-name">Michael Thompson</div>
+                          <div class="team-role">Junior Buyer · Can view orders only</div>
                         </div>
-                        
-                        <div class="col-lg-6">
-                            <div class="profile-section">
-                                <h5>Display Preferences</h5>
-                                <div class="mb-4">
-                                    <label class="form-label">Default Currency</label>
-                                    <select class="form-select">
-                                        <option>US Dollar (USD)</option>
-                                        <option>Euro (EUR)</option>
-                                        <option>British Pound (GBP)</option>
-                                        <option>Japanese Yen (JPY)</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <label class="form-label">Language</label>
-                                    <select class="form-select">
-                                        <option>English</option>
-                                        <option>Spanish</option>
-                                        <option>French</option>
-                                        <option>German</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <label class="form-label">Timezone</label>
-                                    <select class="form-select">
-                                        <option>Eastern Time (ET)</option>
-                                        <option>Central Time (CT)</option>
-                                        <option>Pacific Time (PT)</option>
-                                        <option>GMT</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <label class="form-label">Items per page</label>
-                                    <select class="form-select">
-                                        <option>10 items</option>
-                                        <option>25 items</option>
-                                        <option>50 items</option>
-                                        <option>100 items</option>
-                                    </select>
-                                </div>
-                                
-                                <button class="btn btn-primary">Save Display Settings</button>
-                            </div>
-                        </div>
+                      </div>
+                      <div style="display: flex; gap: 8px; align-items: center">
+                        <span class="role-badge junior">Junior Buyer</span
+                        ><button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                          Edit</button
+                        ><button
+                          style="
+                            background: none;
+                            border: none;
+                            color: var(--col-danger);
+                            font-size: 12px;
+                            cursor: pointer;
+                            font-family: inherit;
+                          "
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
+                    <div class="team-row">
+                      <div class="team-left">
+                        <div
+                          class="team-ava"
+                          style="background: var(--col-warning-light); color: var(--col-warning)"
+                        >
+                          EJ
+                        </div>
+                        <div>
+                          <div class="team-name">Emma Johnson</div>
+                          <div class="team-role">
+                            Finance Manager · Can view invoices and payments
+                          </div>
+                        </div>
+                      </div>
+                      <div style="display: flex; gap: 8px; align-items: center">
+                        <span class="role-badge finance">Finance</span
+                        ><button class="btn-ghost" style="padding: 4px 10px; font-size: 12px">
+                          Edit</button
+                        ><button
+                          style="
+                            background: none;
+                            border: none;
+                            color: var(--col-danger);
+                            font-size: 12px;
+                            cursor: pointer;
+                            font-family: inherit;
+                          "
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <div class="section-title">Role Permissions</div>
+                  </div>
+                  <div style="overflow-x: auto">
+                    <table class="perm-table">
+                      <thead>
+                        <tr>
+                          <th>Permission</th>
+                          <th>Owner</th>
+                          <th>Senior Buyer</th>
+                          <th>Junior Buyer</th>
+                          <th>Finance</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>View Dashboard</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                        </tr>
+                        <tr>
+                          <td>Browse Marketplace</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                        </tr>
+                        <tr>
+                          <td>Create RFQs</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                        </tr>
+                        <tr>
+                          <td>Place Orders</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                        </tr>
+                        <tr>
+                          <td>View Invoices</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                        </tr>
+                        <tr>
+                          <td>Manage Team</td>
+                          <td><i class="bi bi-check-circle-fill perm-check"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                          <td><i class="bi bi-x-circle perm-x"></i></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security -->
+              <div id="tab-security" style="display: none">
+                <div class="section-card">
+                  <div class="section-header">
+                    <div><div class="section-title">Change Password</div></div>
+                  </div>
+                  <div class="section-body">
+                    <div class="form-grid single">
+                      <div class="form-group">
+                        <label class="form-label">Current Password</label
+                        ><input type="password" class="form-input" />
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label class="form-label">New Password</label
+                        ><input type="password" class="form-input" /><span
+                          style="font-size: 11.5px; color: var(--col-text-muted); margin-top: 4px"
+                          >Min. 8 chars with uppercase, lowercase & number</span
+                        >
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Confirm New Password</label
+                        ><input type="password" class="form-input" />
+                      </div>
+                    </div>
+                    <button class="save-btn">Update Password</button>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <div><div class="section-title">Security Settings</div></div>
+                  </div>
+                  <div class="section-body">
+                    <div class="toggle-row">
+                      <div class="toggle-info">
+                        <div class="toggle-label">Two-Factor Authentication</div>
+                        <div class="toggle-desc">Require 2FA on every login</div>
+                      </div>
+                      <label class="toggle-switch"
+                        ><input type="checkbox" checked /><span class="toggle-slider"></span
+                      ></label>
+                    </div>
+                    <div class="toggle-row">
+                      <div class="toggle-info">
+                        <div class="toggle-label">Login Alerts</div>
+                        <div class="toggle-desc">Email me when a new device logs in</div>
+                      </div>
+                      <label class="toggle-switch"
+                        ><input type="checkbox" checked /><span class="toggle-slider"></span
+                      ></label>
+                    </div>
+                    <div class="toggle-row">
+                      <div class="toggle-info">
+                        <div class="toggle-label">Auto-logout after 30 minutes</div>
+                        <div class="toggle-desc">Session expires when inactive</div>
+                      </div>
+                      <label class="toggle-switch"
+                        ><input type="checkbox" /><span class="toggle-slider"></span
+                      ></label>
+                    </div>
+                    <div class="alert-box" style="margin-top: 18px">
+                      <div class="alert-box-title">
+                        <i class="bi bi-shield-exclamation"></i>Security Tips
+                      </div>
+                      <ul>
+                        <li>Use a strong, unique password</li>
+                        <li>Enable two-factor authentication</li>
+                        <li>Regularly review login activity</li>
+                        <li>Log out from shared devices</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <div><div class="section-title">Recent Login Activity</div></div>
+                    <button class="btn-ghost"><i class="bi bi-clock-history"></i> View All</button>
+                  </div>
+                  <div style="overflow-x: auto">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Date & Time</th>
+                          <th>Device</th>
+                          <th>Location</th>
+                          <th>IP Address</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Nov 5, 2023 14:30</td>
+                          <td>Chrome on Windows</td>
+                          <td>Detroit, MI, USA</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            192.168.1.101
+                          </td>
+                          <td><span class="badge success-sm">Success</span></td>
+                        </tr>
+                        <tr>
+                          <td>Nov 5, 2023 10:15</td>
+                          <td>Safari on iPhone</td>
+                          <td>Detroit, MI, USA</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            192.168.1.105
+                          </td>
+                          <td><span class="badge success-sm">Success</span></td>
+                        </tr>
+                        <tr>
+                          <td>Nov 4, 2023 18:45</td>
+                          <td>Firefox on Mac</td>
+                          <td>Chicago, IL, USA</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            203.0.113.45
+                          </td>
+                          <td><span class="badge warn-sm">Unusual Location</span></td>
+                        </tr>
+                        <tr>
+                          <td>Nov 3, 2023 09:20</td>
+                          <td>Chrome on Windows</td>
+                          <td>Detroit, MI, USA</td>
+                          <td style="font-family: 'DM Mono', monospace; font-size: 12px">
+                            192.168.1.101
+                          </td>
+                          <td><span class="badge success-sm">Success</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Preferences -->
+              <div id="tab-preferences" style="display: none">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px">
+                  <div class="section-card">
+                    <div class="section-header">
+                      <div class="section-title">Notification Preferences</div>
+                    </div>
+                    <div class="section-body">
+                      <div
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                          color: var(--col-text-muted);
+                          margin-bottom: 10px;
+                        "
+                      >
+                        Email Notifications
+                      </div>
+                      <div class="check-list" style="margin-bottom: 20px">
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label
+                            >Order updates and tracking</label
+                          ></label
+                        >
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label
+                            >RFQ and bid notifications</label
+                          ></label
+                        >
+                        <label class="check-item"
+                          ><input type="checkbox" /><label
+                            >Marketing and promotional offers</label
+                          ></label
+                        >
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label
+                            >Security and account alerts</label
+                          ></label
+                        >
+                      </div>
+                      <div
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                          color: var(--col-text-muted);
+                          margin-bottom: 10px;
+                        "
+                      >
+                        In-App Notifications
+                      </div>
+                      <div class="check-list" style="margin-bottom: 20px">
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label>New order updates</label></label
+                        >
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label>New quote alerts</label></label
+                        >
+                        <label class="check-item"
+                          ><input type="checkbox" checked /><label>Supplier messages</label></label
+                        >
+                      </div>
+                      <button class="save-btn">Save Preferences</button>
+                    </div>
+                  </div>
+                  <div class="section-card">
+                    <div class="section-header">
+                      <div class="section-title">Display Preferences</div>
+                    </div>
+                    <div class="section-body">
+                      <div class="form-grid single">
+                        <div class="form-group">
+                          <label class="form-label">Default Currency</label
+                          ><select class="form-select">
+                            <option>US Dollar (USD)</option>
+                            <option>Euro (EUR)</option>
+                            <option>British Pound (GBP)</option>
+                          </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 14px">
+                          <label class="form-label">Language</label
+                          ><select class="form-select">
+                            <option>English</option>
+                            <option>Spanish</option>
+                            <option>French</option>
+                            <option>German</option>
+                          </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 14px">
+                          <label class="form-label">Timezone</label
+                          ><select class="form-select">
+                            <option>Eastern Time (ET)</option>
+                            <option>Central Time (CT)</option>
+                            <option>Pacific Time (PT)</option>
+                            <option>GMT</option>
+                          </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 14px">
+                          <label class="form-label">Items per page</label
+                          ><select class="form-select">
+                            <option>10 items</option>
+                            <option>25 items</option>
+                            <option>50 items</option>
+                            <option>100 items</option>
+                          </select>
+                        </div>
+                      </div>
+                      <button class="save-btn" style="margin-top: 18px">
+                        Save Display Settings
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </main>
-    
-    <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2023 ProcurePro. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-muted me-3">Help & Support</a>
-                    <a href="#" class="text-muted me-3">Privacy Policy</a>
-                    <a href="#" class="text-muted">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Bootstrap JS Bundle -->
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Company JS -->
     <script src="../assets/js/company.js"></script>
-</body>
+    <script>
+      const menuToggle = document.getElementById('menuToggle'),
+        sidebar = document.getElementById('sidebar');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target))
+            sidebar.classList.remove('open');
+        });
+      }
+      const tabs = ['account', 'company', 'payment', 'team', 'security', 'preferences'];
+      document.querySelectorAll('.side-tab-item').forEach((item) => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.querySelectorAll('.side-tab-item').forEach((t) => t.classList.remove('active'));
+          item.classList.add('active');
+          tabs.forEach((t) => {
+            const el = document.getElementById('tab-' + t);
+            if (el) el.style.display = 'none';
+          });
+          const el = document.getElementById('tab-' + item.dataset.tab);
+          if (el) el.style.display = 'block';
+        });
+      });
+    </script>
+  </body>
 </html>

@@ -3,374 +3,1196 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Company Dashboard - Buyer Portal</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <title>ProcurePro — Buyer Dashboard</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
-
-    <!-- Shared CSS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/assets/css/style.css" />
-
-    <!-- Company CSS -->
     <link rel="stylesheet" href="/assets/css/company-style.css" />
+    <style>
+      :root {
+        --col-bg: #eef2f9;
+        --col-surface: #f7f9fd;
+        --col-surface-2: #edf1f8;
+        --col-border: #cdd8ee;
+        --col-border-strong: #b3c3e0;
+        --col-text-primary: #0f1e3d;
+        --col-text-secondary: #3d5070;
+        --col-text-muted: #7a90b8;
+        --col-accent: #1d6bf3;
+        --col-accent-light: #dce8fd;
+        --col-accent-hover: #1558d6;
+        --col-success: #0f9960;
+        --col-success-light: #d6f0e6;
+        --col-warning: #b45309;
+        --col-warning-light: #fef3d9;
+        --col-danger: #dc2626;
+        --col-danger-light: #fde8e8;
+        --col-purple: #5b21b6;
+        --col-purple-light: #ede9fe;
+        --nav-w: 240px;
+        --header-h: 0px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --radius-xl: 20px;
+        --shadow-sm: 0 1px 3px rgba(29, 107, 243, 0.08);
+        --shadow-md: 0 4px 16px rgba(29, 107, 243, 0.12);
+        --shadow-lg: 0 8px 28px rgba(29, 107, 243, 0.15);
+      }
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+        min-height: 100vh;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      /* ── Layout Shell ── */
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: var(--nav-w);
+        background: #0f1e3d;
+        border-right: 1px solid #1a3060;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform 0.25s ease;
+      }
+
+      .sidebar-logo {
+        padding: 24px 20px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        background: var(--col-accent);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .logo-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.3px;
+      }
+      .logo-badge {
+        font-size: 10px;
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+
+      .sidebar-section-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 18px 20px 6px;
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 10px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+        cursor: pointer;
+      }
+      .nav-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+      .nav-item.active {
+        background: rgba(29, 107, 243, 0.25);
+        color: #ffffff;
+        font-weight: 600;
+      }
+      .nav-item.active i {
+        color: #5ba4fb;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--col-danger);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
+      }
+      .nav-badge.warning {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+
+      .sidebar-footer {
+        padding: 16px 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.07);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .user-card:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #fff;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .user-card i {
+        margin-left: auto;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+      }
+
+      /* ── Main ── */
+      .main {
+        margin-left: var(--nav-w);
+        flex: 1;
+        min-height: 100vh;
+      }
+
+      /* ── Top Bar ── */
+      .topbar {
+        background: #f7f9fd;
+        border-bottom: 1px solid #cdd8ee;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.07);
+      }
+      .topbar-title {
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+      }
+      .topbar-search {
+        display: flex;
+        align-items: center;
+        background: var(--col-bg);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 12px;
+        gap: 8px;
+        width: 240px;
+        transition: all 0.15s;
+      }
+      .topbar-search:focus-within {
+        border-color: var(--col-accent);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
+      }
+      .topbar-search i {
+        color: var(--col-text-muted);
+        font-size: 13px;
+      }
+      .topbar-search input {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 13px;
+        font-family: inherit;
+        color: var(--col-text-primary);
+        width: 100%;
+      }
+      .topbar-search input::placeholder {
+        color: var(--col-text-muted);
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+      }
+      .icon-btn .dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--col-danger);
+        border: 1.5px solid var(--col-surface);
+      }
+
+      /* ── Page Content ── */
+      .page-content {
+        padding: 28px;
+        max-width: 1200px;
+      }
+
+      /* ── Welcome Banner ── */
+      .welcome-banner {
+        background: linear-gradient(135deg, #0f1e3d 0%, #1a3a7a 60%, #1d6bf3 100%);
+        border-radius: var(--radius-xl);
+        padding: 28px 32px;
+        color: #fff;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 6px 24px rgba(29, 107, 243, 0.25);
+      }
+      .welcome-banner::before {
+        content: '';
+        position: absolute;
+        right: -40px;
+        top: -60px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        pointer-events: none;
+      }
+      .welcome-banner::after {
+        content: '';
+        position: absolute;
+        right: 60px;
+        bottom: -80px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+        pointer-events: none;
+      }
+      .wb-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 6px;
+      }
+      .wb-heading {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+        line-height: 1.2;
+      }
+      .wb-sub {
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 22px;
+      }
+      .wb-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn-wb-primary {
+        background: var(--col-accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 9px 18px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.15s;
+      }
+      .btn-wb-primary:hover {
+        background: var(--col-accent-hover);
+      }
+      .btn-wb-outline {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius-sm);
+        padding: 9px 18px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.15s;
+      }
+      .btn-wb-outline:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .wb-stats {
+        display: flex;
+        gap: 28px;
+        position: relative;
+        z-index: 1;
+      }
+      .wb-stat {
+        text-align: center;
+      }
+      .wb-stat-val {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .wb-stat-lbl {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 4px;
+      }
+
+      /* ── KPI Grid ── */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .kpi-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        transition: all 0.2s;
+      }
+      .kpi-card:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--col-accent);
+        transform: translateY(-2px);
+      }
+      .kpi-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .kpi-icon-wrap {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .kpi-icon-wrap.blue {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .kpi-icon-wrap.green {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .kpi-icon-wrap.amber {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .kpi-icon-wrap.purple {
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+      }
+
+      .kpi-trend {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 7px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .kpi-trend.up {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .kpi-trend.down {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+      }
+
+      .kpi-value {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        line-height: 1;
+        margin-bottom: 4px;
+        font-variant-numeric: tabular-nums;
+      }
+      .kpi-label {
+        font-size: 12px;
+        color: var(--col-text-muted);
+        font-weight: 500;
+      }
+
+      /* ── Grid Layout ── */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+
+      /* ── Section Card ── */
+      .section-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+      .section-header {
+        padding: 18px 22px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--col-border);
+      }
+      .section-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .section-subtitle {
+        font-size: 12px;
+        color: var(--col-text-muted);
+        margin-top: 1px;
+      }
+      .btn-link {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--col-accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: gap 0.15s;
+      }
+      .btn-link:hover {
+        gap: 6px;
+      }
+
+      /* ── Activity Feed ── */
+      .activity-feed {
+        padding: 8px 0;
+      }
+      .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 22px;
+        transition: background 0.15s;
+      }
+      .activity-item:hover {
+        background: var(--col-surface-2);
+      }
+      .activity-dot {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .activity-dot.order {
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+      }
+      .activity-dot.rfq {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .activity-dot.quote {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+
+      .activity-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .activity-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .activity-desc {
+        font-size: 12.5px;
+        color: var(--col-text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .activity-time {
+        font-size: 11px;
+        color: var(--col-text-muted);
+        margin-top: 3px;
+      }
+
+      /* ── Quick Links ── */
+      .quick-links-list {
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .quick-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 10px;
+        border-radius: var(--radius-md);
+        text-decoration: none;
+        color: var(--col-text-primary);
+        transition: background 0.15s;
+      }
+      .quick-link:hover {
+        background: var(--col-bg);
+      }
+      .ql-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .ql-icon.blue {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .ql-icon.green {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .ql-icon.amber {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .ql-icon.purple {
+        background: var(--col-purple-light);
+        color: var(--col-purple);
+      }
+      .ql-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .ql-desc {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .ql-arrow {
+        margin-left: auto;
+        color: var(--col-text-muted);
+        font-size: 12px;
+      }
+
+      /* ── RFQ Table ── */
+      .rfq-table-wrap {
+        overflow-x: auto;
+      }
+      table.rfq-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.rfq-table th {
+        padding: 10px 16px;
+        text-align: left;
+        font-size: 11.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--col-text-muted);
+        background: var(--col-surface-2);
+        border-bottom: 1px solid var(--col-border);
+        white-space: nowrap;
+      }
+      table.rfq-table td {
+        padding: 13px 16px;
+        font-size: 13px;
+        border-bottom: 1px solid var(--col-border);
+        color: var(--col-text-secondary);
+        vertical-align: middle;
+      }
+      table.rfq-table tr:last-child td {
+        border-bottom: none;
+      }
+      table.rfq-table tbody tr:hover td {
+        background: var(--col-surface-2);
+      }
+      table.rfq-table td.bold {
+        font-weight: 600;
+        color: var(--col-text-primary);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .badge.active {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .badge.closed {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+      }
+      .badge.awarded {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .badge.pending {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
+      .badge.cat {
+        background: var(--col-bg);
+        color: var(--col-text-secondary);
+        border: 1px solid var(--col-border);
+      }
+
+      .btn-sm-action {
+        padding: 5px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .btn-sm-action:hover {
+        border-color: var(--col-accent);
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+      }
+      .btn-sm-action.primary {
+        background: var(--col-accent);
+        color: #fff;
+        border-color: var(--col-accent);
+      }
+      .btn-sm-action.primary:hover {
+        background: var(--col-accent-hover);
+        border-color: var(--col-accent-hover);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 1100px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .kpi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .wb-stats {
+          display: none;
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .kpi-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .page-content {
+          padding: 16px;
+        }
+        .welcome-banner {
+          padding: 22px 20px;
+        }
+        .wb-heading {
+          font-size: 20px;
+        }
+      }
+      @media (max-width: 480px) {
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
-  <body class="company-dashboard">
-    <!-- Header -->
-    <header class="company-header">
-      <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo -->
-        <div class="company-logo">
-          <i class="bi bi-building"></i>
-          <span>ProcurePro</span>
+  <body>
+    <div class="shell">
+      <!-- ── Sidebar ── -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-mark">P</div>
+          <div>
+            <div class="logo-name">ProcurePro</div>
+            <div class="logo-badge">BUYER</div>
+          </div>
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-btn d-lg-none">
-          <i class="bi bi-list"></i>
-        </button>
+        <nav class="sidebar-nav">
+          <div class="sidebar-section-label">Main</div>
 
-        <!-- Desktop Navigation -->
-        <nav class="company-nav d-none d-lg-flex">
-          <a href="/dashboard" class="company-nav-link active">
-            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+          <a href="/dashboard" class="nav-item active">
+            <i class="bi bi-grid-1x2"></i>
+            <span>Dashboard</span>
           </a>
-          <a href="/marketplace" class="company-nav-link">
-            <i class="bi bi-shop me-1"></i> Marketplace
+          <a href="/marketplace" class="nav-item">
+            <i class="bi bi-shop"></i>
+            <span>Marketplace</span>
           </a>
-          <a href="/rfq" class="company-nav-link">
-            <i class="bi bi-megaphone me-1"></i> RFQ Center
+          <a href="/rfq" class="nav-item">
+            <i class="bi bi-megaphone"></i>
+            <span>RFQ Center</span>
+            <span class="nav-badge warning">5</span>
           </a>
-          <a href="/orders" class="company-nav-link">
-            <i class="bi bi-cart-check me-1"></i> Orders
+
+          <div class="sidebar-section-label">Procurement</div>
+
+          <a href="/orders" class="nav-item">
+            <i class="bi bi-cart-check"></i>
+            <span>Orders</span>
+            <span class="nav-badge">3</span>
           </a>
-          <a href="/profile" class="company-nav-link">
-            <i class="bi bi-person-circle me-1"></i> Profile
+          <a href="/contracts" class="nav-item">
+            <i class="bi bi-file-earmark-text"></i>
+            <span>Contracts</span>
+          </a>
+          <a href="/invoices" class="nav-item">
+            <i class="bi bi-receipt"></i>
+            <span>Invoices</span>
+          </a>
+          <a href="/suppliers" class="nav-item">
+            <i class="bi bi-people"></i>
+            <span>Suppliers</span>
+          </a>
+
+          <div class="sidebar-section-label">Account</div>
+
+          <a href="/analytics" class="nav-item">
+            <i class="bi bi-bar-chart-line"></i>
+            <span>Analytics</span>
+          </a>
+          <a href="/profile" class="nav-item">
+            <i class="bi bi-person-circle"></i>
+            <span>Profile & Team</span>
+          </a>
+          <a href="/settings" class="nav-item">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
           </a>
         </nav>
 
-        <!-- Actions -->
-        <div class="company-actions">
-          <div class="search-box-company d-none d-md-block">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Search products, suppliers..." />
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">
+              <%= name.name.split(' ').map(w=>w[0]).join('').toUpperCase() %>
+            </div>
+            <div>
+              <div class="user-name"><%= name.name %></div>
+              <div class="user-role">Buyer Account</div>
+            </div>
+            <i class="bi bi-three-dots-vertical"></i>
           </div>
+        </div>
+      </aside>
 
-          <button class="notification-btn">
-            <i class="bi bi-bell"></i>
-            <span class="notification-badge">3</span>
+      <!-- ── Main ── -->
+      <div class="main">
+        <!-- Topbar -->
+        <header class="topbar">
+          <button class="icon-btn d-lg-none" id="menuToggle" style="border: none">
+            <i class="bi bi-list" style="font-size: 18px"></i>
           </button>
-
-          <div class="company-profile">
-            <div class="company-avatar">
-              <%= name.name.split(' ').map(word => word[0]).join('').toUpperCase() %>
-            </div>
-            <div class="d-none d-md-block">
-              <div class="company-name"><%= name.name%></div>
-              <div class="text-muted small">Buyer Account</div>
-            </div>
-            <i class="bi bi-chevron-down"></i>
+          <span class="topbar-title d-none d-md-block"
+            >Good morning,
+            <%= name.name.split(' ')[0] %>
+            👋</span
+          >
+          <div class="topbar-search ms-auto ms-md-0">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search products, suppliers, RFQs…" />
           </div>
-        </div>
-      </div>
+          <div class="topbar-actions">
+            <div class="icon-btn" title="Notifications">
+              <i class="bi bi-bell" style="font-size: 15px"></i>
+              <span class="dot"></span>
+            </div>
+            <div class="icon-btn" title="Help">
+              <i class="bi bi-question-circle" style="font-size: 15px"></i>
+            </div>
+          </div>
+        </header>
 
-      <!-- Mobile Navigation -->
-      <div class="company-nav-mobile d-lg-none">
-        <a href="/dashboard" class="company-nav-link active">
-          <i class="bi bi-speedometer2 me-2"></i> Dashboard
-        </a>
-        <a href="/marketplace" class="company-nav-link">
-          <i class="bi bi-shop me-2"></i> Marketplace
-        </a>
-        <a href="/rfq" class="company-nav-link">
-          <i class="bi bi-megaphone me-2"></i> RFQ Center
-        </a>
-        <a href="/orders" class="company-nav-link">
-          <i class="bi bi-cart-check me-2"></i> Orders
-        </a>
-        <a href="/profile" class="company-nav-link">
-          <i class="bi bi-person-circle me-2"></i> Profile
-        </a>
-      </div>
+        <!-- Page Content -->
+        <div class="page-content">
+          <!-- Welcome Banner -->
+          <div class="welcome-banner">
+            <div>
+              <div class="wb-label">Buyer Portal</div>
+              <div class="wb-heading">Welcome back, <%= name.name %></div>
+              <div class="wb-sub">
+                Track procurement, manage RFQs, and discover verified suppliers.
+              </div>
+              <div class="wb-actions">
+                <button class="btn-wb-primary">
+                  <i class="bi bi-search"></i> Browse Marketplace
+                </button>
+                <button class="btn-wb-outline"><i class="bi bi-plus"></i> Create RFQ</button>
+                <button class="btn-wb-outline"><i class="bi bi-cart"></i> View Orders</button>
+              </div>
+            </div>
+            <div class="wb-stats">
+              <div class="wb-stat">
+                <div class="wb-stat-val">$<%= stats.totalSpend %></div>
+                <div class="wb-stat-lbl">Monthly Spend</div>
+              </div>
+              <div class="wb-stat">
+                <div class="wb-stat-val"><%= stats.activeRFQs %></div>
+                <div class="wb-stat-lbl">Active RFQs</div>
+              </div>
+              <div class="wb-stat">
+                <div class="wb-stat-val"><%= stats.activeOrders %></div>
+                <div class="wb-stat-lbl">Open Orders</div>
+              </div>
+            </div>
+          </div>
 
-      <!-- Mobile Overlay -->
-      <div class="mobile-overlay"></div>
-    </header>
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <div class="kpi-icon-wrap blue"><i class="bi bi-currency-dollar"></i></div>
+                <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>12%</span>
+              </div>
+              <div class="kpi-value">$<%= stats.totalSpend %></div>
+              <div class="kpi-label">Total Spend This Month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <div class="kpi-icon-wrap amber"><i class="bi bi-megaphone"></i></div>
+                <span class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>1</span>
+              </div>
+              <div class="kpi-value"><%= stats.activeRFQs %></div>
+              <div class="kpi-label">Active RFQs / Tenders</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <div class="kpi-icon-wrap green"><i class="bi bi-file-earmark-text"></i></div>
+                <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>3 new</span>
+              </div>
+              <div class="kpi-value"><%= stats.pendingQuotes %></div>
+              <div class="kpi-label">Pending Quotations</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <div class="kpi-icon-wrap purple"><i class="bi bi-cart-check"></i></div>
+                <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>2 new</span>
+              </div>
+              <div class="kpi-value"><%= stats.activeOrders %></div>
+              <div class="kpi-label">Current Active Orders</div>
+            </div>
+          </div>
 
-    <!-- Main Content -->
-    <main class="company-main">
-      <div class="container-fluid py-4">
-        <!-- Welcome Section -->
-        <div class="dashboard-welcome">
-          <div class="row align-items-center">
-            <div class="col-md-8">
-              <div class="welcome-content">
-                <h1>
-                  Welcome back,
-                  <%=name.name%>
-                </h1>
-                <p>Track your procurement activities, manage RFQs, and discover new suppliers.</p>
-                <div class="quick-actions">
-                  <a href="/marketplace" class="btn btn-light">
-                    <i class="bi bi-search me-2"></i> Browse Marketplace
-                  </a>
-                  <a
-                    href="/rfq"
-                    class="btn btn-outline-light"
-                    data-bs-toggle="modal"
-                    data-bs-target="#createRFQModal"
-                  >
-                    <i class="bi bi-plus-circle me-2"></i> Create RFQ
-                  </a>
-                  <a href="/orders" class="btn btn-outline-light">
-                    <i class="bi bi-cart me-2"></i> View Orders
-                  </a>
+          <!-- Activity + Quick Links -->
+          <div class="content-grid">
+            <!-- Recent Activity -->
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-title">Recent Activity</div>
+                  <div class="section-subtitle">Latest procurement events</div>
                 </div>
+                <a href="#" class="btn-link">View all <i class="bi bi-arrow-right"></i></a>
               </div>
-            </div>
-            <div class="col-md-4 d-none d-md-block">
-              <div class="text-center">
-                <i class="bi bi-graph-up-arrow display-1 opacity-25"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- KPI Cards -->
-        <div class="kpi-grid">
-          <div class="kpi-card-company spend">
-            <div class="kpi-icon spend">
-              <i class="bi bi-currency-dollar"></i>
-            </div>
-            <div class="kpi-value">$<%=stats.totalSpend%></div>
-            <div class="kpi-label">Total Spend This Month</div>
-            <div class="kpi-change positive">
-              <i class="bi bi-arrow-up"></i> 12% from last month
-            </div>
-          </div>
-
-          <div class="kpi-card-company rfq">
-            <div class="kpi-icon rfq">
-              <i class="bi bi-megaphone"></i>
-            </div>
-            <div class="kpi-value"><%=stats.activeRFQs%></div>
-            <div class="kpi-label">Active RFQs / Tenders</div>
-            <div class="kpi-change negative"><i class="bi bi-arrow-down"></i> 1 from last week</div>
-          </div>
-
-          <div class="kpi-card-company quotes">
-            <div class="kpi-icon quotes">
-              <i class="bi bi-file-text"></i>
-            </div>
-            <div class="kpi-value"><%=stats.pendingQuotes%></div>
-            <div class="kpi-label">Pending Quotations</div>
-            <div class="kpi-change positive"><i class="bi bi-arrow-up"></i> 3 new today</div>
-          </div>
-
-          <div class="kpi-card-company orders">
-            <div class="kpi-icon orders">
-              <i class="bi bi-cart"></i>
-            </div>
-            <div class="kpi-value"><%=stats.activeOrders%></div>
-            <div class="kpi-label">Current Active Orders</div>
-            <div class="kpi-change positive"><i class="bi bi-arrow-up"></i> 2 new this week</div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <!-- Recent Activity -->
-          <div class="col-lg-8">
-            <div class="card-company p-4">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0">Recent Activity</h4>
-                <a href="#" class="btn btn-outline-primary btn-sm">View All</a>
-              </div>
-
-              <div class="recent-activity">
+              <div class="activity-feed">
                 <% recentActivities.forEach(activity => { %>
-
                 <div class="activity-item">
-                  <div class="activity-icon">
-                    <% if(activity.type === 'orders'){ %>
-                    <i class="bi bi-cart-check"></i>
-                    <% } else if(activity.type === 'rfqs'){ %>
-                    <i class="bi bi-megaphone"></i>
-                    <% } else { %>
-                    <i class="bi bi-file-text"></i>
-                    <% } %>
+                  <div
+                    class="activity-dot <%= activity.type === 'orders' ? 'order' : activity.type === 'rfqs' ? 'rfq' : 'quote' %>"
+                  >
+                    <% if(activity.type === 'orders') { %><i class="bi bi-cart-check"></i>
+                    <% } else if(activity.type === 'rfqs') { %><i class="bi bi-megaphone"></i>
+                    <% } else { %><i class="bi bi-file-earmark-text"></i
+                    ><% } %>
                   </div>
-
-                  <div class="activity-content">
-                    <h6>
-                      <% if(activity.type === 'orders'){ %>
-                      New order placed
-                      <% } else if(activity.type === 'rfqs'){ %>
-                      RFQ created
-                      <% } else { %>
-                      Quote received
-                      <% } %>
-                    </h6>
-
-                    <p><%= activity.message %></p>
-
-                    <span class="activity-time">
-                      <%= new Date(activity.created_at).toLocaleString('en-IN',{ day:'2-digit',
+                  <div class="activity-body">
+                    <div class="activity-title">
+                      <%= activity.type === 'orders' ? 'Order Placed' : activity.type === 'rfqs' ?
+                      'RFQ Created' : 'Quote Received' %>
+                    </div>
+                    <div class="activity-desc"><%= activity.message %></div>
+                    <div class="activity-time">
+                      <%= new Date(activity.created_at).toLocaleString('en-IN', { day:'2-digit',
                       month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) %>
-                    </span>
+                    </div>
                   </div>
                 </div>
-
                 <% }) %>
               </div>
             </div>
-          </div>
-          <!-- Quick Links -->
-          <div class="col-lg-4">
-            <div class="card-company p-4">
-              <h4 class="mb-4">Quick Links</h4>
-              <div class="quick-links">
-                <a href="/marketplace?category=machinery" class="quick-link-item">
-                  <div class="quick-link-icon bg-primary">
-                    <i class="bi bi-gear"></i>
+
+            <!-- Quick Links -->
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-title">Quick Links</div>
+                  <div class="section-subtitle">Frequently used sections</div>
+                </div>
+              </div>
+              <div class="quick-links-list">
+                <a href="/marketplace?category=machinery" class="quick-link">
+                  <div class="ql-icon blue"><i class="bi bi-gear"></i></div>
+                  <div>
+                    <div class="ql-name">Browse Machinery</div>
+                    <div class="ql-desc">Industrial equipment & tools</div>
                   </div>
-                  <div class="quick-link-content">
-                    <h6>Browse Machinery</h6>
-                    <p class="text-muted small">Industrial equipment & tools</p>
-                  </div>
+                  <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/rfq" class="quick-link-item">
-                  <div class="quick-link-icon bg-success">
-                    <i class="bi bi-megaphone"></i>
+                <a href="/rfq" class="quick-link">
+                  <div class="ql-icon amber"><i class="bi bi-megaphone"></i></div>
+                  <div>
+                    <div class="ql-name">Manage RFQs</div>
+                    <div class="ql-desc">View and create tender requests</div>
                   </div>
-                  <div class="quick-link-content">
-                    <h6>Manage RFQs</h6>
-                    <p class="text-muted small">View and create tender requests</p>
-                  </div>
+                  <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/orders" class="quick-link-item">
-                  <div class="quick-link-icon bg-warning">
-                    <i class="bi bi-truck"></i>
+                <a href="/orders" class="quick-link">
+                  <div class="ql-icon purple"><i class="bi bi-truck"></i></div>
+                  <div>
+                    <div class="ql-name">Track Orders</div>
+                    <div class="ql-desc">Monitor shipment & delivery</div>
                   </div>
-                  <div class="quick-link-content">
-                    <h6>Track Orders</h6>
-                    <p class="text-muted small">Monitor shipment & delivery</p>
-                  </div>
+                  <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/profile" class="quick-link-item">
-                  <div class="quick-link-icon bg-info">
-                    <i class="bi bi-people"></i>
+                <a href="/suppliers" class="quick-link">
+                  <div class="ql-icon green"><i class="bi bi-people"></i></div>
+                  <div>
+                    <div class="ql-name">Approved Suppliers</div>
+                    <div class="ql-desc">Manage your supplier network</div>
                   </div>
-                  <div class="quick-link-content">
-                    <h6>Team Management</h6>
-                    <p class="text-muted small">Manage team members & permissions</p>
+                  <i class="bi bi-chevron-right ql-arrow"></i>
+                </a>
+                <a href="/invoices" class="quick-link">
+                  <div class="ql-icon blue"><i class="bi bi-receipt"></i></div>
+                  <div>
+                    <div class="ql-name">Invoices & Payments</div>
+                    <div class="ql-desc">Review outstanding invoices</div>
                   </div>
+                  <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Recent RFQs -->
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="card-company p-4">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0">Recent RFQs</h4>
-                <a href="/rfq" class="btn btn-outline-primary btn-sm">View All RFQs</a>
+          <!-- Recent RFQs -->
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">Recent RFQs</div>
+                <div class="section-subtitle">Your latest request for quotations</div>
               </div>
-
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>RFQ #</th>
-                      <th>Title</th>
-                      <th>Category</th>
-                      <th>Deadline</th>
-                      <th>Bids</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <% recentRFQs.forEach(rfq => { %>
-
-                    <tr>
-                      <td>
-                        <strong>#RFQ-<%= String(rfq.id).padStart(3,'0') %></strong>
-                      </td>
-
-                      <td><%= rfq.title %></td>
-
-                      <td>
-                        <span class="badge bg-primary"> <%= rfq.category %> </span>
-                      </td>
-
-                      <td>
-                        <%= new Date(rfq.deadline).toLocaleDateString('en-IN') %>
-                      </td>
-
-                      <td><%= rfq.bids %></td>
-
-                      <td>
+              <a href="/rfq" class="btn-link">View all RFQs <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="rfq-table-wrap">
+              <table class="rfq-table">
+                <thead>
+                  <tr>
+                    <th>RFQ #</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Deadline</th>
+                    <th style="text-align: center">Bids</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% recentRFQs.forEach(rfq => { %>
+                  <tr>
+                    <td
+                      class="bold"
+                      style="
+                        font-family: 'DM Mono', monospace;
+                        font-size: 12px;
+                        color: var(--col-text-muted);
+                      "
+                    >
+                      #RFQ-<%= String(rfq.id).padStart(3,'0') %>
+                    </td>
+                    <td class="bold"><%= rfq.title %></td>
+                    <td><span class="badge cat"><%= rfq.category %></span></td>
+                    <td><%= new Date(rfq.deadline).toLocaleDateString('en-IN') %></td>
+                    <td style="text-align: center; font-weight: 600"><%= rfq.bids %></td>
+                    <td>
+                      <span
+                        class="badge <%= rfq.status === 'active' ? 'active' : rfq.status === 'closed' ? 'closed' : 'awarded' %>"
+                      >
                         <span
-                          class="badge <%= rfq.status === 'active' ? 'bg-success' : rfq.status === 'closed' ? 'bg-danger' : 'bg-warning' %>"
-                        >
-                          <%= rfq.status %>
-                        </span>
-                      </td>
-
-                      <td>
-                        <% if(rfq.status === 'awarded'){ %>
-                        <button class="btn btn-sm btn-outline-secondary">View Award</button>
-                        <% } else { %>
-                        <button class="btn btn-sm btn-outline-primary">View Bids</button>
-                        <% } %>
-                      </td>
-                    </tr>
-
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
+                          style="
+                            display: inline-block;
+                            width: 5px;
+                            height: 5px;
+                            border-radius: 50%;
+                            background: currentColor;
+                            margin-right: 5px;
+                            opacity: 0.8;
+                          "
+                        ></span>
+                        <%= rfq.status.charAt(0).toUpperCase() + rfq.status.slice(1) %>
+                      </span>
+                    </td>
+                    <td>
+                      <% if(rfq.status === 'awarded') { %>
+                      <button class="btn-sm-action">View Award</button>
+                      <% } else { %>
+                      <button class="btn-sm-action primary">View Bids</button>
+                      <% } %>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+        <!-- /page-content -->
       </div>
-    </main>
+      <!-- /main -->
+    </div>
+    <!-- /shell -->
 
-    <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="mb-0">&copy; 2023 ProcurePro. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-md-end">
-            <a href="#" class="text-muted me-3">Help & Support</a>
-            <a href="#" class="text-muted me-3">Privacy Policy</a>
-            <a href="#" class="text-muted">Terms of Service</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Company JS -->
-    <script src="../assets/js/company.js"></script>
+    <script>
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
