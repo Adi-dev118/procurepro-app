@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const companyController = require('./../controllers/company');
 const userController = require('./../controllers/users');
+const productController = require('./../controllers/product');
 const { render } = require('../app');
 
 router.get('/dashboard', companyController.companyDashboard);
@@ -9,6 +10,8 @@ router.get('/dashboard', companyController.companyDashboard);
 router.get('/marketplace', companyController.marketplaceDashboard);
 
 router.get('/company/dashboard/dashboard-data', userController.getRecentOrdersRFQS);
+router.get('/company/product/products-data', productController.getCompanyProducts);
+
 
 router.get('/rfq', companyController.rfqsDashboard);
 
