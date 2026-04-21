@@ -120,10 +120,21 @@
         color: rgba(255, 255, 255, 0.35);
         padding: 18px 20px 6px;
       }
+
+      .sidebar-nav::-webkit-scrollbar {
+        width: 0px; /* hidden by default */
+      }
+      .sidebar-nav:hover::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar-nav:hover::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 10px;
+      }
       .sidebar-nav {
-        flex: 1;
         overflow-y: auto;
-        padding: 8px 10px;
+        scroll-behavior: smooth;
       }
       .nav-item {
         display: flex;
@@ -206,7 +217,8 @@
       }
       .main {
         margin-left: var(--nav-w);
-        flex: 1;
+        width: calc(100% - var(--nav-w)); /* ✅ IMPORTANT */
+        min-height: 100vh;
       }
       .topbar {
         background: #f7f9fd;
@@ -311,6 +323,8 @@
       }
       .page-content {
         padding: 28px;
+        max-width: 100%;
+        overflow-x: hidden; /* prevents layout breaking */
       }
       .page-header {
         display: flex;
@@ -483,6 +497,10 @@
       }
       table.data-table tbody tr:hover td {
         background: var(--col-surface-2);
+      }
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
       }
       .sup-cell {
         display: flex;
@@ -741,6 +759,18 @@
         color: var(--col-accent);
         background: var(--col-accent-light);
       }
+      .company-pagination-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .pagination-info {
+        text-align: center;
+        width: 100%;
+      }
       .pag-bar {
         display: flex;
         align-items: center;
@@ -777,6 +807,45 @@
         opacity: 0.4;
         pointer-events: none;
       }
+      .shell {
+        display: flex;
+        width: 100%;
+      }
+      .orders-table {
+        width: 100%;
+        table-layout: fixed; /* 🔥 important */
+      }
+      .orders-table th,
+      .orders-table td {
+        padding: 10px 8px; /* reduce spacing */
+        font-size: 13px;
+      }
+      .orders-table td:nth-child(4) {
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .sup-cell {
+        gap: 6px;
+      }
+
+      .sup-ava {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+      }
+      .amount-cell strong {
+        font-size: 14px;
+      }
+
+      .badge {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+      .table-wrapper {
+        overflow-x: hidden; /* removes scrollbar */
+      }
       @media (max-width: 1100px) {
         .kpi-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -806,6 +875,20 @@
         }
         .filter-bar {
           grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .main {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
         }
       }
     </style>
@@ -982,8 +1065,8 @@
               </div>
               <button class="btn-ghost"><i class="bi bi-funnel"></i> Filter</button>
             </div>
-            <div style="overflow-x: auto">
-              <table class="data-table">
+            <div class="table-wrapper">
+              <table class="data-table orders-table">
                 <thead>
                   <tr>
                     <th>Order #</th>
@@ -996,93 +1079,14 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <% if (!orderHistory || orderHistory.length === 0) { %>
-                  <tr>
-                    <td colspan="8" class="text-center py-4 text-muted">
-                      <i class="bi bi-inbox me-2"></i>
-                      No orders found
-                    </td>
-                  </tr>
-                  <% } else { %>
-                  <% orderHistory.forEach(order => { %>
-                  <tr>
-                    <td>
-                      <div class="order-id">
-                        <strong>#ORD-<%= order.id %></strong>
-                      </div>
-                      <div class="order-from">
-                        <% if(order.rfq_id){ %>From RFQ #RFQ-<%= order.rfq_id %><% } else { %>Direct
-                        Purchase<% } %>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="sup-cell">
-                        <div class="sup-ava">
-            <%= order.supplier.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()%>
-                        </div>
-                        <div>
-                          <div style="font-weight: 600; font-size: 13px"><%= order.supplier %></div>
-                          <div style="font-size: 11px; color: var(--col-text-muted)">
-                            <%= order.rating ? order.rating : '0.0' %> ★
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td><%= new Date(order.created_at).toISOString().split('T')[0] %></td>
-                    <td><%= order.items %></td>
-                    <td class="amount-cell">
-                      <strong>$<%= order.total_amount %></strong>
-                    </td>
-                    <td>
-                      <span
-                        class="badge <% if(order.status==='processing'){%>processing<%}else if(order.status==='delivered'){%>delivered<%}else if(order.status==='shipped'){%>shipped<%}else if(order.status==='cancelled'){%>cancelled<%}else{%>default<%}%>"
-                      >
-                        <span class="dot-indicator"></span
-                        ><%= order.status.charAt(0).toUpperCase()+order.status.slice(1) %>
-                      </span>
-                    </td>
-                    <td>
-                      <span
-                        class="badge <% if(order.payment_status==='completed'||order.payment_status==='paid'){%>paid<%}else if(order.payment_status==='pending'){%>pending-pay<%}else if(order.payment_status==='refunded'){%>refunded<%}else{%>default<%}%>"
-                      >
-                        <span class="dot-indicator"></span
-                        ><%= order.payment_status.charAt(0).toUpperCase()+order.payment_status.slice(1) %>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="action-btns">
-                        <button class="action-btn" title="View"><i class="bi bi-eye"></i></button>
-                        <button class="action-btn" title="Invoice">
-                          <i class="bi bi-receipt"></i>
-                        </button>
-                        <% if(order.status==='processing'||order.status==='shipped'){ %><button
-                          class="action-btn track-order-btn"
-                          data-order-id="<%= order.id %>"
-                          title="Track"
-                        >
-                          <i class="bi bi-truck"></i></button
-                        ><% } %>
-                        <% if(order.payment_status==='pending'){ %><button
-                          class="action-btn"
-                          title="Pay"
-                        >
-                          <i class="bi bi-credit-card"></i></button
-                        ><% } %>
-                      </div>
-                    </td>
-                  </tr>
-                  <% }) %>
-                  <% } %>
-                </tbody>
+                <tbody id="orders-table-body"></tbody>
               </table>
             </div>
-            <div class="pag-bar">
-              <a href="#" class="pag-btn disabled"><i class="bi bi-chevron-left"></i></a>
-              <a href="#" class="pag-btn active">1</a>
-              <a href="#" class="pag-btn">2</a>
-              <a href="#" class="pag-btn">3</a>
-              <a href="#" class="pag-btn"><i class="bi bi-chevron-right"></i></a>
+            <div class="company-pagination-container mt-4">
+              <div class="pagination-info"></div>
+              <nav>
+                <div id="pagination" class="pag-bar"></div>
+              </nav>
             </div>
           </div>
 
@@ -1185,6 +1189,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/company.js"></script>
+    <script type="module" src="../assets/js/company/order/order.main.js"></script>
     <script>
       const menuToggle = document.getElementById('menuToggle');
       const sidebar = document.getElementById('sidebar');
