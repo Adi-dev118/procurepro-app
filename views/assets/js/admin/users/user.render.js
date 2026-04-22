@@ -224,43 +224,6 @@ function renderPendingSuppliers(suppliers) {
   });
 }
 
-// Suspended
-
-function renderSuspended(users) {
-  const tbody = document.querySelector('#suspended-body');
-  tbody.innerHTML = '';
-
-  if (!users.length) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="text-center">No suspended users</td>
-      </tr>
-    `;
-    return;
-  }
-
-  users.forEach((user) => {
-    const roleBadge =
-      user.role === 'customer'
-        ? '<span class="badge bg-primary">Buyer</span>'
-        : '<span class="badge bg-warning">Supplier</span>';
-
-    tbody.innerHTML += `
-      <tr>
-        <td>#${user.id}</td>
-        <td>${user.name}</td>
-        <td>${roleBadge}</td>
-        <td>${user.suspended_on?.split('T')[0]}</td>
-        <td>${user.suspend_reason || '-'}</td>
-        <td>
-          <button class="btn btn-success btn-sm">Activate</button>
-          <button class="btn btn-danger btn-sm">Delete</button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
 // Pagination
 
 function renderPagination(totalPages) {
@@ -366,7 +329,6 @@ export {
   renderBuyers,
   renderSuppliers,
   renderPendingSuppliers,
-  renderSuspended,
   renderPagination,
   updateUserCount,
 };

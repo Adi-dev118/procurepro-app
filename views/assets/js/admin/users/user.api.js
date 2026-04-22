@@ -4,7 +4,6 @@ import {
   renderBuyers,
   renderSuppliers,
   renderPendingSuppliers,
-  renderSuspended,
   renderPagination,
   updateUserCount,
 } from './user.render.js';
@@ -62,18 +61,4 @@ async function fetchPendingSuppliers() {
   updateUserCount(data.currentPage, data.total);
 }
 
-async function fetchSuspendedUsers() {
-  const query = new URLSearchParams({
-    page: userState.page,
-    search: userState.search,
-    role: userState.filterRole,
-  });
-
-  const res = await fetch(`/admin/user/users-suspended?${query}`);
-  const data = await res.json();
-
-  renderSuspended(data.users);
-  renderPagination(data.totalPages);
-  updateUserCount(data.currentPage, data.total);
-}
-export { fetchUsers, fetchSuppliers, fetchPendingSuppliers, fetchSuspendedUsers };
+export { fetchUsers, fetchSuppliers, fetchPendingSuppliers };

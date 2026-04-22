@@ -3,7 +3,6 @@ import {
   fetchUsers,
   fetchSuppliers,
   fetchPendingSuppliers,
-  fetchSuspendedUsers,
 } from './user.api.js';
 
 function changePage(page) {
@@ -13,9 +12,7 @@ function changePage(page) {
   if (userState.role === 'supplier') {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
-    fetchPendingSuppliers(); // ✅ IMPORTANT
-  } else if (userState.role === 'suspended') {
-    fetchSuspendedUsers();
+    fetchPendingSuppliers(); 
   } else {
     fetchUsers();
   }
@@ -36,9 +33,7 @@ function setStatusFilter(status) {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
     fetchPendingSuppliers();
-  } else if (userState.role === 'suspended') {
-    fetchSuspendedUsers();
-  } else {
+  }else {
     fetchUsers();
   }
 }
@@ -56,8 +51,6 @@ function setRoleFilter(role) {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
     fetchPendingSuppliers();
-  } else if (userState.role === 'suspended') {
-    fetchSuspendedUsers(); // ✅ now correct
   } else {
     fetchUsers();
   }
@@ -77,9 +70,7 @@ function clearFilters() {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
     fetchPendingSuppliers();
-  } else if (userState.role === 'suspended') {
-    fetchSuspendedUsers();
-  } else {
+  }else {
     fetchUsers();
   }
 }
@@ -92,8 +83,6 @@ async function performSearch(query) {
       fetchSuppliers();
     } else if (userState.role === 'pending') {
       fetchPendingSuppliers(); // ✅
-    } else if (userState.role === 'suspended') {
-      fetchSuspendedUsers(); // ✅ ADD THIS
     } else {
       fetchUsers();
     } // ✅ reuses the same filter-aware fetch
@@ -146,13 +135,7 @@ document.getElementById('pending-tab').addEventListener('click', () => {
   userState.page = 1;
   fetchPendingSuppliers();
 });
-document.getElementById('suspended-tab').addEventListener('click', () => {
-  resetSearch();
-  userState.role = 'suspended';
-  userState.filterRole = '';
-  userState.page = 1;
-  fetchSuspendedUsers();
-});
+
 document.addEventListener('click', (e) => {
   const pageBtn = e.target.closest('.page-link');
 
