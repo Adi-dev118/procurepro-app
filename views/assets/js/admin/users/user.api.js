@@ -21,12 +21,14 @@ async function fetchUsers() {
 
   userState.page = data.currentPage;
 
-  renderUsers(data.users);
-  renderPagination(data.totalPages);
-  updateUserCount(data.currentPage, data.totalUsers);
   if (userState.role === 'customer') {
     renderBuyers(data.users);
-    return;
+    renderPagination(data.totalPages);
+    updateUserCount(data.currentPage, data.totalUsers);
+  } else {
+    renderUsers(data.users);
+    renderPagination(data.totalPages);
+    updateUserCount(data.currentPage, data.totalUsers);
   }
 }
 

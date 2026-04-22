@@ -1,5 +1,10 @@
 import { userState } from './user.state.js';
-import { fetchUsers, fetchSuppliers, fetchPendingSuppliers, fetchSuspendedUsers } from './user.api.js';
+import {
+  fetchUsers,
+  fetchSuppliers,
+  fetchPendingSuppliers,
+  fetchSuspendedUsers,
+} from './user.api.js';
 
 function changePage(page) {
   if (page < 1) return;
@@ -103,7 +108,6 @@ function resetSearch() {
   // clear ALL search inputs (because multiple tabs)
   document.querySelectorAll('input[name="search"]').forEach((input) => {
     input.value = '';
-    performSearch('')
   });
 }
 
@@ -159,7 +163,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.querySelectorAll('input[name="search"]').forEach(input => {
+document.querySelectorAll('input[name="search"]').forEach((input) => {
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -206,4 +210,111 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchUsers();
+
+  let activeTab = '#profile-tab';
+
+  const modal = document.getElementById('viewUserModal');
+
+  // 🔹 Track tab changes (ONLY modal tabs)
+  modal.querySelectorAll('#userDetailTabs button').forEach((tabBtn) => {
+    tabBtn.addEventListener('shown.bs.tab', (e) => {
+      activeTab = e.target.getAttribute('data-bs-target');
+    });
+  });
+
+  // 🔹 Restore tab
+  modal.addEventListener('shown.bs.modal', () => {
+    setTimeout(() => {
+      const triggerEl = modal.querySelector(
+        `#userDetailTabs button[data-bs-target="${activeTab}"]`,
+      );
+
+      if (triggerEl) {
+        new bootstrap.Tab(triggerEl).show();
+      }
+    }, 10);
+  });
+
+  // 🔹 Reset ONLY modal tabs (NOT whole page)
+  modal.addEventListener('hidden.bs.modal', () => {
+    modal.querySelectorAll('#userDetailTabs button').forEach((btn) => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+
+    modal.querySelectorAll('.tab-pane').forEach((pane) => {
+      pane.classList.remove('show', 'active');
+    });
+  });
+});
+// Action buttons
+
+let currentAction = null;
+let currentUserId = null;
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+
+  const userId = btn.dataset.id;
+
+  // 🔴 Suspend → modal (already done)
+  if (btn.classList.contains('suspend-btn')) {
+    document.getElementById('suspendUserId').value = userId;
+    document.getElementById('suspendReason').value = '';
+
+    new bootstrap.Modal(document.getElementById('suspendUserModal')).show();
+  }
+
+  // 🔵 Approve → open modal
+  if (btn.classList.contains('approve-btn')) {
+    currentAction = 'approve';
+    currentUserId = userId;
+
+    document.getElementById('actionModalTitle').innerText = 'Approve User';
+    document.getElementById('actionModalBody').innerText =
+      'Are you sure you want to approve this user?';
+
+    new bootstrap.Modal(document.getElementById('actionModal')).show();
+  }
+
+  // 🟢 Activate → open modal
+  if (btn.classList.contains('activate-btn')) {
+    currentAction = 'activate';
+    currentUserId = userId;
+
+    document.getElementById('actionModalTitle').innerText = 'Activate User';
+    document.getElementById('actionModalBody').innerText =
+      'Are you sure you want to activate this user?';
+
+    new bootstrap.Modal(document.getElementById('actionModal')).show();
+  }
+});
+
+document.getElementById('confirmActionBtn').addEventListener('click', async () => {
+  if (!currentAction || !currentUserId) return;
+
+  try {
+    let url = '';
+
+    if (currentAction === 'approve') {
+      url = `/admin/user/users-data/modal-data/${currentUserId}/approve`;
+    }
+
+    if (currentAction === 'activate') {
+      url = `/admin/user/users-data/modal-data/${currentUserId}/activate`;
+    }
+
+    await fetch(url, {
+      method: 'PUT',
+    });
+
+    // close modal
+    bootstrap.Modal.getInstance(document.getElementById('actionModal')).hide();
+
+    fetchUsers(); // refresh table
+  } catch (err) {
+    console.error(err);
+    alert('Action failed');
+  }
 });

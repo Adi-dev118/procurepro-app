@@ -1,12 +1,8 @@
 // Main JavaScript for Admin Dashboard
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
   // Initialize all components
   initSidebarToggle();
   initMobileMenu();
-  initTabs();
   initDataTables();
   initCharts();
   initFormValidation();
@@ -66,37 +62,6 @@ function initMobileMenu() {
       mobileOverlay.classList.remove('active');
     });
   }
-}
-
-// Tab functionality
-function initTabs() {
-  const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
-
-  tabLinks.forEach((link) => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-
-      // Get target tab
-      const targetId = this.getAttribute('data-bs-target') || this.getAttribute('href');
-      const targetTab = document.querySelector(targetId);
-
-      if (!targetTab) return;
-
-      // Remove active class from all tabs
-      document.querySelectorAll('.nav-tabs .nav-link').forEach((tab) => {
-        tab.classList.remove('active');
-      });
-
-      // Hide all tab contents
-      document.querySelectorAll('.tab-pane').forEach((pane) => {
-        pane.classList.remove('show', 'active');
-      });
-
-      // Activate current tab
-      this.classList.add('active');
-      targetTab.classList.add('show', 'active');
-    });
-  });
 }
 
 // Initialize data tables with sorting and filtering
@@ -393,6 +358,132 @@ function formatNumber(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+// User Modal Functionality
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.view');
+  if (!btn) return;
+
+  const userId = btn.dataset.id;
+
+  try {
+    const res = await fetch(`/admin/user/users-data/modal-data/${userId}`);
+    const user = await res.json();
+
+    openUserModal(user);
+  } catch (err) {
+    console.error('Error fetching user:', err);
+  }
+});
+
+function openUserModal(user) {
+  function getStatusBadge(status) {
+    const map = {
+      delivered: 'success',
+      pending: 'warning',
+      processing: 'primary',
+      cancelled: 'danger',
+    };
+
+    return `<span class="badge bg-${map[status] || 'secondary'}">${status}</span>`;
+  }
+  // 🔹 Set title
+  document.querySelector('#viewUserModal .modal-title').textContent = user.name;
+
+  // 🔹 PROFILE TAB
+  document.getElementById('profile-content').innerHTML = `
+  <div class="row g-4">
+
+    <div class="col-md-6">
+      <div class="card p-3 profile-card">
+        <p><span>Name: </span>${user.name}</p>
+        <p><span>Email: </span>${user.email}</p>
+        <p><span>Role</span><span class="badge role-badge">${user.role}</span></p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card p-3 profile-card">
+        <p><span>Phone: </span>${user.address?.phone || '-'}</p>
+        <p><span>Address: </span>
+          ${
+            user.address
+              ? `
+                ${user.address.street}<br/>
+                ${user.address.city}, ${user.address.state}<br/>
+                ${user.address.pincode}
+              `
+              : '-'
+          }
+        </p>
+      </div>
+    </div>
+
+  </div>
+`;
+  // 🔹 ORDERS TAB
+  document.getElementById('orders-content').innerHTML = `
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${
+          user.orders?.length
+            ? user.orders
+                .map(
+                  (o) => `
+                <tr>
+                  <td>#${o.id}</td>
+                  <td>₹${o.amount}</td>
+                 <td>${getStatusBadge(o.status)}</td>
+                </tr>
+              `,
+                )
+                .join('')
+            : '<tr><td colspan="3">No orders</td></tr>'
+        }
+      </tbody>
+    </table>
+  `;
+
+  // 🔹 ACTIVITY TAB
+  document.getElementById('activity-content').innerHTML = `
+    <ul class="list-group">
+    ${
+      user.activity?.length
+        ? user.activity
+            .map(
+              (a) => `
+              <li class="list-group-item activity-item">
+  <div>
+    <strong>${a.activity}</strong>
+    <p class="mb-1 text-muted">${a.detail}</p>
+    <small>${new Date(a.created_at).toLocaleString()}</small>
+  </div>
+  <span class="badge bg-success">${a.status}</span>
+</li>
+            `,
+            )
+            .join('')
+        : '<li class="list-group-item">No activity</li>'
+    }
+  </ul>
+  `;
+
+  // 🔥 Reset to first tab every time
+  const firstTab = new bootstrap.Tab(document.getElementById('profile-tab-btn'));
+  firstTab.show();
+
+  // 🔥 Show modal
+  const modal = new bootstrap.Modal(document.getElementById('viewUserModal'));
+  modal.show();
+}
+
+// Action button
 // Admin logout Function
 
 const signOut = document.getElementById('signoutButton');
@@ -422,4 +513,3 @@ async function handleLogout() {
 if (signOut) {
   signOut.addEventListener('click', handleLogout);
 }
-

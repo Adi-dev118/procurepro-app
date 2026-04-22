@@ -530,3 +530,128 @@ exports.deleteUser = async (req, res) => {
     message: 'The user was deleted',
   });
 };
+
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // 🔹 1. USER
+    const [userRows] = await db.query(
+      `SELECT id, name, email, role 
+       FROM users 
+       WHERE id = ?`,
+      [userId]
+    );
+
+    if (userRows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = userRows[0];
+
+    // 🔹 2. ADDRESS (default one)
+    const [addressRows] = await db.query(
+      `SELECT full_name, phone, street, landmark, city, state, pincode 
+       FROM addresses 
+       WHERE user_id = ? AND is_default = 1 
+       LIMIT 1`,
+      [userId]
+    );
+
+    const address = addressRows[0] || null;
+
+    // 🔹 3. ORDERS
+    const [ordersRows] = await db.query(
+      `SELECT id, total_amount AS amount, status, created_at 
+       FROM orders 
+       WHERE user_id = ? 
+       ORDER BY created_at DESC`,
+      [userId]
+    );
+
+    // 🔹 4. ACTIVITY
+    const [activityRows] = await db.query(
+      `SELECT activity, detail, status, created_at 
+       FROM user_activity_logs 
+       WHERE user_id = ? 
+       ORDER BY created_at DESC 
+       LIMIT 10`,
+      [userId]
+    );
+
+    // 🔥 FINAL RESPONSE
+    res.json({
+      ...user,
+      address,
+      orders: ordersRows,
+      activity: activityRows
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+exports.suspendUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { reason } = req.body;
+
+    if (!reason) {
+      return res.status(400).json({ message: 'Reason required' });
+    }
+
+    await db.query(
+      `UPDATE users 
+       SET status = 'suspended',
+           suspend_reason = ?,
+           suspended_on = NOW()
+       WHERE id = ?`,
+      [reason, userId]
+    );
+
+    res.json({ message: 'User suspended successfully' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.activateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    await db.query(
+      `UPDATE users 
+       SET status = 'active',
+           suspend_reason = NULL,
+           suspended_on = NULL
+       WHERE id = ?`,
+      [userId]
+    );
+
+    res.json({ message: 'User activated' });
+
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.approveUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    await db.query(
+      `UPDATE users SET status = 'active' WHERE id = ?`,
+      [userId]
+    );
+
+    res.json({ message: 'User approved' });
+
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};

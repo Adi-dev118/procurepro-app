@@ -1,4 +1,4 @@
-import { userState } from "./user.state.js";
+import { userState } from './user.state.js';
 // All Users
 
 function renderUsers(users) {
@@ -55,6 +55,14 @@ function renderBuyers(users) {
       .map((w) => w[0])
       .join('')
       .toUpperCase();
+
+    const button =
+      user.status === 'active'
+        ? `<button class="btn btn-warning btn-sm suspend-btn"  data-id="${user.id}">Suspend</button>`
+        : user.status === 'pending'
+          ? `<button class="btn btn-primary btn-sm approve-btn"  data-id="${user.id}">Approve</button>`
+          : `<button class="btn btn-success btn-sm activate-btn"  data-id="${user.id}">Active</button>`;
+
     const statusBadge =
       user.status === 'active'
         ? '<span class="status-badge active">Active</span>'
@@ -79,10 +87,10 @@ function renderBuyers(users) {
         </td>
         <td>
           <did class="action-buttons">
-          <button class="btn-icon view" title="View" id="user-info-modal">
+          <button class="btn-icon view" title="View" id="user-info-modal" data-id="${user.id}">
             <i class="bi bi-eye"></i>
           </button>
-          <button class="btn btn-warning btn-sm">Suspend</button>
+          ${button}
           </div>
         </td>
       </tr>
@@ -332,19 +340,19 @@ function updateUserCount(currentPage, totalUsers, limit = 5) {
 
   if (userState.role === 'customer') {
     label = 'buyers';
-    container = document.querySelector('#buyers .pagination-info');
+    container = document.querySelector('.pagination-info-buyers');
   } else if (userState.role === 'supplier') {
     label = 'suppliers';
-    container = document.querySelector('#suppliers .pagination-info');
+    container = document.querySelector('.pagination-info-suppliers ');
   } else if (userState.role === 'pending') {
     label = 'pending suppliers';
-    container = document.querySelector('#pending .pagination-info');
+    container = document.querySelector('.pagination-info-pending');
   } else if (userState.role === 'suspended') {
     label = 'suspended users';
-    container = document.querySelector('#suspended .pagination-info');
+    container = document.querySelector('.pagination-info-suspended');
   } else {
     label = 'users';
-    container = document.querySelector('#all-users .pagination-info');
+    container = document.querySelector('.pagination-info-all-users');
   }
 
   if (!container) return; // safety
