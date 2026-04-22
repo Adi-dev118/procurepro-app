@@ -21,6 +21,7 @@ router.put('/admin/user/users-data/modal-data/:id/suspend', userController.suspe
 router.put('/admin/user/users-data/modal-data/:id/activate', userController.activateUser);
 router.put('/admin/user/users-data/modal-data/:id/approve', userController.approveUser);
 router.get('/admin/supplier/supplier-data', userController.getSupplierManagement);
+router.get('/admin/supplier/supplier-data/modal-data/:id', userController.getSupplierById);
 
 router.get('/admin/order/order-data', orderController.getOrderManagement);
 router.get('/admin/dispute/dispute-data', disputeController.getDisputes);

@@ -540,7 +540,7 @@ exports.getUserById = async (req, res) => {
       `SELECT id, name, email, role 
        FROM users 
        WHERE id = ?`,
-      [userId]
+      [userId],
     );
 
     if (userRows.length === 0) {
@@ -555,7 +555,7 @@ exports.getUserById = async (req, res) => {
        FROM addresses 
        WHERE user_id = ? AND is_default = 1 
        LIMIT 1`,
-      [userId]
+      [userId],
     );
 
     const address = addressRows[0] || null;
@@ -566,7 +566,7 @@ exports.getUserById = async (req, res) => {
        FROM orders 
        WHERE user_id = ? 
        ORDER BY created_at DESC`,
-      [userId]
+      [userId],
     );
 
     // 🔹 4. ACTIVITY
@@ -576,7 +576,7 @@ exports.getUserById = async (req, res) => {
        WHERE user_id = ? 
        ORDER BY created_at DESC 
        LIMIT 10`,
-      [userId]
+      [userId],
     );
 
     // 🔥 FINAL RESPONSE
@@ -584,15 +584,13 @@ exports.getUserById = async (req, res) => {
       ...user,
       address,
       orders: ordersRows,
-      activity: activityRows
+      activity: activityRows,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 exports.suspendUser = async (req, res) => {
   try {
@@ -609,11 +607,10 @@ exports.suspendUser = async (req, res) => {
            suspend_reason = ?,
            suspended_on = NOW()
        WHERE id = ?`,
-      [reason, userId]
+      [reason, userId],
     );
 
     res.json({ message: 'User suspended successfully' });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -630,11 +627,10 @@ exports.activateUser = async (req, res) => {
            suspend_reason = NULL,
            suspended_on = NULL
        WHERE id = ?`,
-      [userId]
+      [userId],
     );
 
     res.json({ message: 'User activated' });
-
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -644,14 +640,87 @@ exports.approveUser = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    await db.query(
-      `UPDATE users SET status = 'active' WHERE id = ?`,
-      [userId]
-    );
+    await db.query(`UPDATE users SET status = 'active' WHERE id = ?`, [userId]);
 
     res.json({ message: 'User approved' });
-
   } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.getSupplierById = async (req, res) => {
+  try {
+    const supplierId = req.params.id;
+
+    // 🔹 1. BASIC INFO
+    const [supplierRows] = await db.query(
+      `SELECT s.id, s.business_name,  u.email, s.verification_status, s.business_type, 
+      s.business_registration, s.description, s.mobile_no, u.name AS owner_name
+       FROM suppliers s
+       LEFT JOIN users u
+       ON s.user_id = u.id
+       WHERE s.id = ?`,
+      [supplierId],
+    );
+
+    if (supplierRows.length === 0) {
+      return res.status(404).json({ message: 'Supplier not found' });
+    }
+
+    const supplier = supplierRows[0];
+
+    // 🔹 2. ADDRESS
+    const [addressRows] = await db.query(
+      `SELECT *
+       FROM supplier_address
+       WHERE supplier_id = ?
+       LIMIT 1`,
+      [supplierId],
+    );
+
+    const address = addressRows[0] || null;
+
+    // 🔹 3. PRODUCTS
+    const [products] = await db.query(
+      `SELECT id, name, final_price, stock
+       FROM products
+       WHERE supplier_id = ?`,
+      [supplierId],
+    );
+
+    // 🔹 4. ORDERS
+    const [orders] = await db.query(
+      `SELECT  DISTINCT o.id, SUM(oi.quantity * oi.price_at_purchase) AS amount, o.status, o.created_at
+       FROM orders o
+       LEFT JOIN order_items oi
+       ON o.id = oi.order_id
+       LEFT JOIN products p
+       ON oi.product_id = p.id
+       LEFT JOIN suppliers s
+       ON p.supplier_id = s.id
+       WHERE s.id = ?
+       GROUP BY o.id
+       ORDER BY created_at DESC`,
+      [supplierId],
+    );
+
+    // 🔹 5. STATS
+    const stats = {
+      total_products: products.length,
+      total_orders: orders.length,
+      total_earnings: orders.reduce((sum, o) => sum + Number(o.amount), 0),
+    };
+
+    // 🔥 FINAL RESPONSE
+    res.json({
+      ...supplier,
+      address,
+      products,
+      orders,
+      stats,
+    });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
