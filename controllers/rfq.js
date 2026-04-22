@@ -165,3 +165,79 @@ AND q.status = 'submitted'
     res.status(500).json({ message: 'Server error' });
   }
 };
+exports.getCompanyRFQs = async (req, res) => {
+  try {
+    const companyId = req.session.user.id;
+
+    const [rfqs] = await db.query(
+      `
+      SELECT 
+        r.id,
+        r.title,
+        r.deadline,
+        r.quantity,
+        r.description,
+        r.status,
+
+        COUNT(DISTINCT i.supplier_id) AS suppliers_invited,
+        COUNT(DISTINCT q.id) AS bids_received
+
+      FROM rfqs r
+      LEFT JOIN rfq_invitations i ON r.id = i.rfq_id
+      LEFT JOIN rfq_quotes q ON r.id = q.rfq_id
+
+      WHERE r.user_id = ?
+
+      GROUP BY r.id
+      ORDER BY r.created_at DESC
+    `,
+      [companyId],
+    );
+
+    // 🔥 attach specs + quotes
+    for (let rfq of rfqs) {
+      const [specs] = await db.query(
+        `SELECT spec_name, spec_value FROM rfq_specifications WHERE rfq_id = ?`,
+        [rfq.id],
+      );
+
+      const [quotes] = await db.query(
+        `
+        SELECT 
+          q.id,
+          q.price,
+          q.delivery_days,
+          q.warranty,
+          q.payment_terms,
+          q.message,
+          q.status,
+          s.business_name AS company,
+
+          ROUND(COALESCE(AVG(pr.rating),0),1) AS rating,
+          COUNT(DISTINCT pr.id) AS review_count,
+
+          MAX(o.id) AS order_id
+
+        FROM rfq_quotes q
+        JOIN suppliers s ON s.id = q.supplier_id
+        LEFT JOIN products p ON p.supplier_id = s.id
+        LEFT JOIN product_reviews pr ON pr.product_id = p.id
+        LEFT JOIN orders o 
+          ON o.rfq_id = q.rfq_id AND q.status = 'accepted'
+
+        WHERE q.rfq_id = ?
+        GROUP BY q.id
+      `,
+        [rfq.id],
+      );
+
+      rfq.specifications = specs;
+      rfq.quotes = quotes;
+    }
+
+    res.json({ rfqs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

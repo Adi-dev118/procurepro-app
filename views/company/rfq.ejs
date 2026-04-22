@@ -118,7 +118,7 @@
         color: rgba(255, 255, 255, 0.35);
         padding: 18px 20px 6px;
       }
-      
+
       .sidebar-nav::-webkit-scrollbar {
         width: 0px; /* hidden by default */
       }
@@ -858,190 +858,11 @@
           </div>
 
           <!-- Tab Panels -->
-          <div id="tab-active">
-            <%currentRFQs.forEach(rfq => {%>
-            <%if(rfq.status==='active'){%>
-            <div class="rfq-card">
-              <div class="rfq-card-header">
-                <div>
-                  <div class="rfq-id">#RFQ-00<%=rfq.id%></div>
-                  <div class="rfq-title"><%=rfq.title%> — <%=rfq.quantity%> Units</div>
-                  <div class="rfq-meta">
-                    <span class="rfq-meta-item"
-                      ><i class="bi bi-calendar3"></i>Deadline:
-                      <%= new Date(rfq.deadline).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span
-                    >
-                    <span class="rfq-meta-item"
-                      ><i class="bi bi-people"></i
-                      ><%=rfq.suppliers_invited%>
-                      suppliers invited</span
-                    >
-                    <span class="rfq-meta-item"
-                      ><i class="bi bi-file-text"></i
-                      ><%=rfq.bids_received%>
-                      bids received</span
-                    >
-                  </div>
-                </div>
-                <span class="badge open"><span class="dot-indicator"></span>Open for Bids</span>
-              </div>
-              <div class="rfq-body">
-                <p class="rfq-description"><%=rfq.description%></p>
-                <div class="rfq-specs-box">
-                  <div class="rfq-specs-title">Specifications</div>
-                  <ul class="rfq-specs-list">
-                    <%rfq.specifications.forEach(spec=>{%>
-                    <li>
-                      <strong><%=spec.spec_name%>:</strong>
-                      <%=spec.spec_value%>
-                    </li>
-                    <%})%>
-                  </ul>
-                </div>
-                <div class="bids-section-title">Received Bids (<%=rfq.quotes.length%>)</div>
-                <%rfq.quotes.forEach(quote=>{%>
-                <div class="bid-card">
-                  <div class="bid-card-header">
-                    <div class="bid-supplier-row">
-                      <div class="bid-sup-ava">
-                        <%= quote.company.split(' ').map(w=>w[0]).join('').toUpperCase() %>
-                      </div>
-                      <div>
-                        <div class="bid-sup-name"><%=quote.company%></div>
-                        <div class="bid-sup-rating">
-                          <%=quote.rating%> ★ · <%=quote.review_count%> reviews
-                        </div>
-                      </div>
-                    </div>
-                    <div class="bid-price-tag">$<%=quote.price%></div>
-                  </div>
-                  <div class="bid-details-row">
-                    <span class="bid-detail-item"
-                      ><i class="bi bi-truck"></i>Delivery:
-                      <%=quote.delivery_days%>
-                      days</span
-                    >
-                    <span class="bid-detail-item"
-                      ><i class="bi bi-shield-check"></i>Warranty:
-                      <%=quote.warranty%>
-                      yr</span
-                    >
-                    <span class="bid-detail-item"
-                      ><i class="bi bi-credit-card"></i
-                      ><%=quote.payment_terms%></span
-                    >
-                  </div>
-                  <div class="bid-notes"><%=quote.message%></div>
-                  <div class="bid-actions">
-                    <button class="btn-accept accept-bid-btn" data-bid-id="<%=quote.id%>">
-                      <i class="bi bi-check-circle"></i> Accept Bid
-                    </button>
-                    <button class="btn-outline-sm">
-                      <i class="bi bi-chat-left-text"></i> Message
-                    </button>
-                    <button class="btn-outline-sm"><i class="bi bi-eye"></i> Details</button>
-                  </div>
-                </div>
-                <%})%>
-              </div>
-            </div>
-            <%}%><%})%>
-          </div>
+          <div id="tab-active"></div>
+          <div id="tab-pending" style="display: none"></div>
+          <div id="tab-closed" style="display: none"></div>
 
-          <div id="tab-pending" style="display: none">
-            <%currentRFQs.forEach(rfq=>{%><%if(rfq.status==='expired'){%>
-            <div class="rfq-card">
-              <div class="rfq-card-header">
-                <div>
-                  <div class="rfq-id">#RFQ-00<%=rfq.id%></div>
-                  <div class="rfq-title"><%=rfq.title%></div>
-                  <div class="rfq-meta">
-                    <span class="rfq-meta-item"
-                      ><i class="bi bi-people"></i
-                      ><%=rfq.suppliers_invited%>
-                      suppliers invited</span
-                    ><span class="rfq-meta-item"><i class="bi bi-clock"></i>2 Days Remaining</span>
-                  </div>
-                </div>
-                <span class="badge awaiting"><span class="dot-indicator"></span>Awaiting Bids</span>
-              </div>
-              <div class="rfq-body">
-                <p class="rfq-description"><%=rfq.description%></p>
-                <div class="empty-state">
-                  <i class="bi bi-hourglass-split"></i>
-                  <h5>Awaiting Supplier Bids</h5>
-                  <p>No bids received yet. Check back after the deadline.</p>
-                </div>
-              </div>
-            </div>
-            <%}%><%})%>
-          </div>
-
-          <div id="tab-closed" style="display: none">
-            <%currentRFQs.forEach(rfq=>{%><%if(rfq.status==='closed'){%>
-            <div class="rfq-card">
-              <div class="rfq-card-header">
-                <div>
-                  <div class="rfq-id">#RFQ-<%=rfq.id%></div>
-                  <div class="rfq-title"><%=rfq.title%></div>
-                  <div class="rfq-meta">
-                    <span class="rfq-meta-item"
-                      ><i class="bi bi-calendar3"></i>Closed:
-                      <%= new Date(rfq.deadline).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span
-                    ><span class="rfq-meta-item"
-                      ><i class="bi bi-file-text"></i
-                      ><%=rfq.bids_received%>
-                      bids</span
-                    >
-                  </div>
-                </div>
-                <span class="badge awarded"><span class="dot-indicator"></span>Awarded</span>
-              </div>
-              <div class="rfq-body">
-                <p class="rfq-description"><%=rfq.description%></p>
-                <%rfq.quotes.forEach(quote=>{%><%if(quote.status==='won'){%>
-                <div class="award-banner">
-                  <i class="bi bi-trophy-fill"></i>
-                  <div>
-                    <h6>
-                      Awarded to
-                      <%=quote.company%>
-                    </h6>
-                    <p>
-                      Winning bid: $<%=quote.price%> · Delivery: <%=quote.delivery_days%> days ·
-                      Order #ORD-<%=quote.order_id%> created from this RFQ
-                    </p>
-                  </div>
-                </div>
-                <%}%><%})%>
-              </div>
-            </div>
-            <%}%><%})%>
-          </div>
-
-          <div id="tab-draft" style="display: none">
-            <div class="rfq-card">
-              <div class="rfq-card-header">
-                <div>
-                  <div class="rfq-id">Draft · Last saved today, 10:30 AM</div>
-                  <div class="rfq-title">Industrial Pumps — Draft</div>
-                </div>
-                <span class="badge draft">Draft</span>
-              </div>
-              <div class="rfq-body">
-                <p class="rfq-description">Need centrifugal pumps for water treatment facility…</p>
-                <div class="bid-actions">
-                  <button class="btn-primary-action">
-                    <i class="bi bi-pencil"></i> Continue Editing
-                  </button>
-                  <button class="btn-outline-sm"><i class="bi bi-eye"></i> Preview</button>
-                  <button class="btn-outline-sm" style="color: var(--col-danger)">
-                    <i class="bi bi-trash"></i> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="tab-draft" style="display: none"></div>
 
           <!-- Stats -->
           <div class="stats-row">
@@ -1071,6 +892,8 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/company.js"></script>
+    <script type="module" src="../assets/js/company/rfq/rfq.main.js"></script>
+   
     <script>
       const menuToggle = document.getElementById('menuToggle');
       const sidebar = document.getElementById('sidebar');

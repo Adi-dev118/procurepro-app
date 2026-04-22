@@ -442,8 +442,9 @@ exports.getCompanyOrders = async (req, res) => {
       JOIN products p ON p.id = oi.product_id
       JOIN suppliers s ON s.id = p.supplier_id
 
-      LEFT JOIN product_reviews pr ON pr.product_id = p.id
-
+      LEFT JOIN product_reviews pr ON pr.product_id IN (
+  SELECT id FROM products WHERE supplier_id = s.id
+)
       ${where}
 
       GROUP BY o.id
