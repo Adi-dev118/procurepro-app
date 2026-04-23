@@ -1,9 +1,5 @@
 import { userState } from './user.state.js';
-import {
-  fetchUsers,
-  fetchSuppliers,
-  fetchPendingSuppliers,
-} from './user.api.js';
+import { fetchUsers, fetchSuppliers, fetchPendingSuppliers } from './user.api.js';
 
 function changePage(page) {
   if (page < 1) return;
@@ -12,7 +8,7 @@ function changePage(page) {
   if (userState.role === 'supplier') {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
-    fetchPendingSuppliers(); 
+    fetchPendingSuppliers();
   } else {
     fetchUsers();
   }
@@ -33,7 +29,7 @@ function setStatusFilter(status) {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
     fetchPendingSuppliers();
-  }else {
+  } else {
     fetchUsers();
   }
 }
@@ -70,7 +66,7 @@ function clearFilters() {
     fetchSuppliers();
   } else if (userState.role === 'pending') {
     fetchPendingSuppliers();
-  }else {
+  } else {
     fetchUsers();
   }
 }
@@ -228,6 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.querySelectorAll('.tab-pane').forEach((pane) => {
       pane.classList.remove('show', 'active');
     });
+    document.getElementById('orders-tab-btn').style.display = '';
+    document.getElementById('activity-tab-btn').style.display = '';
+
+    document.getElementById('profile-content').innerHTML = '';
+    document.getElementById('orders-content').innerHTML = '';
+    document.getElementById('activity-content').innerHTML = '';
   });
 });
 // Action buttons
@@ -243,8 +245,11 @@ document.addEventListener('click', (e) => {
 
   // 🔴 Suspend → modal (already done)
   if (btn.classList.contains('suspend-btn')) {
-    document.getElementById('suspendUserId').value = userId;
+    currentAction = 'suspend';
+     currentUserId = userId;
+    document.getElementById('suspendUserId').value = currentUserId;
     document.getElementById('suspendReason').value = '';
+    console.log('click Suspend');
 
     new bootstrap.Modal(document.getElementById('suspendUserModal')).show();
   }
@@ -269,35 +274,228 @@ document.addEventListener('click', (e) => {
     document.getElementById('actionModalTitle').innerText = 'Activate User';
     document.getElementById('actionModalBody').innerText =
       'Are you sure you want to activate this user?';
+    console.log('click Active');
 
     new bootstrap.Modal(document.getElementById('actionModal')).show();
   }
 });
+const handleAction = async () => {
+  if (!currentAction || !currentUserId) {
+    console.error('Missing action/user');
+    return;
+  }
 
-document.getElementById('confirmActionBtn').addEventListener('click', async () => {
-  if (!currentAction || !currentUserId) return;
+  let url = '';
 
-  try {
-    let url = '';
+  if (currentAction === 'approve') {
+    url = `/admin/user/users-data/modal-data/${currentUserId}/approve`;
+  }
 
-    if (currentAction === 'approve') {
-      url = `/admin/user/users-data/modal-data/${currentUserId}/approve`;
-    }
+  if (currentAction === 'activate') {
+    url = `/admin/user/users-data/modal-data/${currentUserId}/activate`;
+  }
 
-    if (currentAction === 'activate') {
-      url = `/admin/user/users-data/modal-data/${currentUserId}/activate`;
-    }
+  if (currentAction === 'suspend') {
+    url = `/admin/user/users-data/modal-data/${currentUserId}/suspend`;
+  }
 
-    await fetch(url, {
-      method: 'PUT',
-    });
+  await fetch(url, { method: 'PUT' });
 
-    // close modal
+  // ✅ CLOSE CORRECT MODAL
+  if (currentAction === 'suspend') {
+    bootstrap.Modal.getInstance(document.getElementById('suspendUserModal')).hide();
+  } else {
     bootstrap.Modal.getInstance(document.getElementById('actionModal')).hide();
+  }
 
-    fetchUsers(); // refresh table
+  fetchUsers();
+};
+
+// attach both
+document.getElementById('confirmActionBtn')?.addEventListener('click', handleAction);
+document.getElementById('confirmSuspendBtn')?.addEventListener('click', handleAction);
+
+
+function openUserModal(user) {
+  function getStatusBadge(status) {
+    const map = {
+      delivered: 'success',
+      pending: 'warning',
+      processing: 'primary',
+      cancelled: 'danger',
+    };
+
+    return `<span class="badge bg-${map[status] || 'secondary'}">${status}</span>`;
+  }
+  // 🔹 Set title
+  document.querySelector('#viewUserModal .modal-title').textContent = user.name;
+
+  // 🔹 PROFILE TAB
+  document.getElementById('profile-content').innerHTML = `
+  <div class="row g-4">
+
+    <div class="col-md-6">
+      <div class="card p-3 profile-card">
+        <p><span>Name: </span>${user.name}</p>
+        <p><span>Email: </span>${user.email}</p>
+        <p><span>Role</span><span class="badge role-badge">${user.role}</span></p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card p-3 profile-card">
+        <p><span>Phone: </span>${user.address?.phone || '-'}</p>
+        <p><span>Address: </span>
+          ${
+            user.address
+              ? `
+                ${user.address.street}<br/>
+                ${user.address.city}, ${user.address.state}<br/>
+                ${user.address.pincode}
+              `
+              : '-'
+          }
+        </p>
+      </div>
+    </div>
+
+  </div>
+`;
+  // 🔹 ORDERS TAB
+  document.getElementById('orders-content').innerHTML = `
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${
+          user.orders?.length
+            ? user.orders
+                .map(
+                  (o) => `
+                <tr>
+                  <td>#${o.id}</td>
+                  <td>₹${o.amount}</td>
+                 <td>${getStatusBadge(o.status)}</td>
+                </tr>
+              `,
+                )
+                .join('')
+            : '<tr><td colspan="3">No orders</td></tr>'
+        }
+      </tbody>
+    </table>
+  `;
+
+  // 🔹 ACTIVITY TAB
+  document.getElementById('activity-content').innerHTML = `
+    <ul class="list-group">
+    ${
+      user.activity?.length
+        ? user.activity
+            .map(
+              (a) => `
+              <li class="list-group-item activity-item">
+  <div>
+    <strong>${a.activity}</strong>
+    <p class="mb-1 text-muted">${a.detail}</p>
+    <small>${new Date(a.created_at).toLocaleString()}</small>
+  </div>
+  <span class="badge bg-success">${a.status}</span>
+</li>
+            `,
+            )
+            .join('')
+        : '<li class="list-group-item">No activity</li>'
+    }
+  </ul>
+  `;
+
+  // 🔥 Reset to first tab every time
+  const firstTab = new bootstrap.Tab(document.getElementById('profile-tab-btn'));
+  firstTab.show();
+
+  // 🔥 Show modal
+  const modal = new bootstrap.Modal(document.getElementById('viewUserModal'));
+  modal.show();
+}
+
+async function openSupplierProfile(id) {
+  try {
+    const res = await fetch(`/admin/supplier/supplier-data/modal-data/${id}`);
+    const data = await res.json();
+
+    // 🔴 Hide unwanted tabs
+    document.getElementById('orders-tab-btn').style.display = 'none';
+    document.getElementById('activity-tab-btn').style.display = 'none';
+
+    // 🔴 Force Profile tab active
+    new bootstrap.Tab(document.querySelector('#profile-tab-btn')).show();
+
+    document.querySelector('#viewUserModal .modal-title').textContent = data.business_name;
+    // 🔴 Render LIMITED info
+    document.getElementById('profile-content').innerHTML = `
+  <div class="supplier-profile">
+
+    <div class="profile-left">
+      <div class="profile-card">
+        <p><span><i class="bi bi-building"></i> Company</span>${data.business_name || '-'}</p>
+        <p><span><i class="bi bi-envelope"></i> Email</span>${data.email || '-'}</p>
+        <p><span>Status</span>
+          <span class="status-badge ${data.verification_status}">
+            ${data.verification_status || '-'}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <div class="profile-card">
+        <p><span>Phone</span>${data.mobile_no || '-'}</p>
+        <p><span>Products</span>${data.stats?.total_products || 0}</p>
+        <p><span>Orders</span>${data.stats?.total_orders || 0}</p>
+        <p><span>Earnings</span>
+          <span class="earning"> $ ${data.stats?.total_earnings || 0}</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+`;
+    new bootstrap.Modal(document.getElementById('viewUserModal')).show();
   } catch (err) {
     console.error(err);
-    alert('Action failed');
+  }
+}
+document.addEventListener('click', async (e) => {
+  e.stopPropagation();
+  const btn = e.target.closest('.view');
+  if (!btn) return;
+
+  const supplierId = btn.getAttribute('data-supplierId');
+  const userId = btn.getAttribute('data-userId');
+
+  console.log('CLICK DEBUG:', { supplierId, userId }); // 🔥 ADD THIS
+
+  // 🚫 HARD STOP
+  if (!supplierId && !userId) return;
+
+  if (supplierId) {
+    openSupplierProfile(supplierId);
+    return;
+  }
+
+  if (userId) {
+    try {
+      const res = await fetch(`/admin/user/users-data/modal-data/${userId}`);
+      const user = await res.json();
+      openUserModal(user);
+    } catch (err) {
+      console.error(err);
+    }
   }
 });

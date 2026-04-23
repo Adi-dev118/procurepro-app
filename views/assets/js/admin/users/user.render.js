@@ -87,7 +87,7 @@ function renderBuyers(users) {
         </td>
         <td>
           <did class="action-buttons">
-          <button class="btn-icon view" title="View" id="user-info-modal" data-id="${user.id}">
+          <button class="btn-icon view" title="View" id="user-info-modal" data-userId="${user.id}">
             <i class="bi bi-eye"></i>
           </button>
           ${button}
@@ -130,7 +130,7 @@ function renderSuppliers(suppliers) {
 
     tbody.innerHTML += `
       <tr>
-        <td>#${supplier.id}</td>
+        <td>#${supplier.supplierId}</td>
         <td><div class="d-flex align-items-center">
           <div class="user-avatar me-1" style="width:30px;height:30px;font-size:12px">
             ${initials}
@@ -143,7 +143,7 @@ function renderSuppliers(suppliers) {
         <td>${statusBadge}</td>
         <td>
         <did class="action-buttons">
-          <button class="btn-icon view" title="View">
+          <button class="btn-icon view" title="View" data-supplierId="${supplier.supplierId}" data-type="supplier">
             <i class="bi bi-eye"></i>
           </button>
           <button class="btn btn-warning btn-sm">Suspend</button>

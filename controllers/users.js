@@ -105,13 +105,13 @@ exports.getSuppliers = async (req, res) => {
     const limit = 5;
     const offset = (page - 1) * limit;
     let query = `SELECT
-  u.id,
+  u.id AS userId,
   u.name,
   u.email,
   u.role,
   u.status,
   u.registration_date,
-
+  s.id AS supplierId,
   s.business_name AS company,
   s.mobile_no AS contact,
 
@@ -533,7 +533,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     // 🔹 1. USER
     const [userRows] = await db.query(
@@ -594,7 +594,7 @@ exports.getUserById = async (req, res) => {
 
 exports.suspendUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const { reason } = req.body;
 
     if (!reason) {
@@ -619,7 +619,7 @@ exports.suspendUser = async (req, res) => {
 
 exports.activateUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     await db.query(
       `UPDATE users 
@@ -638,7 +638,7 @@ exports.activateUser = async (req, res) => {
 
 exports.approveUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     await db.query(`UPDATE users SET status = 'active' WHERE id = ?`, [userId]);
 
@@ -650,7 +650,7 @@ exports.approveUser = async (req, res) => {
 
 exports.getSupplierById = async (req, res) => {
   try {
-    const supplierId = req.params.id;
+    const supplierId = req.params.supplierId;
 
     // 🔹 1. BASIC INFO
     const [supplierRows] = await db.query(
