@@ -3,7 +3,6 @@ import {
   renderUsers,
   renderBuyers,
   renderSuppliers,
-  renderPendingSuppliers,
   renderPagination,
   updateUserCount,
 } from './user.render.js';
@@ -47,18 +46,4 @@ async function fetchSuppliers() {
   updateUserCount(data.currentPage, data.totalSuppliers);
 }
 
-async function fetchPendingSuppliers() {
-  const query = new URLSearchParams({
-    page: userState.page,
-    search: userState.search,
-  });
-
-  const res = await fetch(`/admin/user/suppliers-pending?${query}`);
-  const data = await res.json();
-
-  renderPendingSuppliers(data.pendingSuppliers);
-  renderPagination(data.totalPages);
-  updateUserCount(data.currentPage, data.total);
-}
-
-export { fetchUsers, fetchSuppliers, fetchPendingSuppliers };
+export { fetchUsers, fetchSuppliers };

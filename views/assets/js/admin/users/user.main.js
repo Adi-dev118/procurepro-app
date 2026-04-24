@@ -1,5 +1,5 @@
 import { userState } from './user.state.js';
-import { fetchUsers, fetchSuppliers, fetchPendingSuppliers } from './user.api.js';
+import { fetchUsers, fetchSuppliers} from './user.api.js';
 
 function changePage(page) {
   if (page < 1) return;
@@ -7,8 +7,6 @@ function changePage(page) {
 
   if (userState.role === 'supplier') {
     fetchSuppliers();
-  } else if (userState.role === 'pending') {
-    fetchPendingSuppliers();
   } else {
     fetchUsers();
   }
@@ -27,9 +25,7 @@ function setStatusFilter(status) {
   if (userState.role === 'supplier') {
     if (userState.status === 'active') userState.status = 'approved';
     fetchSuppliers();
-  } else if (userState.role === 'pending') {
-    fetchPendingSuppliers();
-  } else {
+  }else {
     fetchUsers();
   }
 }
@@ -45,9 +41,7 @@ function setRoleFilter(role) {
   userState.page = 1;
   if (userState.role === 'supplier') {
     fetchSuppliers();
-  } else if (userState.role === 'pending') {
-    fetchPendingSuppliers();
-  } else {
+  }  else {
     fetchUsers();
   }
 }
@@ -64,8 +58,6 @@ function clearFilters() {
 
   if (userState.role === 'supplier') {
     fetchSuppliers();
-  } else if (userState.role === 'pending') {
-    fetchPendingSuppliers();
   } else {
     fetchUsers();
   }
@@ -77,9 +69,7 @@ async function performSearch(query) {
     userState.page = 1;
     if (userState.role === 'supplier') {
       fetchSuppliers();
-    } else if (userState.role === 'pending') {
-      fetchPendingSuppliers(); // ✅
-    } else {
+    }  else {
       fetchUsers();
     } // ✅ reuses the same filter-aware fetch
   } catch (err) {
@@ -121,15 +111,6 @@ document.getElementById('suppliers-tab').addEventListener('click', () => {
   userState.filterRole = '';
   userState.page = 1;
   fetchSuppliers();
-});
-
-document.getElementById('pending-tab').addEventListener('click', () => {
-  resetSearch();
-  userState.role = 'pending'; // 🔥 KEY
-  userState.status = '';
-  userState.filterRole = '';
-  userState.page = 1;
-  fetchPendingSuppliers();
 });
 
 document.addEventListener('click', (e) => {

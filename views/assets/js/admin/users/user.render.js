@@ -161,76 +161,6 @@ function renderSuppliers(suppliers) {
   });
 }
 
-// Pending
-
-function renderPendingSuppliers(suppliers) {
-  const tbody = document.querySelector('#pending-body'); // ⚠️ IMPORTANT ID
-  tbody.innerHTML = '';
-
-  if (!suppliers || suppliers.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="text-center">No pending suppliers</td>
-      </tr>
-    `;
-    return;
-  }
-
-  suppliers.forEach((supplier) => {
-    const initials = (supplier.company || supplier.name || '-')
-      .split(' ')
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-
-    const documents = supplier.documents
-      ? supplier.documents
-          .split('|')
-          .map((doc) => `<span class="badge bg-warning me-1">${doc.trim()}</span>`)
-          .join('')
-      : `<span class="badge bg-success">Not Required</span>`;
-
-    tbody.innerHTML += `
-      <tr>
-        <td>#${supplier.id}</td>
-
-        <td>
-          <div class="d-flex align-items-center">
-            <div class="user-avatar me-1" style="width:30px;height:30px;font-size:12px">
-              ${initials}
-            </div>
-            ${supplier.company || supplier.name || '-'}
-          </div>
-        </td>
-
-        <td>
-          <span class="badge bg-warning">Supplier</span>
-        </td>
-
-        <td>${supplier.registration_date?.split('T')[0]}</td>
-
-        <td>${documents}</td>
-
-        <td>
-          <div class="action-buttons">
-            <button class="btn btn-success btn-sm approve-btn" data-id="${supplier.id}">
-              Approve
-            </button>
-
-            <button class="btn btn-danger btn-sm reject-btn" data-id="${supplier.id}">
-              Reject
-            </button>
-
-            <button class="btn btn-info btn-sm">
-              <i class="bi bi-file-text"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
-  });
-}
-
 // Pagination
 
 function renderPagination(totalPages) {
@@ -335,7 +265,6 @@ export {
   renderUsers,
   renderBuyers,
   renderSuppliers,
-  renderPendingSuppliers,
   renderPagination,
   updateUserCount,
 };
