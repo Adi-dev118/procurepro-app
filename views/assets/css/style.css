@@ -524,7 +524,8 @@ body {
 }
 
 .btn-icon.view {
-  color: #3498db;
+  color: #888489;
+  text-decoration: none;
 }
 
 .btn-icon.view:hover {

@@ -34,6 +34,7 @@ router.put(
 );
 
 router.get('/admin/order/order-data', orderController.getOrderManagement);
+router.get('/admin/order/order-data/order-modal/:orderId', orderController.getOrderProducts);
 router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
 router.get('/admin/product/product-data', productController.getProducts);
 
@@ -56,6 +57,10 @@ router.get(
 router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
 router.get('/admin/supplier-details/:supplierId', (req, res) => {
   res.render('admin/supplier-detail');
+});
+
+router.get('/admin/order-detail/:orderId', (req, res) => {
+  res.render('admin/order-detail');
 });
 
 module.exports = router;

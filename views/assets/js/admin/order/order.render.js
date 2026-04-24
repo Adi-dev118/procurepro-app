@@ -41,7 +41,12 @@ function renderOrders(orders) {
       <tr>
         <td>
           <strong>#ORD-${order.id}</strong>
-          <div class="text-muted small">Click to view details</div>
+          <div class="text-muted small"> <a 
+  href="/admin/order-detail/${order.id}" 
+  class="btn-icon view" 
+  title="View"
+> Details
+</a></div>
         </td>
         <td>${order.orderType}</td>
         <td>

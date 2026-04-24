@@ -385,7 +385,6 @@ exports.getVendorOrderManagement = async (req, res) => {
   }
 };
 
-
 exports.getCompanyOrders = async (req, res) => {
   try {
     const search = req.query.search || '';
@@ -476,5 +475,55 @@ exports.getCompanyOrders = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+exports.getOrderProducts = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    const query = `
+      SELECT 
+        p.id,
+        p.name AS product_name,
+        c.name AS category_name,
+        oi.quantity,
+        oi.price_at_purchase AS price,
+        oi.subtotal,
+        s.business_name,
+        o.status,
+        o.total_amount,
+        o.created_at,
+        o.payment_status
+      FROM orders o
+
+      LEFT JOIN order_items oi
+        ON o.id = oi.order_id
+
+      LEFT JOIN products p
+        ON oi.product_id = p.id
+
+      LEFT JOIN categories c
+        ON p.category_id = c.id
+
+      LEFT JOIN suppliers s
+        ON p.supplier_id = s.id
+
+      WHERE o.id = ?
+
+      ORDER BY p.id ASC
+    `;
+
+    const [orderProducts] = await db.query(query, [orderId]);
+
+    res.status(200).json({
+      orderProducts,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Server Error',
+    });
   }
 };

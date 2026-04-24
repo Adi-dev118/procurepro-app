@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Order Details</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+
+    <style>
+      /* ===== Order Detail Extra Styles ===== */
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--primary-color);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        margin-bottom: 20px;
+        transition: gap 0.2s;
+      }
+      .back-link:hover {
+        gap: 10px;
+        color: var(--secondary-color);
+      }
+
+      /* ===== Order Hero ===== */
+      .order-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        border-radius: 14px;
+        padding: 26px 32px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .order-hero::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .order-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        right: 100px;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .hero-left h2 {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 6px;
+      }
+      .hero-left p {
+        font-size: 13.5px;
+        opacity: 0.8;
+        margin: 0;
+      }
+      .hero-right {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .hero-metric {
+        text-align: center;
+      }
+      .hero-metric .val {
+        font-size: 20px;
+        font-weight: 700;
+        display: block;
+      }
+      .hero-metric .lbl {
+        font-size: 11px;
+        opacity: 0.72;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .hero-divider {
+        width: 1px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .hero-status-badge {
+        padding: 7px 18px;
+        border-radius: 24px;
+        font-size: 13px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .hero-status-badge::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.9;
+        display: inline-block;
+      }
+
+      /* ===== Info Cards Row ===== */
+      .info-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 22px 24px;
+        height: 100%;
+      }
+      .info-card-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #9ca3af;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f0f0f5;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        font-size: 14px;
+        border-bottom: 1px solid #f8f8fb;
+      }
+      .info-row:last-child {
+        border-bottom: none;
+      }
+      .info-row .ilabel {
+        color: #6b7280;
+        font-weight: 500;
+      }
+      .info-row .ivalue {
+        color: #111827;
+        font-weight: 600;
+      }
+
+      /* ===== Status Badges ===== */
+      .s-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .s-badge::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+      .s-badge.delivered {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .s-badge.delivered::before {
+        background: #10b981;
+      }
+      .s-badge.processing {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .s-badge.processing::before {
+        background: #3b82f6;
+      }
+      .s-badge.pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .s-badge.pending::before {
+        background: #f59e0b;
+      }
+      .s-badge.cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .s-badge.cancelled::before {
+        background: #ef4444;
+      }
+      .s-badge.paid {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .s-badge.paid::before {
+        background: #10b981;
+      }
+      .s-badge.unpaid {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .s-badge.unpaid::before {
+        background: #ef4444;
+      }
+
+      /* ===== Products Table ===== */
+      .products-section {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-top: 24px;
+      }
+      .products-section-header {
+        padding: 18px 24px;
+        border-bottom: 2px solid #f0f0f5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafbff;
+      }
+      .products-section-header h5 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+      }
+      .item-count-badge {
+        background: #eef2ff;
+        color: var(--primary-color);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .order-items-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .order-items-table thead {
+        background: #f8f9fc;
+      }
+      .order-items-table th {
+        padding: 13px 20px;
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #6b7280;
+        text-align: left;
+        border-bottom: 2px solid #eaeef4;
+        white-space: nowrap;
+      }
+      .order-items-table td {
+        padding: 16px 20px;
+        font-size: 14.5px;
+        color: #374151;
+        border-bottom: 1px solid #f3f4f6;
+        vertical-align: middle;
+      }
+      .order-items-table tr:last-child td {
+        border-bottom: none;
+      }
+      .order-items-table tr:hover td {
+        background: #f8f9ff;
+      }
+
+      .product-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .product-cell .pname {
+        font-weight: 700;
+        color: #111827;
+        font-size: 15px;
+      }
+      .product-cell .pcat {
+        font-size: 12px;
+        color: #9ca3af;
+        font-weight: 500;
+      }
+
+      .supplier-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sup-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .sup-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .qty-badge {
+        background: #f3f4f6;
+        color: #374151;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 14px;
+        display: inline-block;
+      }
+
+      .price-cell {
+        font-weight: 600;
+        color: #374151;
+      }
+      .subtotal-cell {
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 15px;
+      }
+
+      /* ===== Order Summary ===== */
+      .summary-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-top: 24px;
+        overflow: hidden;
+      }
+      .summary-card-header {
+        padding: 16px 24px;
+        border-bottom: 2px solid #f0f0f5;
+        background: #fafbff;
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .summary-body {
+        padding: 20px 24px;
+      }
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        font-size: 14.5px;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .summary-line:last-child {
+        border-bottom: none;
+      }
+      .summary-line .slabel {
+        color: #6b7280;
+      }
+      .summary-line .sval {
+        font-weight: 700;
+        color: #111827;
+      }
+      .summary-line.total-line {
+        margin-top: 4px;
+        padding-top: 14px;
+        border-top: 2px solid #eaeef4;
+        border-bottom: none;
+      }
+      .summary-line.total-line .slabel {
+        font-size: 16px;
+        font-weight: 700;
+        color: #111827;
+      }
+      .summary-line.total-line .sval {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--primary-color);
+      }
+
+      /* ===== Loading ===== */
+      .page-loading {
+        text-align: center;
+        padding: 60px;
+        color: #9ca3af;
+      }
+      .page-loading i {
+        font-size: 40px;
+        display: block;
+        margin-bottom: 12px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .page-error {
+        text-align: center;
+        padding: 50px;
+        color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <i class="bi bi-shop logo-icon"></i>
+            <span class="logo-text">AdminPanel</span>
+          </div>
+          <button class="toggle-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+        <nav class="sidebar-menu">
+          <ul>
+            <li>
+              <a href="/admin/dashboard"
+                ><i class="bi bi-speedometer2"></i><span class="menu-text">Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/users"
+                ><i class="bi bi-people"></i><span class="menu-text">User Management</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/suppliers"
+                ><i class="bi bi-truck"></i><span class="menu-text">Supplier Management</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/products"
+                ><i class="bi bi-box-seam"></i><span class="menu-text">Product Management</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/orders" class="active"
+                ><i class="bi bi-cart-check"></i><span class="menu-text">Order Management</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/disputes"
+                ><i class="bi bi-exclamation-triangle"></i
+                ><span class="menu-text">Dispute Center</span></a
+              >
+            </li>
+            <li>
+              <a href="/admin/settings"
+                ><i class="bi bi-gear"></i><span class="menu-text">System Settings</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer"><p>AdminPanel v1.0</p></div>
+      </aside>
+
+      <div class="mobile-overlay"></div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+          <button class="mobile-menu-btn"><i class="bi bi-list"></i></button>
+          <h1 class="page-title">Order Details</h1>
+          <div class="topbar-actions">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search..." />
+            </div>
+            <div class="notification-badge"><i class="bi bi-bell"></i><span>3</span></div>
+            <div class="user-profile dropdown" style="position: relative">
+              <button
+                id="adminDropdownBtn"
+                class="d-flex align-items-center gap-2 btn border-0"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="user-avatar"><span>AD</span></div>
+                <span class="user-name">Admin User</span>
+                <i class="bi bi-chevron-down"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end mt-2" style="min-width: 220px">
+                <li class="px-3 py-2 border-bottom">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="user-avatar"><span>AD</span></div>
+                    <div>
+                      <div class="fw-medium">Admin User</div>
+                      <small class="text-muted">admin@panel.com</small>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/profile"
+                    ><i class="bi bi-person me-2"></i>My Profile</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/admin/settings"
+                    ><i class="bi bi-gear me-2"></i>System Settings</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="/company/login"
+                    ><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+          <a href="/admin/orders" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to Orders
+          </a>
+
+          <!-- Loading -->
+          <div id="pageLoading" class="page-loading">
+            <i class="bi bi-arrow-repeat"></i>
+            <p>Loading order details...</p>
+          </div>
+
+          <!-- Main content (hidden until loaded) -->
+          <div id="orderContent" style="display: none">
+            <!-- Hero -->
+            <div class="order-hero">
+              <div class="hero-left">
+                <h2 id="heroOrderId">Order #—</h2>
+                <p id="heroDate">Placed on —</p>
+              </div>
+              <div class="hero-right">
+                <div class="hero-metric">
+                  <span class="val" id="heroItems">—</span>
+                  <span class="lbl">Items</span>
+                </div>
+                <div class="hero-divider"></div>
+                <div class="hero-metric">
+                  <span class="val" id="heroTotal">—</span>
+                  <span class="lbl">Total</span>
+                </div>
+                <div class="hero-divider"></div>
+                <div class="hero-metric">
+                  <span class="hero-status-badge" id="heroStatus">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="row g-3 mb-0">
+              <!-- Order Info -->
+              <div class="col-md-4">
+                <div class="info-card">
+                  <div class="info-card-title"><i class="bi bi-receipt"></i> Order Info</div>
+                  <div class="info-row">
+                    <span class="ilabel">Order ID</span>
+                    <span class="ivalue" id="infoOrderId">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Date</span>
+                    <span class="ivalue" id="infoDate">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Status</span>
+                    <span class="ivalue" id="infoStatus">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Payment</span>
+                    <span class="ivalue" id="infoPayment">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Amount Breakdown -->
+              <div class="col-md-4">
+                <div class="info-card">
+                  <div class="info-card-title"><i class="bi bi-currency-rupee"></i> Amount</div>
+                  <div class="info-row">
+                    <span class="ilabel">Total Amount</span>
+                    <span class="ivalue" id="infoAmount">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Items Subtotal</span>
+                    <span class="ivalue" id="infoSubtotal">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Products</span>
+                    <span class="ivalue" id="infoProductCount">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="ilabel">Suppliers</span>
+                    <span class="ivalue" id="infoSupplierCount">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category Breakdown -->
+              <div class="col-md-4">
+                <div class="info-card">
+                  <div class="info-card-title"><i class="bi bi-tags"></i> Categories</div>
+                  <div id="categoryBreakdown">
+                    <!-- populated by JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="products-section">
+              <div class="products-section-header">
+                <h5>
+                  <i class="bi bi-box-seam me-2" style="color: var(--primary-color)"></i>Order Items
+                </h5>
+                <span class="item-count-badge" id="itemCountBadge">0 items</span>
+              </div>
+              <div class="table-responsive">
+                <table class="order-items-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Supplier</th>
+                      <th>Category</th>
+                      <th>Unit Price</th>
+                      <th>Qty</th>
+                      <th>Subtotal</th>
+                      <th>Status</th>
+                      <th>Payment</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTableBody">
+                    <!-- populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="row justify-content-end">
+              <div class="col-md-5">
+                <div class="summary-card">
+                  <div class="summary-card-header">
+                    <i class="bi bi-calculator" style="color: var(--primary-color)"></i>
+                    Order Summary
+                  </div>
+                  <div class="summary-body" id="summaryBody">
+                    <!-- populated by JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end #orderContent -->
+        </div>
+      </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+    <script>
+      // ============================================================
+      // Order Detail Page — reads order ID from URL, calls API
+      // API endpoint: GET /admin/orders/:id
+      // Expected response shape: { orderProducts: [...] }
+      // ============================================================
+
+      function getOrderIdFromUrl() {
+        const parts = window.location.pathname.split('/');
+        return parts[parts.length - 1];
+      }
+
+      function formatCurrency(amount) {
+        return '₹' + Number(amount).toLocaleString('en-IN');
+      }
+
+      function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      }
+
+      function getInitials(name) {
+        return name
+          .split(' ')
+          .map((w) => w[0])
+          .join('')
+          .toUpperCase()
+          .slice(0, 2);
+      }
+
+      function capitalize(str) {
+        return str ? str.charAt(0).toUpperCase() + str.slice(1) : '—';
+      }
+
+      function statusBadge(status) {
+        const s = (status || '').toLowerCase();
+        return `<span class="s-badge ${s}">${capitalize(s)}</span>`;
+      }
+
+      function render(orderId, products) {
+        // --- Hero ---
+        const first = products[0];
+        const totalAmount = parseFloat(first.total_amount);
+        const itemsSubtotal = products.reduce((s, p) => s + p.subtotal, 0);
+        const overallStatus = first.status;
+        const orderDate = formatDate(first.created_at);
+
+        document.getElementById('heroOrderId').textContent = `Order #${orderId}`;
+        document.getElementById('heroDate').textContent = `Placed on ${orderDate}`;
+        document.getElementById('heroItems').textContent = products.length;
+        document.getElementById('heroTotal').textContent = formatCurrency(totalAmount);
+        document.getElementById('heroStatus').textContent = capitalize(overallStatus);
+
+        // --- Info cards ---
+        document.getElementById('infoOrderId').textContent = `#${orderId}`;
+        document.getElementById('infoDate').innerHTML = orderDate;
+        document.getElementById('infoStatus').innerHTML = statusBadge(overallStatus);
+        document.getElementById('infoPayment').innerHTML = statusBadge(first.payment_status);
+        document.getElementById('infoAmount').textContent = formatCurrency(totalAmount);
+        document.getElementById('infoSubtotal').textContent = formatCurrency(itemsSubtotal);
+        document.getElementById('infoProductCount').textContent = products.length;
+
+        const uniqueSuppliers = [...new Set(products.map((p) => p.business_name))];
+        document.getElementById('infoSupplierCount').textContent = uniqueSuppliers.length;
+
+        // --- Category breakdown ---
+        const catMap = {};
+        products.forEach((p) => {
+          catMap[p.category_name] = (catMap[p.category_name] || 0) + 1;
+        });
+        const catEl = document.getElementById('categoryBreakdown');
+        catEl.innerHTML = Object.entries(catMap)
+          .map(
+            ([cat, count]) => `
+          <div class="info-row">
+            <span class="ilabel">${cat}</span>
+            <span class="ivalue">${count} item${count > 1 ? 's' : ''}</span>
+          </div>
+        `,
+          )
+          .join('');
+
+        // --- Items table ---
+        document.getElementById('itemCountBadge').textContent =
+          `${products.length} item${products.length > 1 ? 's' : ''}`;
+        const tbody = document.getElementById('itemsTableBody');
+        tbody.innerHTML = products
+          .map(
+            (p) => `
+          <tr>
+            <td>
+              <div class="product-cell">
+                <span class="pname">${p.product_name}</span>
+                <span class="pcat">#${p.id}</span>
+              </div>
+            </td>
+            <td>
+              <div class="supplier-cell">
+                <div class="sup-avatar">${getInitials(p.business_name)}</div>
+                <span class="sup-name">${p.business_name}</span>
+              </div>
+            </td>
+            <td><span style="font-size:13px;color:#6b7280;">${p.category_name}</span></td>
+            <td><span class="price-cell">${formatCurrency(p.price)}</span></td>
+            <td><span class="qty-badge">${p.quantity}</span></td>
+            <td><span class="subtotal-cell">${formatCurrency(p.subtotal)}</span></td>
+            <td>${statusBadge(p.status)}</td>
+            <td>${statusBadge(p.payment_status)}</td>
+          </tr>
+        `,
+          )
+          .join('');
+
+        // --- Summary ---
+        const summaryEl = document.getElementById('summaryBody');
+        summaryEl.innerHTML = `
+          ${products
+            .map(
+              (p) => `
+            <div class="summary-line">
+              <span class="slabel">${p.product_name} × ${p.quantity}</span>
+              <span class="sval">${formatCurrency(p.subtotal)}</span>
+            </div>
+          `,
+            )
+            .join('')}
+          <div class="summary-line total-line">
+            <span class="slabel">Total Amount</span>
+            <span class="sval">${formatCurrency(totalAmount)}</span>
+          </div>
+        `;
+
+        // --- Document title ---
+        document.title = `Admin Dashboard - Order #${orderId}`;
+      }
+
+      async function loadOrderDetail() {
+        const orderId = getOrderIdFromUrl();
+        try {
+          const res = await fetch(`/admin/order/order-data/order-modal/${orderId}`);
+          if (!res.ok) throw new Error('Failed to fetch order');
+          const data = await res.json();
+
+          const products = data.orderProducts;
+          if (!products || !products.length) throw new Error('No products in order');
+
+          document.getElementById('pageLoading').style.display = 'none';
+          document.getElementById('orderContent').style.display = 'block';
+
+          render(orderId, products);
+        } catch (err) {
+          document.getElementById('pageLoading').innerHTML = `
+            <div class="page-error">
+              <i class="bi bi-exclamation-circle" style="font-size:40px;display:block;margin-bottom:10px;animation:none;"></i>
+              <p>Failed to load order details. Please try again.</p>
+              <a href="/admin/orders" class="btn btn-outline-primary mt-2">← Back to Orders</a>
+            </div>
+          `;
+          console.error(err);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', loadOrderDetail);
+    </script>
+  </body>
+</html>
