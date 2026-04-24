@@ -58,7 +58,7 @@ function renderBuyers(users) {
 
     const button =
       user.status === 'active'
-        ? `<button class="btn btn-warning btn-sm suspend-btn"  data-id="${user.id}">Suspend</button>`
+        ? `<button class="btn btn-warning btn-sm suspend-btn" data-type="buyer" data-id="${user.id}">Suspend</button>`
         : user.status === 'pending'
           ? `<button class="btn btn-primary btn-sm approve-btn"  data-id="${user.id}">Approve</button>`
           : `<button class="btn btn-success btn-sm activate-btn"  data-id="${user.id}">Active</button>`;
@@ -115,7 +115,7 @@ function renderSuppliers(suppliers) {
 
   suppliers.forEach((supplier) => {
     const statusBadge =
-      supplier.status === 'active'
+      supplier.status === 'approved'
         ? '<span class="status-badge active">Active</span>'
         : supplier.status === 'suspended'
           ? '<span class="status-badge suspended">Suspended</span>'
@@ -125,6 +125,14 @@ function renderSuppliers(suppliers) {
       .map((w) => w[0])
       .join('')
       .toUpperCase();
+
+    const button =
+      supplier.status === 'approved'
+        ? `<button class="btn btn-warning btn-sm suspend-btn" data-type="vendor" data-id="${supplier.supplierId}">Suspend</button>`
+        : supplier.status === 'pending'
+          ? `<button class="btn btn-primary btn-sm approve-btn" data-type="vendor" data-id="${supplier.supplierId}">Approve</button>`
+          : `<button class="btn btn-success btn-sm activate-btn" data-type="vendor"
+        data-id="${supplier.supplierId}">Active</button>`;
 
     const rating = supplier.avgRating || 0;
 
@@ -145,8 +153,7 @@ function renderSuppliers(suppliers) {
         <did class="action-buttons">
           <button class="btn-icon view" title="View" data-supplierId="${supplier.supplierId}" data-type="supplier">
             <i class="bi bi-eye"></i>
-          </button>
-          <button class="btn btn-warning btn-sm">Suspend</button>
+          ${button}
           </div>
         </td>
       </tr>

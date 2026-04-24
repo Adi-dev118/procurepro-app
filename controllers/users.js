@@ -109,9 +109,9 @@ exports.getSuppliers = async (req, res) => {
   u.name,
   u.email,
   u.role,
-  u.status,
   u.registration_date,
   s.id AS supplierId,
+  s.verification_status AS status,
   s.business_name AS company,
   s.mobile_no AS contact,
 
@@ -721,6 +721,62 @@ exports.getSupplierById = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.suspendSupplier = async (req, res) => {
+  try {
+    const supplierId = req.params.supplierId;
+    const { reason } = req.body;
+    if (!reason) {
+      return res.status(400).json({ message: 'Reason required' });
+    }
+
+    await db.query(
+      `UPDATE suppliers 
+       SET verification_status = 'suspended', suspend_reason = ?, suspended_at = NOW() 
+       WHERE id = ?`,
+      [reason || null, supplierId],
+    );
+
+    res.json({ message: 'Supplier suspended successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to suspend supplier' });
+  }
+};
+
+exports.activateSupplier = async (req, res) => {
+  try {
+    const supplierId = req.params.supplierId;
+
+    await db.query(
+      `UPDATE suppliers 
+       SET verification_status = 'approved', suspend_reason = NULL 
+       WHERE id = ?`,
+      [supplierId],
+    );
+
+    res.json({ message: 'Supplier activated successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to activate supplier' });
+  }
+};
+
+exports.approveSupplier = async (req, res) => {
+  try {
+    const supplierId = req.params.supplierId;
+
+
+    await db.query(`UPDATE suppliers SET verification_status = 'approved' WHERE id = ?`, [
+      supplierId,
+    ]);
+  
+
+    res.json({ message: 'supplier approved' });
+  } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };

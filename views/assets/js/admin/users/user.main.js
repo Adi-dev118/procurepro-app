@@ -236,20 +236,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let currentAction = null;
 let currentUserId = null;
+let currentType = null;
 
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
 
-  const userId = btn.dataset.id;
+  const id = btn.dataset.id;
+  const type = btn.dataset.type; // 🔥
 
   // 🔴 Suspend → modal (already done)
   if (btn.classList.contains('suspend-btn')) {
     currentAction = 'suspend';
-     currentUserId = userId;
+    currentUserId = id;
+    currentType = type;
     document.getElementById('suspendUserId').value = currentUserId;
     document.getElementById('suspendReason').value = '';
-    console.log('click Suspend');
 
     new bootstrap.Modal(document.getElementById('suspendUserModal')).show();
   }
@@ -257,7 +259,8 @@ document.addEventListener('click', (e) => {
   // 🔵 Approve → open modal
   if (btn.classList.contains('approve-btn')) {
     currentAction = 'approve';
-    currentUserId = userId;
+    currentUserId = id;
+    currentType = type;
 
     document.getElementById('actionModalTitle').innerText = 'Approve User';
     document.getElementById('actionModalBody').innerText =
@@ -269,17 +272,18 @@ document.addEventListener('click', (e) => {
   // 🟢 Activate → open modal
   if (btn.classList.contains('activate-btn')) {
     currentAction = 'activate';
-    currentUserId = userId;
+    currentUserId = id;
+    currentType = type;
 
     document.getElementById('actionModalTitle').innerText = 'Activate User';
     document.getElementById('actionModalBody').innerText =
       'Are you sure you want to activate this user?';
-    console.log('click Active');
 
     new bootstrap.Modal(document.getElementById('actionModal')).show();
   }
 });
 const handleAction = async () => {
+  const bodyData = {};
   if (!currentAction || !currentUserId) {
     console.error('Missing action/user');
     return;
@@ -288,18 +292,38 @@ const handleAction = async () => {
   let url = '';
 
   if (currentAction === 'approve') {
-    url = `/admin/user/users-data/modal-data/${currentUserId}/approve`;
+      console.log(currentType)
+    if (currentType === 'vendor') {
+      url = `/admin/supplier/supplier-data/modal-data/${currentUserId}/approve`;
+    } else {
+      url = `/admin/user/users-data/modal-data/${currentUserId}/approve`;
+    }
   }
 
   if (currentAction === 'activate') {
-    url = `/admin/user/users-data/modal-data/${currentUserId}/activate`;
+    if (currentType === 'vendor') {
+      url = `/admin/supplier/supplier-data/modal-data/${currentUserId}/activate`;
+    } else {
+      url = `/admin/user/users-data/modal-data/${currentUserId}/activate`;
+    }
   }
-
   if (currentAction === 'suspend') {
-    url = `/admin/user/users-data/modal-data/${currentUserId}/suspend`;
+    const reason = document.getElementById('suspendReason').value.trim();
+    bodyData.reason = reason;
+    if (currentType === 'vendor') {
+      url = `/admin/supplier/supplier-data/modal-data/${currentUserId}/suspend`;
+    } else {
+      url = `/admin/user/users-data/modal-data/${currentUserId}/suspend`;
+    }
   }
 
-  await fetch(url, { method: 'PUT' });
+  await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyData),
+  });
 
   // ✅ CLOSE CORRECT MODAL
   if (currentAction === 'suspend') {
@@ -308,13 +332,16 @@ const handleAction = async () => {
     bootstrap.Modal.getInstance(document.getElementById('actionModal')).hide();
   }
 
-  fetchUsers();
+  if (currentType === 'vendor') {
+    fetchSuppliers();
+  } else {
+    fetchUsers();
+  }
 };
 
 // attach both
 document.getElementById('confirmActionBtn')?.addEventListener('click', handleAction);
 document.getElementById('confirmSuspendBtn')?.addEventListener('click', handleAction);
-
 
 function openUserModal(user) {
   function getStatusBadge(status) {
@@ -478,8 +505,6 @@ document.addEventListener('click', async (e) => {
 
   const supplierId = btn.getAttribute('data-supplierId');
   const userId = btn.getAttribute('data-userId');
-
-  console.log('CLICK DEBUG:', { supplierId, userId }); // 🔥 ADD THIS
 
   // 🚫 HARD STOP
   if (!supplierId && !userId) return;
