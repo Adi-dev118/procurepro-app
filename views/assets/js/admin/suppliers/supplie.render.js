@@ -47,12 +47,16 @@ function renderSuppliers(suppliers) {
         <td>${statusBadge}</td>
         <td>
         <div class="action-buttons">
-          <button class="btn-icon view" data-id="${s.id}">
-            <i class="bi bi-eye"></i>
-          </button>
-          <button class="btn btn-warning btn-sm">Suspend</button>
+         <a  class="btn btn-primary btn-sm"
+  href="/admin/supplier-details/${s.id}" 
+  class="btn-icon view" 
+  title="View"
+>Details
+</a>
+          
           </div>
         </td>
+        
       </tr>
     `;
   });
@@ -123,7 +127,7 @@ function updateSupplierCount(currentPage, totalProducts, limit = 5) {
 
   let label = 'products';
   let container = null;
-    container = document.querySelector('.pagination-info');
+  container = document.querySelector('.pagination-info');
 
   if (!container) return; // safety
 
@@ -131,5 +135,4 @@ function updateSupplierCount(currentPage, totalProducts, limit = 5) {
   container.textContent = text;
 }
 
-
-export { renderSuppliers, renderPagination, updateSupplierCount};
+export { renderSuppliers, renderPagination, updateSupplierCount };

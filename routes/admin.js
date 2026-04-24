@@ -13,8 +13,6 @@ router.get('/admin/dashboard', authController.restrictTo('admin'), adminControll
 router.get('/admin/users', authController.restrictTo('admin'), adminController.userDashboard);
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
-router.get('/admin/user/suppliers-pending', userController.getPendingSuppliers);
-router.get('/admin/user/users-suspended', userController.getSuspendedUsers);
 router.get('/admin/user/users-data', userController.getAllUsers);
 router.get('/admin/user/users-data/modal-data/:userId', userController.getUserById);
 router.put('/admin/user/users-data/modal-data/:userId/suspend', userController.suspendUser);
@@ -56,5 +54,8 @@ router.get(
 );
 
 router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
+router.get('/admin/supplier-details/:supplierId', (req, res) => {
+  res.render('admin/supplier-detail');
+});
 
 module.exports = router;

@@ -169,11 +169,7 @@ function renderPagination(totalPages) {
       ? document.getElementById('buyers-pagination')
       : userState.role === 'supplier'
         ? document.getElementById('suppliers-pagination')
-        : userState.role === 'pending'
-          ? document.getElementById('pending-pagination')
-          : userState.role === 'suspended'
-            ? document.getElementById('suspend-pagination')
-            : document.getElementById('pagination');
+        : document.getElementById('pagination');
   container.innerHTML = '';
 
   let pages = [];
@@ -244,12 +240,6 @@ function updateUserCount(currentPage, totalUsers, limit = 5) {
   } else if (userState.role === 'supplier') {
     label = 'suppliers';
     container = document.querySelector('.pagination-info-suppliers ');
-  } else if (userState.role === 'pending') {
-    label = 'pending suppliers';
-    container = document.querySelector('.pagination-info-pending');
-  } else if (userState.role === 'suspended') {
-    label = 'suspended users';
-    container = document.querySelector('.pagination-info-suspended');
   } else {
     label = 'users';
     container = document.querySelector('.pagination-info-all-users');
@@ -261,10 +251,4 @@ function updateUserCount(currentPage, totalUsers, limit = 5) {
   container.textContent = text;
 }
 
-export {
-  renderUsers,
-  renderBuyers,
-  renderSuppliers,
-  renderPagination,
-  updateUserCount,
-};
+export { renderUsers, renderBuyers, renderSuppliers, renderPagination, updateUserCount };

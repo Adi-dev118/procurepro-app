@@ -459,23 +459,27 @@ body {
   width: 8%;
 } /* ID */
 .table th:nth-child(2) {
-  width: 18%;
+  width: 16%;
 } /* Name */
 .table th:nth-child(3) {
-  width: 22%;
+  width: 18%;
 } /* Email */
 .table th:nth-child(4) {
-  width: 12%;
+  width: 11%;
 } /* Role/Orders */
 .table th:nth-child(5) {
-  width: 18%;
+  width: 16%;
 } /* Date/Spent */
 .table th:nth-child(6) {
-  width: 12%;
+  width: 11%;
 } /* Status */
 .table th:nth-child(7) {
   width: 10%;
-} /* Actions */
+} 
+.table th:nth-child(8) {
+  width: 10%;
+  
+}/* Actions */
 .status-badge {
   padding: 5px 10px;
   border-radius: 30px;
