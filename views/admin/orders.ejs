@@ -161,10 +161,6 @@
           <!-- Page Header -->
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="section-title">Order Management</h1>
-            <button class="btn btn-primary">
-              <i class="bi bi-plus-circle me-2"></i>
-              Create Order
-            </button>
           </div>
 
           <!-- Order Stats -->
@@ -248,7 +244,13 @@
             <div class="table-header">
               <div class="table-actions">
                 <div class="input-group" style="width: 300px">
-                  <input type="text" class="form-control" placeholder="Search orders..." data-type="orders" name="search" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search orders..."
+                    data-type="orders"
+                    name="search"
+                  />
                   <button class="btn btn-outline-secondary search-btn" type="button">
                     <i class="bi bi-search"></i>
                   </button>
@@ -316,9 +318,7 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item status-filter" href="#" data-range="today"
-                          >Today</a
-                        >
+                        <a class="dropdown-item status-filter" href="#" data-range="today">Today</a>
                       </li>
                       <li>
                         <a class="dropdown-item status-filter" href="#" data-range="7days"

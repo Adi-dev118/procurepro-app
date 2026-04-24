@@ -161,14 +161,6 @@
           <!-- Page Header -->
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="section-title">Supplier Management</h1>
-            <button
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#addSupplierModal"
-            >
-              <i class="bi bi-plus-circle me-2"></i>
-              Add Supplier
-            </button>
           </div>
 
           <!-- Supplier Stats -->
@@ -250,7 +242,13 @@
             <div class="table-header">
               <div class="table-actions">
                 <div class="input-group" style="width: 300px">
-                  <input type="text" class="form-control" placeholder="Search suppliers..." data-type="suppliers" name="search"/>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search suppliers..."
+                    data-type="suppliers"
+                    name="search"
+                  />
                   <button class="btn btn-outline-secondary search-btn" type="button">
                     <i class="bi bi-search"></i>
                   </button>
@@ -286,8 +284,7 @@
                   <i class="bi bi-download me-2"></i>
                   Export
                 </button>
-                <button class="btn btn-outline-danger clear-filters">Clear Filters
-                </button>
+                <button class="btn btn-outline-danger clear-filters">Clear Filters</button>
               </div>
             </div>
 
@@ -420,111 +417,6 @@
           </div>
         </div>
       </main>
-    </div>
-
-    <!-- Add Supplier Modal -->
-    <div
-      class="modal fade"
-      id="addSupplierModal"
-      tabindex="-1"
-      aria-labelledby="addSupplierModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addSupplierModalLabel">Add New Supplier</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="addSupplierForm">
-              <div class="mb-3">
-                <label for="supplierName" class="form-label">Company Name</label>
-                <input type="text" class="form-control" id="supplierName" required />
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="contactPerson" class="form-label">Contact Person</label>
-                    <input type="text" class="form-control" id="contactPerson" required />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="contactEmail" class="form-label">Contact Email</label>
-                    <input type="email" class="form-control" id="contactEmail" required />
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="phoneNumber" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phoneNumber" />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="website" class="form-label">Website</label>
-                    <input type="url" class="form-control" id="website" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="businessType" class="form-label">Business Type</label>
-                <select class="form-select" id="businessType" required>
-                  <option value="">Select Type</option>
-                  <option value="manufacturer">Manufacturer</option>
-                  <option value="wholesaler">Wholesaler</option>
-                  <option value="retailer">Retailer</option>
-                  <option value="dropshipper">Dropshipper</option>
-                </select>
-              </div>
-
-              <div class="mb-3">
-                <label for="commissionRate" class="form-label">Commission Rate (%)</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="commissionRate"
-                  min="1"
-                  max="50"
-                  step="0.5"
-                  value="15"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="supplierStatus" class="form-label">Account Status</label>
-                <select class="form-select" id="supplierStatus">
-                  <option value="active">Active</option>
-                  <option value="pending">Pending Approval</option>
-                  <option value="suspended">Suspended</option>
-                </select>
-              </div>
-
-              <div class="mb-3">
-                <label for="businessAddress" class="form-label">Business Address</label>
-                <textarea class="form-control" id="businessAddress" rows="3"></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" form="addSupplierForm" class="btn btn-primary">
-              Add Supplier
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- View Supplier Modal -->
