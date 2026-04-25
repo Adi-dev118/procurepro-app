@@ -529,11 +529,20 @@
           </div>
 
           <!-- User Activity Logs -->
-          <div class="mt-5">
-            <h3 class="section-title">Recent User Activity Logs</h3>
-            <div class="table-container">
+          <!-- Replace your Recent User Activity Logs section with this -->
+
+          <div class="recent-activity-wrapper">
+            <div class="table-container mt-4">
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-center px-3 pt-3 pb-2">
+                <h3 class="section-title mb-0">Recent User Activity Logs</h3>
+
+                <a href="/admin/activities" class="btn btn-sm btn-outline-primary"> View All </a>
+              </div>
+
+              <!-- Table -->
               <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover align-middle mb-0">
                   <thead>
                     <tr>
                       <th>Timestamp</th>
@@ -543,25 +552,8 @@
                       <th>Status</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <%activityLogs.forEach(activity => {%>
-                    <tr>
-                      <td>
-                        <%= new Date(activity.timeStamp).toISOString().slice(0,19).replace('T',' ')%>
-                      </td>
-                      <td><%=activity.name%></td>
-                      <td><%=activity.address%></td>
-                      <td><%=activity.log%></td>
-                      <td>
-                        <%if(activity.status==="Success") {%>
-                        <span class="status-badge active">Success</span>
-                        <%} else {%>
-                        <span class="status-badge suspended">Failed</span>
-                        <%}%>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <%})%>
+
+                  <tbody id="activityTableBody"></tbody>
                 </table>
               </div>
             </div>

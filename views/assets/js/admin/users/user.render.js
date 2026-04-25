@@ -1,4 +1,6 @@
 import { userState } from './user.state.js';
+import { activityState } from '../activities/activity.state.js';
+
 // All Users
 
 function renderUsers(users) {
@@ -161,6 +163,65 @@ function renderSuppliers(suppliers) {
   });
 }
 
+
+// Activities 
+
+
+function renderActivities(activities) {
+  const tbody = document.getElementById('activityTableBody');
+  // const tableContainer = document.querySelector('.recent-activity-section');
+
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  // 🔹 Empty state
+  if (!activities.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="text-center">
+          No activities found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  activities.forEach((activity) => {
+    let statusBadge = '';
+
+    if (activity.status === 'Success') {
+      statusBadge = `
+        <span class="status-badge active">
+          ${activity.status}
+        </span>
+      `;
+    } else {
+      statusBadge = `
+        <span class="status-badge suspended">
+          ${activity.status}
+        </span>
+      `;
+    }
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${activity.timeStamp}</td>
+
+        <td>${activity.name}</td>
+
+        <td>${activity.address}</td>
+
+        <td>${activity.log}</td>
+
+        <td>
+          ${statusBadge}
+        </td>
+      </tr>
+    `;
+  });
+}
+
 // Pagination
 
 function renderPagination(totalPages) {
@@ -251,4 +312,12 @@ function updateUserCount(currentPage, totalUsers, limit = 5) {
   container.textContent = text;
 }
 
-export { renderUsers, renderBuyers, renderSuppliers, renderPagination, updateUserCount };
+
+export {
+  renderUsers,
+  renderBuyers,
+  renderSuppliers,
+  renderActivities,
+  renderPagination,
+  updateUserCount,
+};

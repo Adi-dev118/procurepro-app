@@ -889,6 +889,35 @@ th {
   font-weight: 600;
   font-size: 18px;
 }
+
+/* Add this in your style.css */
+
+.recent-activity-wrapper .table-container {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.recent-activity-wrapper .section-title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.recent-activity-wrapper .btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.recent-activity-wrapper table thead th {
+  background: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.recent-activity-wrapper table tbody td {
+  vertical-align: middle;
+}
 /* ===== Responsive Design ===== */
 @media (max-width: 992px) {
   .sidebar {

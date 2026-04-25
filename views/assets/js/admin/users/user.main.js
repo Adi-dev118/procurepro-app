@@ -1,5 +1,5 @@
 import { userState } from './user.state.js';
-import { fetchUsers, fetchSuppliers} from './user.api.js';
+import { fetchUsers, fetchSuppliers, fetchRecentActivities } from './user.api.js';
 
 function changePage(page) {
   if (page < 1) return;
@@ -25,7 +25,7 @@ function setStatusFilter(status) {
   if (userState.role === 'supplier') {
     if (userState.status === 'active') userState.status = 'approved';
     fetchSuppliers();
-  }else {
+  } else {
     fetchUsers();
   }
 }
@@ -41,7 +41,7 @@ function setRoleFilter(role) {
   userState.page = 1;
   if (userState.role === 'supplier') {
     fetchSuppliers();
-  }  else {
+  } else {
     fetchUsers();
   }
 }
@@ -69,7 +69,7 @@ async function performSearch(query) {
     userState.page = 1;
     if (userState.role === 'supplier') {
       fetchSuppliers();
-    }  else {
+    } else {
       fetchUsers();
     } // ✅ reuses the same filter-aware fetch
   } catch (err) {
@@ -170,6 +170,7 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchUsers();
+  fetchRecentActivities();
 
   let activeTab = '#profile-tab';
 
@@ -273,7 +274,7 @@ const handleAction = async () => {
   let url = '';
 
   if (currentAction === 'approve') {
-      console.log(currentType)
+    console.log(currentType);
     if (currentType === 'vendor') {
       url = `/admin/supplier/supplier-data/modal-data/${currentUserId}/approve`;
     } else {

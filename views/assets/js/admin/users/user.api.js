@@ -1,8 +1,12 @@
 import { userState } from './user.state.js';
+
+import { activityState } from '../activities/activity.state.js';
+
 import {
   renderUsers,
   renderBuyers,
   renderSuppliers,
+  renderActivities,
   renderPagination,
   updateUserCount,
 } from './user.render.js';
@@ -46,4 +50,11 @@ async function fetchSuppliers() {
   updateUserCount(data.currentPage, data.totalSuppliers);
 }
 
-export { fetchUsers, fetchSuppliers };
+async function fetchRecentActivities() {
+  const res = await fetch('/admin/user/users-data/recent-activities');
+  const data = await res.json();
+
+  renderActivities(data.activities);
+}
+
+export { fetchUsers, fetchSuppliers, fetchRecentActivities };

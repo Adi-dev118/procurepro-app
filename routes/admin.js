@@ -14,6 +14,8 @@ router.get('/admin/users', authController.restrictTo('admin'), adminController.u
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/users-data', userController.getAllUsers);
+router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
+router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
 router.get('/admin/user/users-data/modal-data/:userId', userController.getUserById);
 router.put('/admin/user/users-data/modal-data/:userId/suspend', userController.suspendUser);
 router.put('/admin/user/users-data/modal-data/:userId/activate', userController.activateUser);
@@ -61,6 +63,10 @@ router.get('/admin/supplier-details/:supplierId', (req, res) => {
 
 router.get('/admin/order-detail/:orderId', (req, res) => {
   res.render('admin/order-detail');
+});
+
+router.get('/admin/activities', (req, res) => {
+  res.render('admin/activities');
 });
 
 module.exports = router;
