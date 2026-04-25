@@ -1,5 +1,4 @@
-const db = require("./../config/db");
-
+const db = require('./../config/db');
 
 exports.addItems = async (req, res) => {
   // Getting Independent Connection to DB
@@ -18,7 +17,7 @@ exports.addItems = async (req, res) => {
     const qty = Number(quantity);
     if (!Number.isInteger(qty) || qty <= 0) {
       return res.status(400).json({
-        status: "Failed",
+        status: 'Failed',
         message: "The quantity doesn't exist",
       });
     }
@@ -26,45 +25,40 @@ exports.addItems = async (req, res) => {
     // Checking if Product is Available from ID
 
     const [rows] = await connection.query(
-      `SELECT id, price, stock FROM products WHERE id = ?`,
+      `SELECT id, final_price, stock FROM products WHERE id = ?`,
       [productId],
     );
     console.log(rows);
     if (rows.length === 0) {
-      throw new Error("Product not Found");
+      throw new Error('Product not Found');
     }
     const product = rows[0];
 
     if (quantity > product.stock) {
-      throw new Error("The product is not in Stock");
+      throw new Error('The product is not in Stock');
     }
 
     // Check if Cart exits if not create for that user
 
     let cartId;
 
-    const [cartRows] = await connection.query(
-      `SELECT id FROM carts WHERE user_id= ?`,
-      [userId],
-    );
+    const [cartRows] = await connection.query(`SELECT id FROM carts WHERE user_id= ?`, [userId]);
 
-    const [row] = await connection.query(`SELECT role FROM users WHERE id = ?`, [
-      userId,
-    ]);
+    const [row] = await connection.query(`SELECT role FROM users WHERE id = ?`, [userId]);
     if (row.length === 0) {
       await connection.rollback();
       return res.status(500).json({
-        status: "Failed",
+        status: 'Failed',
         message: "The user doesn't exist",
       });
     }
     const user = row[0];
 
-    if (user.role !== "customer") {
+    if (user.role !== 'customer') {
       await connection.rollback();
       return res.status(500).json({
-        status: "Failed",
-        message: "Only customers can order",
+        status: 'Failed',
+        message: 'Only customers can order',
       });
     }
     if (cartRows.length > 0) {
@@ -89,7 +83,7 @@ exports.addItems = async (req, res) => {
       const oldQuantity = cartProduct[0].quantity;
       const newQuantity = qty + oldQuantity;
       if (newQuantity > product.stock) {
-        throw new Error("Stock Exceeded");
+        throw new Error('Stock Exceeded');
       }
       await connection.query(
         `UPDATE cart_items SET quantity= ? WHERE cart_id = ? AND product_id = ?`,
@@ -103,15 +97,14 @@ exports.addItems = async (req, res) => {
       );
     }
 
-    const [finalCart] = await connection.query(
-      `SELECT * FROM cart_items WHERE cart_id =?`,
-      [cartId],
-    );
+    const [finalCart] = await connection.query(`SELECT * FROM cart_items WHERE cart_id =?`, [
+      cartId,
+    ]);
 
     await connection.commit();
 
     res.status(201).json({
-      status: "Success",
+      status: 'Success',
       data: {
         cart: finalCart,
       },
@@ -119,7 +112,7 @@ exports.addItems = async (req, res) => {
   } catch (error) {
     await connection.rollback();
     return res.status(400).json({
-      status: "Failed",
+      status: 'Failed',
       message: error.message,
     });
   } finally {
@@ -129,33 +122,50 @@ exports.addItems = async (req, res) => {
 
 exports.getCartItems = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.session.user.id;
+    const page = req.query.page;
 
     const [cart] = await db.query(
-      `SELECT p.name, ci.quantity, ci.price FROM carts c JOIN cart_items ci ON c.id = ci.cart_id JOIN products p ON p.id = ci.product_id WHERE c.user_id = ?`,
+      `SELECT 
+    p.*,
+    ci.quantity,
+    ci.price,
+    (ci.quantity * ci.price) AS item_total,
+
+    -- total price of entire cart
+    (
+        SELECT SUM(ci2.quantity * ci2.price)
+        FROM cart_items ci2
+        JOIN carts c2 ON c2.id = ci2.cart_id
+        WHERE c2.user_id = c.user_id
+    ) AS cart_total
+
+FROM carts c
+JOIN cart_items ci 
+    ON c.id = ci.cart_id
+JOIN products p 
+    ON p.id = ci.product_id
+
+WHERE c.user_id = ?;`,
       [userId],
     );
-      const [row] = await db.query(`SELECT role FROM users WHERE id = ?`, [
-      userId,
-    ]);
+    const [row] = await db.query(`SELECT role FROM users WHERE id = ?`, [userId]);
     const user = row[0];
-    
-    if (user.role !== "customer") {
+
+    if (user.role !== 'customer') {
       return res.status(500).json({
-        status: "Failed",
-        message: "Only customers can have cart",
+        status: 'Failed',
+        message: 'Only customers can have cart',
       });
     }
 
     res.status(200).json({
-      status: "Success",
-      data: {
         cart,
-      },
+        total: cart[0].cart_total
     });
   } catch (error) {
     res.status(400).json({
-      status: "Failed",
+      status: 'Failed',
       message: error.message,
     });
   }
@@ -167,17 +177,15 @@ exports.updateCart = async (req, res) => {
     const { productId, quantity } = req.body;
     if (!productId || !quantity || quantity <= 0) {
       return res.status(400).json({
-        status: "Failed",
-        message: "Invalid product or quantity",
+        status: 'Failed',
+        message: 'Invalid product or quantity',
       });
     }
-    const [row] = await db.query(`SELECT id FROM carts WHERE user_id=?`, [
-      userId,
-    ]);
+    const [row] = await db.query(`SELECT id FROM carts WHERE user_id=?`, [userId]);
     if (row.length === 0) {
       return res.status(404).json({
-        status: "Failed",
-        message: "Cart not found",
+        status: 'Failed',
+        message: 'Cart not found',
       });
     }
     const cartId = row[0].id;
@@ -188,18 +196,18 @@ exports.updateCart = async (req, res) => {
     );
     if (result.affectedRows === 0) {
       return res.status(400).json({
-        status: "Failed",
-        message: "Invalid update or insufficient quantity",
+        status: 'Failed',
+        message: 'Invalid update or insufficient quantity',
       });
     }
 
     res.status(200).json({
-      status: "Success",
-      message: "Cart was updated Successfully",
+      status: 'Success',
+      message: 'Cart was updated Successfully',
     });
   } catch (error) {
     res.status(500).json({
-      status: "Failed",
+      status: 'Failed',
       message: error.message,
     });
   }

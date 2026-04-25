@@ -56,6 +56,9 @@ function renderProducts(products) {
             <button class="btn-quote">
               <i class="bi bi-send"></i> Request Quote
             </button>
+             <button class="btn-quote">
+              <i class="bi bi-send"></i> Direct Order
+            </button>
             <button class="btn-info-icon">
               <i class="bi bi-info-circle"></i>
             </button>
@@ -131,9 +134,10 @@ function renderProductPagination(totalPages) {
   container.innerHTML = html;
 }
 
-function updateProductCount(currentPage, totalProducts, limit = 8) {
+function updateProductCount(currentPage, totalProducts, limit = 6) {
   const start = (currentPage - 1) * limit + 1;
   const end = Math.min(currentPage * limit, totalProducts);
+  console.log("limit" , limit);
 
   const container = document.querySelector('.pagination-info');
   if (!container) return;

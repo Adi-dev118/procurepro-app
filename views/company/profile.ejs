@@ -178,42 +178,98 @@
         background: var(--col-warning-light);
         color: var(--col-warning);
       }
+      
+      /* ── User Popup Menu ── */
       .sidebar-footer {
-        padding: 16px 14px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
       }
-      .user-card {
+      .user-popup {
+        position: fixed;
+        bottom: 80px;
+        left: 14px;
+        width: calc(var(--nav-w) - 28px);
+        background: #0d1f42;
+        border: 1px solid #2a4a80;
+        border-radius: var(--radius-md);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.55);
+        overflow: hidden;
+        transform: translateY(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+        z-index: 9999;
+      }
+      .user-popup.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      .user-popup-header {
+        padding: 10px 14px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .user-popup-item {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px;
-        border-radius: var(--radius-md);
-        background: rgba(255, 255, 255, 0.07);
+        padding: 9px 14px;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition:
+          background 0.15s,
+          color 0.15s;
         cursor: pointer;
       }
-      .user-avatar {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: var(--col-accent);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 12px;
-        flex-shrink: 0;
-      }
-      .user-name {
-        font-size: 13px;
-        font-weight: 600;
-        line-height: 1.2;
-        color: #ffffff;
-      }
-      .user-role {
-        font-size: 11px;
+      .user-popup-item i {
+        font-size: 14px;
+        width: 16px;
+        text-align: center;
         color: rgba(255, 255, 255, 0.45);
+        flex-shrink: 0;
+        margin-left: 0;
       }
+      .user-popup-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .user-popup-item:hover i {
+        color: #5ba4fb;
+      }
+      .user-popup-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 4px 0;
+      }
+      .user-popup-item.danger {
+        color: #f87171;
+      }
+      .user-popup-item.danger i {
+        color: #f87171;
+      }
+      .user-popup-item.danger:hover {
+        background: rgba(220, 38, 38, 0.12);
+        color: #fca5a5;
+      }
+      .user-popup-item.danger:hover i {
+        color: #fca5a5;
+      }
+      /* rotate chevron when open */
+      .user-card .user-chevron {
+        transition: transform 0.2s ease;
+      }
+      .user-card.active .user-chevron {
+        transform: rotate(180deg);
+      }
+
       .main {
         margin-left: var(--nav-w);
         flex: 1;
@@ -1049,16 +1105,29 @@
           <a href="/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
-          <div class="user-card">
-            <div class="user-avatar">IB</div>
+          <div class="user-popup" id="userPopup">
+            <div class="user-popup-header">My Account</div>
+            <a href="/profile" class="user-popup-item">
+              <i class="bi bi-person-circle"></i> Profile
+            </a>
+            <a href="/cart" class="user-popup-item"> <i class="bi bi-cart3"></i> Cart </a>
+            <a href="/settings" class="user-popup-item"> <i class="bi bi-gear"></i> Settings </a>
+            <div class="user-popup-divider"></div>
+            <a href="/company/login" class="user-popup-item danger">
+              <i class="bi bi-box-arrow-left"></i> Sign Out
+            </a>
+          </div>
+
+          <!-- User Card Trigger -->
+          <div class="user-card" id="userCard">
+            <div class="user-avatar">
+              <%= name.name.split(' ').map(w=>w[0]).join('').toUpperCase() %>
+            </div>
             <div>
-              <div class="user-name">Industrial Buyers Inc.</div>
+              <div class="user-name"><%= name.name %></div>
               <div class="user-role">Buyer Account</div>
             </div>
-            <i
-              class="bi bi-three-dots-vertical"
-              style="margin-left: auto; color: rgba(255, 255, 255, 0.35); font-size: 13px"
-            ></i>
+            <i class="bi bi-chevron-up user-chevron"></i>
           </div>
         </div>
       </aside>
@@ -1911,6 +1980,25 @@ Industrial Buyers Inc. is a leading manufacturing company specializing in automo
           if (el) el.style.display = 'block';
         });
       });
+
+      
+      // ── User Account Popup ──
+      const userCard = document.getElementById('userCard');
+      const userPopup = document.getElementById('userPopup');
+      if (userCard && userPopup) {
+        userCard.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = userPopup.classList.toggle('open');
+          userCard.classList.toggle('active', isOpen);
+        });
+        document.addEventListener('click', (e) => {
+          if (!userCard.contains(e.target) && !userPopup.contains(e.target)) {
+            userPopup.classList.remove('open');
+            userCard.classList.remove('active');
+          }
+        });
+      }
+
     </script>
   </body>
 </html>

@@ -30,4 +30,8 @@ router.get('/company/login', (req, res) => {
   res.render('company/login');
 });
 
+router.get('/cart', (req, res) => {
+  res.render('company/cart');
+});
+
 module.exports = router;

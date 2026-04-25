@@ -20,5 +20,5 @@ export async function fetchProducts() {
 
   renderProducts(data.products);
   renderProductPagination(data.totalPages);
-  updateProductCount(productState.page, data.total, 8);
+  updateProductCount(productState.page, data.total);
 }
