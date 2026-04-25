@@ -303,50 +303,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Recent Activity Section -->
-          <div class="mt-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h2 class="section-title">Recent Activity</h2>
-              <a href="#" class="btn btn-outline-primary btn-sm">View All</a>
-            </div>
-
-            <div class="table-container">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>User</th>
-                      <th>Activity</th>
-                      <th>Details</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% activities.forEach(activity => { %>
-                    <tr>
-                      <td><%= activity.time %></td>
-                      <td><%= activity.user_name %></td>
-                      <td><%= activity.activity %></td>
-                      <td><%= activity.detail %></td>
-
-                      <td>
-                        <% if(activity.status === 'Success'){ %>
-                        <span class="status-badge active"><%= activity.status %></span>
-
-                        <% } else{ %>
-                        <span class="status-badge suspended"><%= activity.status %></span>
-
-                        <% }%>
-                      </td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
     </div>
