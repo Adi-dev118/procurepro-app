@@ -34,4 +34,8 @@ router.get('/cart', (req, res) => {
   res.render('company/cart');
 });
 
+router.get('/rfq/create', (req, res) => {
+  res.render('company/create-rfq');
+});
+
 module.exports = router;
