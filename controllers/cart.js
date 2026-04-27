@@ -8,7 +8,7 @@ exports.addItems = async (req, res) => {
     await connection.beginTransaction();
 
     // Getting User Id and Product Id with Quantity
-    const userId = req.params.id;
+    const userId = req.session.user.id;
 
     const { productId, quantity } = req.body;
 
@@ -28,7 +28,7 @@ exports.addItems = async (req, res) => {
       `SELECT id, final_price, stock FROM products WHERE id = ?`,
       [productId],
     );
-    console.log(rows);
+
     if (rows.length === 0) {
       throw new Error('Product not Found');
     }
@@ -93,7 +93,7 @@ exports.addItems = async (req, res) => {
       //2. If products doesn't exits
       await connection.query(
         `INSERT INTO cart_items (cart_id, product_id, quantity, price) VALUES (?, ?, ?, ?)`,
-        [cartId, productId, qty, product.price],
+        [cartId, productId, qty, product.final_price],
       );
     }
 
@@ -125,6 +125,39 @@ exports.getCartItems = async (req, res) => {
     const userId = req.session.user.id;
     const page = req.query.page;
 
+    const [row] = await db.query(`SELECT role FROM users WHERE id = ?`, [userId]);
+    const user = row[0];
+
+    if (user.role !== 'customer') {
+      return res.status(500).json({
+        status: 'Failed',
+        message: 'Only customers can have cart',
+      });
+    }
+
+    let cartId;
+
+    const [cartRows] = await db.query(`SELECT id FROM carts WHERE user_id= ?`, [userId]);
+
+    const [rows] = await db.query(`SELECT role FROM users WHERE id = ?`, [userId]);
+    if (rows.length === 0) {
+      await connection.rollback();
+      return res.status(500).json({
+        status: 'Failed',
+        message: "The user doesn't exist",
+      });
+    }
+   
+    if (cartRows.length > 0) {
+      cartId = cartRows[0].id;
+    } else {
+      const [result] = await connection.query(
+        `INSERT INTO carts (user_id, created_at) VALUES (?, ?)`,
+        [userId, new Date()],
+      );
+      cartId = result.insertId;
+    }
+
     const [cart] = await db.query(
       `SELECT 
     p.*,
@@ -149,19 +182,10 @@ JOIN products p
 WHERE c.user_id = ?;`,
       [userId],
     );
-    const [row] = await db.query(`SELECT role FROM users WHERE id = ?`, [userId]);
-    const user = row[0];
-
-    if (user.role !== 'customer') {
-      return res.status(500).json({
-        status: 'Failed',
-        message: 'Only customers can have cart',
-      });
-    }
 
     res.status(200).json({
-        cart,
-        total: cart[0].cart_total
+      cart,
+      total: cart[0].cart_total,
     });
   } catch (error) {
     res.status(400).json({
@@ -171,9 +195,9 @@ WHERE c.user_id = ?;`,
   }
 };
 
-exports.updateCart = async (req, res) => {
+exports.increaseQuantity = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.session.user.id;
     const { productId, quantity } = req.body;
     if (!productId || !quantity || quantity <= 0) {
       return res.status(400).json({
@@ -189,10 +213,28 @@ exports.updateCart = async (req, res) => {
       });
     }
     const cartId = row[0].id;
-    // console.log(cartId[0].id)
+
+    const [product] = await db.query(
+      `SELECT ci.quantity, p.stock
+FROM cart_items ci
+JOIN products p ON p.id = ci.product_id
+WHERE ci.cart_id = ? AND ci.product_id = ?`,
+      [cartId, productId],
+    );
+
+    const currentQty = product[0].quantity;
+    const stock = product[0].stock;
+
+    if (currentQty + quantity > stock) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid update or insufficient quantity',
+      });
+    }
+
     const [result] = await db.query(
-      `UPDATE cart_items SET quantity = quantity - ? WHERE cart_id =? AND product_id = ? AND quantity >= ?`,
-      [quantity, cartId, productId, quantity],
+      `UPDATE cart_items SET quantity = quantity + ? WHERE cart_id =? AND product_id = ?`,
+      [quantity, cartId, productId],
     );
     if (result.affectedRows === 0) {
       return res.status(400).json({
@@ -204,6 +246,157 @@ exports.updateCart = async (req, res) => {
     res.status(200).json({
       status: 'Success',
       message: 'Cart was updated Successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Failed',
+      message: error.message,
+    });
+  }
+};
+
+exports.decreaseQuantity = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { productId, quantity } = req.body;
+
+    if (!productId || !quantity || quantity <= 0) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid product or quantity',
+      });
+    }
+    const [row] = await db.query(`SELECT id FROM carts WHERE user_id=?`, [userId]);
+    if (row.length === 0) {
+      return res.status(404).json({
+        status: 'Failed',
+        message: 'Cart not found',
+      });
+    }
+
+    const cartId = row[0].id;
+
+    const [cart] = await db.query(
+      `SELECT quantity
+FROM cart_items
+WHERE cart_id = ? AND product_id = ?`,
+      [cartId, productId],
+    );
+    const currentqty = cart[0].quantity;
+
+    const [rows] = await db.query(`SELECT id, final_price, stock FROM products WHERE id = ?`, [
+      productId,
+    ]);
+
+    if (rows.length === 0) {
+      throw new Error('Product not Found');
+    }
+    const product = rows[0];
+
+    if (currentqty <= quantity) {
+      const [result] = await db.query(
+        `DELETE FROM cart_items
+WHERE product_id = ? AND cart_id = ?`,
+        [productId, cartId],
+      );
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Cart was updated Successfully',
+      });
+    }
+
+    const [result] = await db.query(
+      `UPDATE cart_items SET quantity = quantity - ? WHERE cart_id =? AND product_id = ?`,
+      [quantity, cartId, productId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid update',
+      });
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Cart was updated Successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Failed',
+      message: error.message,
+    });
+  }
+};
+
+exports.deleteItem = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { productId } = req.body;
+    if (!productId) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid product',
+      });
+    }
+    const [row] = await db.query(`SELECT id FROM carts WHERE user_id=?`, [userId]);
+    if (row.length === 0) {
+      return res.status(404).json({
+        status: 'Failed',
+        message: 'Cart not found',
+      });
+    }
+    const cartId = row[0].id;
+
+    const [result] = await db.query(
+      `DELETE FROM cart_items
+WHERE product_id = ? AND cart_id = ?`,
+      [productId, cartId],
+    );
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Cart item was deleted Successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Failed',
+      message: error.message,
+    });
+  }
+};
+
+exports.deleteCart = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+
+    const [row] = await db.query(`SELECT id FROM carts WHERE user_id=?`, [userId]);
+    if (row.length === 0) {
+      return res.status(404).json({
+        status: 'Failed',
+        message: 'Cart not found',
+      });
+    }
+
+    const cartId = row[0].id;
+
+    const [result] = await db.query(
+      `DELETE ci
+FROM cart_items ci
+JOIN carts c ON c.id = ci.cart_id
+WHERE c.user_id = ?`,
+      [userId],
+    );
+    if (result.affectedRows === 0) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid update or insufficient quantity',
+      });
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Cart was deleted Successfully',
     });
   } catch (error) {
     res.status(500).json({
