@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
   initSearch();
   initNotifications();
   initFilters();
-  initRFQActions();
   initOrderTracking();
   initProfileTabs();
   initModals();
@@ -90,34 +89,7 @@ function initFilters() {
   }
 }
 
-// RFQ actions
-function initRFQActions() {
-  // Create RFQ button
-  const createRFQBtn = document.querySelector('.create-rfq-btn');
-  if (createRFQBtn) {
-    createRFQBtn.addEventListener('click', function () {
-      showCreateRFQModal();
-    });
-  }
 
-  // Bid actions
-  const acceptBidBtns = document.querySelectorAll('.accept-bid-btn');
-  const rejectBidBtns = document.querySelectorAll('.reject-bid-btn');
-
-  acceptBidBtns.forEach((btn) => {
-    btn.addEventListener('click', function () {
-      const bidId = this.getAttribute('data-bid-id');
-      acceptBid(bidId);
-    });
-  });
-
-  rejectBidBtns.forEach((btn) => {
-    btn.addEventListener('click', function () {
-      const bidId = this.getAttribute('data-bid-id');
-      rejectBid(bidId);
-    });
-  });
-}
 
 // Order tracking
 function initOrderTracking() {
@@ -368,123 +340,6 @@ function showNotifications() {
   showNotificationDropdown(notificationHtml);
 }
 
-// Show create RFQ modal
-function showCreateRFQModal() {
-  // In a real app, this would show a modal with RFQ creation form
-  console.log('Showing create RFQ modal');
-
-  // Example modal content
-  const modalContent = `
-        <div class="modal fade modal-company" id="createRFQModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Create New RFQ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="createRFQForm">
-                            <div class="mb-3">
-                                <label for="rfqTitle" class="form-label">RFQ Title</label>
-                                <input type="text" class="form-control" id="rfqTitle" placeholder="e.g., Need 100 units of Industrial Valves" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="rfqCategory" class="form-label">Category</label>
-                                <select class="form-select" id="rfqCategory" required>
-                                    <option value="">Select Category</option>
-                                    <option value="machinery">Machinery</option>
-                                    <option value="tools">Tools & Equipment</option>
-                                    <option value="raw-material">Raw Materials</option>
-                                    <option value="components">Components</option>
-                                    <option value="services">Services</option>
-                                </select>
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="rfqQuantity" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="rfqQuantity" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="rfqDeadline" class="form-label">Bid Deadline</label>
-                                    <input type="date" class="form-control" id="rfqDeadline" required>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="rfqDescription" class="form-label">Description & Specifications</label>
-                                <textarea class="form-control" id="rfqDescription" rows="5" placeholder="Provide detailed specifications, requirements, and any special instructions..." required></textarea>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="rfqAttachments" class="form-label">Attachments (Optional)</label>
-                                <input type="file" class="form-control" id="rfqAttachments" multiple>
-                                <div class="form-text">Upload drawings, specifications, or other relevant documents</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Target Suppliers (Optional)</label>
-                                <select class="form-select" multiple>
-                                    <option>TechGadgets Ltd</option>
-                                    <option>Global Supplies Inc.</option>
-                                    <option>Industrial Parts Co.</option>
-                                    <option>Manufacturing Solutions</option>
-                                </select>
-                                <div class="form-text">Hold Ctrl to select multiple suppliers</div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="createRFQForm" class="btn btn-primary">Create RFQ</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-  // Add modal to DOM and show it
-  document.body.insertAdjacentHTML('beforeend', modalContent);
-  const modal = new bootstrap.Modal(document.getElementById('createRFQModal'));
-  modal.show();
-
-  // Remove modal from DOM after hiding
-  document.getElementById('createRFQModal').addEventListener('hidden.bs.modal', function () {
-    this.remove();
-  });
-}
-
-// Accept bid
-function acceptBid(bidId) {
-  if (confirm('Are you sure you want to accept this bid?')) {
-    console.log(`Accepting bid ${bidId}`);
-
-    // Update UI
-    const bidCard = document.querySelector(`[data-bid-id="${bidId}"]`).closest('.bid-card');
-    bidCard.style.borderLeftColor = '#27ae60';
-    bidCard.querySelector('.bid-actions').innerHTML =
-      '<span class="badge badge-success">Accepted</span>';
-
-    showToast('Bid accepted successfully', 'success');
-  }
-}
-
-// Reject bid
-function rejectBid(bidId) {
-  if (confirm('Are you sure you want to reject this bid?')) {
-    console.log(`Rejecting bid ${bidId}`);
-
-    // Update UI
-    const bidCard = document.querySelector(`[data-bid-id="${bidId}"]`).closest('.bid-card');
-    bidCard.style.borderLeftColor = '#e74c3c';
-    bidCard.querySelector('.bid-actions').innerHTML =
-      '<span class="badge badge-danger">Rejected</span>';
-
-    showToast('Bid rejected', 'warning');
-  }
-}
-
 // Show order tracking
 function showOrderTracking(orderId) {
   console.log(`Showing tracking for order ${orderId}`);
@@ -629,6 +484,103 @@ function formatDate(dateString) {
   });
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const categorySelect = document.getElementById('rfqCategory');
+  const supplierSelect = document.getElementById('supplierInvitation');
+
+  // =========================
+  // Load Categories
+  // =========================
+
+  async function loadCategories() {
+    try {
+      const res = await fetch('/api/v1/products/categories');
+      const data = await res.json();
+
+      categorySelect.innerHTML = `
+        <option value="">Select Category</option>
+      `;
+
+      data.categories.forEach((category) => {
+        categorySelect.innerHTML += `
+          <option value="${category.id}">
+            ${category.name}
+          </option>
+        `;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // =========================
+  // On Category Change
+  // Load Products + Suppliers
+  // =========================
+
+  categorySelect.addEventListener('change', async () => {
+    const categoryId = categorySelect.value;
+
+    if (!categoryId) return;
+
+    await loadProducts(categoryId);
+    await loadSuppliers(categoryId);
+  });
+
+  // =========================
+  // Dynamic Products
+  // =========================
+
+  async function loadProducts(categoryId) {
+    try {
+      const res = await fetch(`/api/v1/products/by-category/${categoryId}`);
+
+      const data = await res.json();
+
+      document.querySelectorAll('.rfq-item-product').forEach((select) => {
+        select.innerHTML = `
+          <option value="">Select Item</option>
+        `;
+
+        data.products.forEach((product) => {
+          select.innerHTML += `
+            <option value="${product.id}">
+              ${product.name}
+            </option>
+          `;
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // =========================
+  // Dynamic Suppliers
+  // =========================
+
+  async function loadSuppliers(categoryId) {
+    try {
+      const res = await fetch(`/api/v1/users/vendor/by-category/${categoryId}`);
+
+      const data = await res.json();
+
+      supplierSelect.innerHTML = '';
+
+      data.suppliers.forEach((supplier) => {
+        supplierSelect.innerHTML += `
+          <option value="${supplier.id}">
+            ${supplier.business_name}
+          </option>
+        `;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  loadCategories();
+});
 // SIgnup Login
 
 function switchTab(t) {
@@ -691,13 +643,12 @@ async function handleLogin() {
         if (data.session.role === 'customer') {
           toast('Signed in successfully! Redirecting…');
           setTimeout(() => (window.location.href = '/dashboard'), 1800);
-        } else if (data.session.role === 'admin'){
+        } else if (data.session.role === 'admin') {
           toast('Signed in successfully! Redirecting…');
           setTimeout(() => (window.location.href = '/admin/dashboard'), 1800);
-        } else{
-            toast('Signed in successfully! Redirecting…');
-            setTimeout(() => (window.location.href = '/vendor/dashboard'), 1800);
-
+        } else {
+          toast('Signed in successfully! Redirecting…');
+          setTimeout(() => (window.location.href = '/vendor/dashboard'), 1800);
         }
       } else {
         toast(data.message || 'login failed');

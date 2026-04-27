@@ -367,3 +367,28 @@ exports.getCompanyProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getProductByCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const [products] = await db.query(`SELECT * FROM products WHERE category_id = ?`, [categoryId]);
+    res.json({
+      products,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.getCategories = async (req, res) => {
+  try {
+    const [categories] = await db.query(`SELECT * FROM categories`);
+    res.json({
+      categories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

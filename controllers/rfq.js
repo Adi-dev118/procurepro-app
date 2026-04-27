@@ -241,3 +241,228 @@ exports.getCompanyRFQs = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+// controllers/rfq.js
+
+
+exports.createRFQ = async (req, res) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // =========================
+    // Buyer from session
+    // =========================
+
+    const buyerId = req.session.user.id;
+
+    // =========================
+    // Request Body
+    // =========================
+
+    const {
+      title,
+      description,
+      categoryId,
+      totalQuantity,
+      budgetMin,
+      budgetMax,
+      deadline,
+      location,
+      priority,
+      items,
+      specifications,
+      suppliers
+    } = req.body;
+
+    // =========================
+    // Basic Validation
+    // =========================
+
+    if (
+      !title ||
+      !description ||
+      !categoryId ||
+      !totalQuantity ||
+      !budgetMin ||
+      !budgetMax ||
+      !deadline ||
+      !location ||
+      !priority
+    ) {
+      await connection.rollback();
+
+      return res.status(400).json({
+        status: "Failed",
+        message: "Required fields are missing"
+      });
+    }
+
+    if (Number(budgetMin) > Number(budgetMax)) {
+      await connection.rollback();
+
+      return res.status(400).json({
+        status: "Failed",
+        message: "Minimum budget cannot exceed maximum budget"
+      });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      await connection.rollback();
+
+      return res.status(400).json({
+        status: "Failed",
+        message: "At least one RFQ item is required"
+      });
+    }
+
+    // =========================
+    // Insert Main RFQ
+    // =========================
+
+    const [rfqResult] = await connection.query(
+      `
+      INSERT INTO rfqs
+      (
+        user_id,
+        title,
+        description,
+        quantity,
+        category_id,
+        budget_min,
+        budget_max,
+        deadline,
+        location,
+        priority,
+        status
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        buyerId,
+        title,
+        description,
+        totalQuantity,
+        categoryId,
+        budgetMin,
+        budgetMax,
+        deadline,
+        location,
+        priority,
+        "active"
+      ]
+    );
+
+    const rfqId = rfqResult.insertId;
+
+    // =========================
+    // Insert RFQ Items
+    // =========================
+
+    for (const item of items) {
+      if (!item.productName || !item.quantity) continue;
+
+      await connection.query(
+        `
+        INSERT INTO rfq_items
+        (
+          rfq_id,
+          product_name,
+          quantity,
+          specifications
+        )
+        VALUES (?, ?, ?, ?)
+        `,
+        [
+          rfqId,
+          item.productName,
+          item.quantity,
+          item.specifications || null
+        ]
+      );
+    }
+
+    // =========================
+    // Insert Specifications
+    // =========================
+
+    if (specifications && Array.isArray(specifications)) {
+      for (const spec of specifications) {
+        if (!spec.specName || !spec.specValue) continue;
+
+        await connection.query(
+          `
+          INSERT INTO rfq_specifications
+          (
+            rfq_id,
+            spec_name,
+            spec_value
+          )
+          VALUES (?, ?, ?)
+          `,
+          [
+            rfqId,
+            spec.specName,
+            spec.specValue
+          ]
+        );
+      }
+    }
+
+    // =========================
+    // Insert Supplier Invitations
+    // =========================
+
+    if (suppliers && Array.isArray(suppliers)) {
+      for (const supplierId of suppliers) {
+        if (!supplierId) continue;
+
+        await connection.query(
+          `
+          INSERT INTO rfq_invitations
+          (
+            rfq_id,
+            supplier_id,
+            status
+          )
+          VALUES (?, ?, ?)
+          `,
+          [
+            rfqId,
+            supplierId,
+            "invited"
+          ]
+        );
+      }
+    }
+
+    // =========================
+    // Commit
+    // =========================
+
+    await connection.commit();
+
+    return res.status(201).json({
+      status: "Success",
+      message: "RFQ created successfully",
+      data: {
+        rfqId
+      }
+    });
+
+  } catch (error) {
+    await connection.rollback();
+
+    console.error(error);
+
+    return res.status(500).json({
+      status: "Failed",
+      message: error.message
+    });
+
+  } finally {
+    connection.release();
+  }
+};

@@ -143,4 +143,70 @@ document.addEventListener('click', (e) => {
 // 🔹 Initial Load
 document.addEventListener('DOMContentLoaded', () => {
   fetchProducts();
+  const qtyInput = document.getElementById('modalProductQty');
+  const increaseBtn = document.getElementById('increaseQtyBtn');
+  const decreaseBtn = document.getElementById('decreaseQtyBtn');
+  const addToCartBtn = document.getElementById('addToCartBtn');
+
+  const productIdInput = document.getElementById('modalProductId');
+  const productNameInput = document.getElementById('modalProductName');
+  const productPriceInput = document.getElementById('modalProductPrice');
+
+  // Open modal and set values
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.direct-order-btn');
+
+    if (!btn) return;
+
+    productIdInput.value = btn.dataset.id;
+    productNameInput.value = btn.dataset.name;
+    productPriceInput.value = `$${btn.dataset.price}`;
+    qtyInput.value = 1;
+  });
+
+  // Increase quantity
+  increaseBtn.addEventListener('click', () => {
+    qtyInput.value = Number(qtyInput.value) + 1;
+  });
+
+  // Decrease quantity
+  decreaseBtn.addEventListener('click', () => {
+    if (Number(qtyInput.value) > 1) {
+      qtyInput.value = Number(qtyInput.value) - 1;
+    }
+  });
+
+  // Add to cart API
+  addToCartBtn.addEventListener('click', async () => {
+    const productId = productIdInput.value;
+    const quantity = qtyInput.value;
+
+    try {
+      const res = await fetch('/api/v1/carts/add-items/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId,
+          quantity,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'Success') {
+        alert('Product added to cart successfully');
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('directOrderModal'));
+
+        modal.hide();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Something went wrong');
+    }
+  });
 });
