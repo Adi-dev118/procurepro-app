@@ -48,7 +48,13 @@
         --shadow-md: 0 4px 16px rgba(29, 107, 243, 0.12);
       }
 
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
         font-family: 'DM Sans', sans-serif;
@@ -60,7 +66,10 @@
       }
 
       /* ── Shell ── */
-      .shell { display: flex; min-height: 100vh; }
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
 
       /* ── Sidebar ── */
       .sidebar {
@@ -70,7 +79,9 @@
         display: flex;
         flex-direction: column;
         position: fixed;
-        top: 0; left: 0; bottom: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
         z-index: 100;
         transition: transform 0.25s ease;
       }
@@ -79,158 +90,375 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
       .logo-mark {
-        width: 34px; height: 34px;
+        width: 34px;
+        height: 34px;
         background: var(--col-accent);
         border-radius: var(--radius-sm);
-        display: flex; align-items: center; justify-content: center;
-        color: #fff; font-size: 16px; font-weight: 700; flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
       }
-      .logo-name { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+      .logo-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
       .logo-badge {
-        font-size: 10px; color: var(--col-accent);
+        font-size: 10px;
+        color: var(--col-accent);
         background: var(--col-accent-light);
-        padding: 1px 6px; border-radius: 20px; font-weight: 600; margin-top: 1px;
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 1px;
       }
       .sidebar-section-label {
-        font-size: 10px; font-weight: 600; letter-spacing: 0.8px;
-        text-transform: uppercase; color: rgba(255,255,255,0.35);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
         padding: 18px 20px 6px;
       }
-      .sidebar-nav { overflow-y: auto; scroll-behavior: smooth; flex: 1; padding: 0 14px; }
-      .sidebar-nav::-webkit-scrollbar { width: 0; }
-      .sidebar-nav:hover::-webkit-scrollbar { width: 6px; }
-      .sidebar-nav:hover::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; }
+      .sidebar-nav {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        flex: 1;
+        padding: 0 14px;
+      }
+      .sidebar-nav::-webkit-scrollbar {
+        width: 0;
+      }
+      .sidebar-nav:hover::-webkit-scrollbar {
+        width: 6px;
+      }
+      .sidebar-nav:hover::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 10px;
+      }
 
       .nav-item {
-        display: flex; align-items: center; gap: 10px;
-        padding: 9px 12px; border-radius: var(--radius-sm);
-        color: rgba(255,255,255,0.6); text-decoration: none;
-        font-weight: 500; font-size: 13.5px;
-        transition: all 0.15s; margin-bottom: 2px; cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+        cursor: pointer;
       }
-      .nav-item i { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
-      .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-      .nav-item.active { background: rgba(29,107,243,0.25); color: #fff; font-weight: 600; }
-      .nav-item.active i { color: #5ba4fb; }
+      .nav-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .nav-item.active {
+        background: rgba(29, 107, 243, 0.25);
+        color: #fff;
+        font-weight: 600;
+      }
+      .nav-item.active i {
+        color: #5ba4fb;
+      }
       .nav-badge {
-        margin-left: auto; background: var(--col-danger);
-        color: #fff; font-size: 10px; font-weight: 700;
-        padding: 1px 6px; border-radius: 20px; min-width: 18px; text-align: center;
+        margin-left: auto;
+        background: var(--col-danger);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
       }
-      .nav-badge.warning { background: var(--col-warning-light); color: var(--col-warning); }
+      .nav-badge.warning {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+      }
 
       /* User popup */
-      .sidebar-footer { padding: 16px 14px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; }
+      .sidebar-footer {
+        padding: 16px 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+      }
       .user-popup {
-        position: fixed; bottom: 80px; left: 14px;
+        position: fixed;
+        bottom: 80px;
+        left: 14px;
         width: calc(var(--nav-w) - 28px);
-        background: #0d1f42; border: 1px solid #2a4a80;
+        background: #0d1f42;
+        border: 1px solid #2a4a80;
         border-radius: var(--radius-md);
-        box-shadow: 0 -4px 24px rgba(0,0,0,0.55);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.55);
         overflow: hidden;
-        transform: translateY(10px); opacity: 0; pointer-events: none;
-        transition: opacity 0.2s ease, transform 0.2s ease;
+        transform: translateY(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
         z-index: 9999;
       }
-      .user-popup.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+      .user-popup.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
       .user-popup-header {
-        padding: 10px 14px 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
-        font-size: 10px; font-weight: 600; letter-spacing: 0.7px;
-        text-transform: uppercase; color: rgba(255,255,255,0.35);
+        padding: 10px 14px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
       }
       .user-popup-item {
-        display: flex; align-items: center; gap: 10px;
-        padding: 9px 14px; color: rgba(255,255,255,0.75);
-        text-decoration: none; font-size: 13px; font-weight: 500;
-        transition: background 0.15s, color 0.15s; cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 14px;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        cursor: pointer;
       }
-      .user-popup-item i { font-size: 14px; width: 16px; text-align: center; color: rgba(255,255,255,0.45); flex-shrink: 0; }
-      .user-popup-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-      .user-popup-item:hover i { color: #5ba4fb; }
-      .user-popup-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
-      .user-popup-item.danger { color: #f87171; }
-      .user-popup-item.danger i { color: #f87171; }
-      .user-popup-item.danger:hover { background: rgba(220,38,38,0.12); color: #fca5a5; }
+      .user-popup-item i {
+        font-size: 14px;
+        width: 16px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.45);
+        flex-shrink: 0;
+      }
+      .user-popup-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .user-popup-item:hover i {
+        color: #5ba4fb;
+      }
+      .user-popup-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 4px 0;
+      }
+      .user-popup-item.danger {
+        color: #f87171;
+      }
+      .user-popup-item.danger i {
+        color: #f87171;
+      }
+      .user-popup-item.danger:hover {
+        background: rgba(220, 38, 38, 0.12);
+        color: #fca5a5;
+      }
       .user-card {
-        display: flex; align-items: center; gap: 10px;
-        padding: 10px; border-radius: var(--radius-md);
-        background: rgba(255,255,255,0.07); cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.07);
+        cursor: pointer;
         transition: background 0.15s;
       }
-      .user-card:hover { background: rgba(255,255,255,0.12); }
-      .user-avatar {
-        width: 34px; height: 34px; border-radius: 50%;
-        background: var(--col-accent); color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 12px; flex-shrink: 0;
+      .user-card:hover {
+        background: rgba(255, 255, 255, 0.12);
       }
-      .user-name { font-size: 13px; font-weight: 600; line-height: 1.2; color: #fff; }
-      .user-role { font-size: 11px; color: rgba(255,255,255,0.45); }
-      .user-card .user-chevron { transition: transform 0.2s ease; margin-left: auto; color: rgba(255,255,255,0.35); font-size: 13px; }
-      .user-card.active .user-chevron { transform: rotate(180deg); }
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #fff;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .user-card .user-chevron {
+        transition: transform 0.2s ease;
+        margin-left: auto;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+      }
+      .user-card.active .user-chevron {
+        transform: rotate(180deg);
+      }
 
       /* ── Main ── */
-      .main { margin-left: var(--nav-w); flex: 1; min-height: 100vh; }
+      .main {
+        margin-left: var(--nav-w);
+        flex: 1;
+        min-height: 100vh;
+      }
 
       /* ── Topbar ── */
       .topbar {
-        background: #f7f9fd; border-bottom: 1px solid #cdd8ee;
-        height: 60px; display: flex; align-items: center;
-        padding: 0 28px; gap: 16px;
-        position: sticky; top: 0; z-index: 50;
-        box-shadow: 0 1px 4px rgba(29,107,243,0.07);
+        background: #f7f9fd;
+        border-bottom: 1px solid #cdd8ee;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.07);
       }
-      .topbar-title { font-size: 15px; font-weight: 600; flex: 1; }
+      .topbar-title {
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+      }
       .topbar-breadcrumb {
-        display: flex; align-items: center; gap: 6px;
-        font-size: 13.5px; flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13.5px;
+        flex: 1;
       }
-      .topbar-breadcrumb a { color: var(--col-text-muted); text-decoration: none; font-weight: 500; }
-      .topbar-breadcrumb a:hover { color: var(--col-accent); }
-      .topbar-breadcrumb .sep { color: var(--col-border-strong); font-size: 16px; }
-      .topbar-breadcrumb .current { color: var(--col-text-primary); font-weight: 600; }
-      .topbar-actions { display: flex; align-items: center; gap: 8px; }
+      .topbar-breadcrumb a {
+        color: var(--col-text-muted);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .topbar-breadcrumb a:hover {
+        color: var(--col-accent);
+      }
+      .topbar-breadcrumb .sep {
+        color: var(--col-border-strong);
+        font-size: 16px;
+      }
+      .topbar-breadcrumb .current {
+        color: var(--col-text-primary);
+        font-weight: 600;
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
       .icon-btn {
-        width: 36px; height: 36px; border-radius: var(--radius-sm);
-        display: flex; align-items: center; justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid var(--col-border);
-        background: var(--col-surface); color: var(--col-text-secondary);
-        cursor: pointer; transition: all 0.15s; position: relative;
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
       }
-      .icon-btn:hover { background: var(--col-bg); color: var(--col-text-primary); }
+      .icon-btn:hover {
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+      }
       .icon-btn .dot {
-        position: absolute; top: 6px; right: 6px;
-        width: 7px; height: 7px; border-radius: 50%;
-        background: var(--col-danger); border: 1.5px solid var(--col-surface);
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--col-danger);
+        border: 1.5px solid var(--col-surface);
       }
 
       /* topbar buttons */
       .btn-draft {
-        display: flex; align-items: center; gap: 7px;
-        background: none; border: 1px solid var(--col-border);
-        border-radius: var(--radius-sm); padding: 7px 14px;
-        font-family: inherit; font-size: 13px; font-weight: 500;
-        color: var(--col-text-secondary); cursor: pointer;
-        transition: all 0.15s; white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: none;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 7px 14px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
       }
-      .btn-draft:hover { border-color: var(--col-warning); color: var(--col-warning); background: var(--col-warning-light); }
-      .btn-draft.saving { border-color: var(--col-warning); color: var(--col-warning); }
-      .btn-draft.saved  { border-color: var(--col-success); color: var(--col-success); background: var(--col-success-light); }
+      .btn-draft:hover {
+        border-color: var(--col-warning);
+        color: var(--col-warning);
+        background: var(--col-warning-light);
+      }
+      .btn-draft.saving {
+        border-color: var(--col-warning);
+        color: var(--col-warning);
+      }
+      .btn-draft.saved {
+        border-color: var(--col-success);
+        color: var(--col-success);
+        background: var(--col-success-light);
+      }
 
       .btn-publish {
-        display: flex; align-items: center; gap: 7px;
-        background: var(--col-accent); border: none;
-        border-radius: var(--radius-sm); padding: 8px 18px;
-        font-family: inherit; font-size: 13px; font-weight: 600;
-        color: #fff; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--col-accent);
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 18px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
       }
-      .btn-publish:hover { background: var(--col-accent-hover); }
+      .btn-publish:hover {
+        background: var(--col-accent-hover);
+      }
 
       /* ── Page layout ── */
-      .page-content { padding: 28px; }
+      .page-content {
+        padding: 28px;
+      }
 
       .rfq-layout {
         display: grid;
@@ -245,32 +473,72 @@
         top: 84px;
       }
       .form-nav-label {
-        font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
-        text-transform: uppercase; color: var(--col-text-muted);
-        padding: 0 4px; margin-bottom: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--col-text-muted);
+        padding: 0 4px;
+        margin-bottom: 10px;
       }
-      .form-nav-list { display: flex; flex-direction: column; gap: 2px; }
+      .form-nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
       .fnav-item {
-        display: flex; align-items: center; gap: 9px;
-        padding: 8px 10px; border-radius: var(--radius-sm);
-        cursor: pointer; text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        text-decoration: none;
         transition: background 0.12s;
       }
-      .fnav-item:hover { background: var(--col-surface); }
-      .fnav-item.active { background: var(--col-accent-light); }
+      .fnav-item:hover {
+        background: var(--col-surface);
+      }
+      .fnav-item.active {
+        background: var(--col-accent-light);
+      }
       .fnav-num {
-        width: 20px; height: 20px; border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
         border: 1.5px solid var(--col-border-strong);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 10px; font-weight: 700; flex-shrink: 0;
-        color: var(--col-text-muted); transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        flex-shrink: 0;
+        color: var(--col-text-muted);
+        transition: all 0.15s;
         font-family: 'DM Mono', monospace;
       }
-      .fnav-item.active .fnav-num { background: var(--col-accent); border-color: var(--col-accent); color: #fff; }
-      .fnav-item.done .fnav-num { background: var(--col-success); border-color: var(--col-success); color: #fff; }
-      .fnav-label { font-size: 12.5px; font-weight: 500; color: var(--col-text-secondary); }
-      .fnav-item.active .fnav-label { color: var(--col-accent); font-weight: 600; }
-      .fnav-item.done .fnav-label { color: var(--col-success); }
+      .fnav-item.active .fnav-num {
+        background: var(--col-accent);
+        border-color: var(--col-accent);
+        color: #fff;
+      }
+      .fnav-item.done .fnav-num {
+        background: var(--col-success);
+        border-color: var(--col-success);
+        color: #fff;
+      }
+      .fnav-label {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+      }
+      .fnav-item.active .fnav-label {
+        color: var(--col-accent);
+        font-weight: 600;
+      }
+      .fnav-item.done .fnav-label {
+        color: var(--col-success);
+      }
 
       /* draft resume banner */
       .draft-banner {
@@ -283,25 +551,52 @@
         align-items: center;
         gap: 12px;
       }
-      .draft-banner.show { display: flex; }
-      .draft-banner i { color: var(--col-warning); font-size: 16px; flex-shrink: 0; }
-      .draft-banner-text { flex: 1; font-size: 13px; }
-      .draft-banner-text strong { color: var(--col-warning); }
+      .draft-banner.show {
+        display: flex;
+      }
+      .draft-banner i {
+        color: var(--col-warning);
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .draft-banner-text {
+        flex: 1;
+        font-size: 13px;
+      }
+      .draft-banner-text strong {
+        color: var(--col-warning);
+      }
       .btn-resume-draft {
-        background: var(--col-warning); color: #fff; border: none;
-        border-radius: var(--radius-sm); padding: 6px 14px;
-        font-size: 12.5px; font-weight: 600; font-family: inherit;
-        cursor: pointer; white-space: nowrap;
+        background: var(--col-warning);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 6px 14px;
+        font-size: 12.5px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        white-space: nowrap;
       }
       .btn-discard-draft {
-        background: none; border: 1px solid #f0c070; color: var(--col-warning);
-        border-radius: var(--radius-sm); padding: 6px 10px;
-        font-size: 12.5px; font-weight: 500; font-family: inherit;
-        cursor: pointer; white-space: nowrap;
+        background: none;
+        border: 1px solid #f0c070;
+        color: var(--col-warning);
+        border-radius: var(--radius-sm);
+        padding: 6px 10px;
+        font-size: 12.5px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        white-space: nowrap;
       }
 
       /* ── Section cards ── */
-      .form-sections { display: flex; flex-direction: column; gap: 16px; }
+      .form-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
 
       .section-card {
         background: var(--col-surface);
@@ -313,211 +608,432 @@
       .section-head {
         padding: 16px 22px 14px;
         border-bottom: 1px solid var(--col-border);
-        display: flex; align-items: center; gap: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
       .section-index {
         font-family: 'DM Mono', monospace;
-        font-size: 11px; color: var(--col-text-muted);
-        background: var(--col-surface-2); border: 1px solid var(--col-border);
-        padding: 2px 7px; border-radius: 20px;
+        font-size: 11px;
+        color: var(--col-text-muted);
+        background: var(--col-surface-2);
+        border: 1px solid var(--col-border);
+        padding: 2px 7px;
+        border-radius: 20px;
       }
-      .section-title { font-size: 13.5px; font-weight: 700; }
-      .section-body { padding: 22px 22px; }
+      .section-title {
+        font-size: 13.5px;
+        font-weight: 700;
+      }
+      .section-body {
+        padding: 22px 22px;
+      }
 
       /* ── Fields ── */
-      .field { margin-bottom: 18px; }
-      .field:last-child { margin-bottom: 0; }
+      .field {
+        margin-bottom: 18px;
+      }
+      .field:last-child {
+        margin-bottom: 0;
+      }
 
       .field label {
-        display: block; font-size: 12px; font-weight: 600;
-        color: var(--col-text-secondary); margin-bottom: 6px;
-        text-transform: uppercase; letter-spacing: 0.4px;
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--col-text-secondary);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
       }
-      .field label .req { color: var(--col-danger); margin-left: 2px; font-weight: 700; }
+      .field label .req {
+        color: var(--col-danger);
+        margin-left: 2px;
+        font-weight: 700;
+      }
 
-      .field input[type="text"],
-      .field input[type="number"],
-      .field input[type="date"],
+      .field input[type='text'],
+      .field input[type='number'],
+      .field input[type='date'],
       .field textarea,
       .field select {
-        width: 100%; padding: 9px 12px;
+        width: 100%;
+        padding: 9px 12px;
         border: 1px solid var(--col-border);
         border-radius: var(--radius-sm);
         font-family: 'DM Sans', sans-serif;
-        font-size: 13.5px; color: var(--col-text-primary);
+        font-size: 13.5px;
+        color: var(--col-text-primary);
         background: #fff;
-        transition: border-color 0.15s, box-shadow 0.15s;
-        outline: none; appearance: none;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        outline: none;
+        appearance: none;
       }
-      .field input:focus, .field textarea:focus, .field select:focus {
+      .field input:focus,
+      .field textarea:focus,
+      .field select:focus {
         border-color: var(--col-accent);
-        box-shadow: 0 0 0 3px rgba(29,107,243,0.1);
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
         background: #fff;
       }
-      .field input::placeholder, .field textarea::placeholder { color: var(--col-text-muted); }
-      .field textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: var(--col-text-muted);
+      }
+      .field textarea {
+        resize: vertical;
+        min-height: 90px;
+        line-height: 1.65;
+      }
       .field select {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a90b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 11px center;
-        padding-right: 32px; cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: right 11px center;
+        padding-right: 32px;
+        cursor: pointer;
       }
-      .field-hint { font-size: 11.5px; color: var(--col-text-muted); margin-top: 5px; }
+      .field-hint {
+        font-size: 11.5px;
+        color: var(--col-text-muted);
+        margin-top: 5px;
+      }
 
-      .field-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .field-row-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
 
       /* Priority pills */
-      .priority-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-      .ppill-input { display: none; }
+      .priority-pills {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .ppill-input {
+        display: none;
+      }
       .ppill-label {
-        padding: 7px 18px; border-radius: 20px;
+        padding: 7px 18px;
+        border-radius: 20px;
         border: 1.5px solid var(--col-border);
-        font-size: 12.5px; font-weight: 600; cursor: pointer;
-        transition: all 0.15s; color: var(--col-text-secondary);
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        color: var(--col-text-secondary);
         user-select: none;
       }
       .ppill-input:checked + .ppill-label {
         border-color: currentColor;
       }
-      #p-low:checked   + .ppill-label { background: var(--col-success-light); color: var(--col-success); border-color: var(--col-success); }
-      #p-med:checked   + .ppill-label { background: var(--col-warning-light); color: var(--col-warning); border-color: var(--col-warning); }
-      #p-high:checked  + .ppill-label { background: var(--col-danger-light);  color: var(--col-danger);  border-color: var(--col-danger);  }
+      #p-low:checked + .ppill-label {
+        background: var(--col-success-light);
+        color: var(--col-success);
+        border-color: var(--col-success);
+      }
+      #p-med:checked + .ppill-label {
+        background: var(--col-warning-light);
+        color: var(--col-warning);
+        border-color: var(--col-warning);
+      }
+      #p-high:checked + .ppill-label {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+        border-color: var(--col-danger);
+      }
 
       /* Dynamic rows */
-      .dynamic-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+      .dynamic-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
 
-      .row-header { display: grid; gap: 8px; margin-bottom: 4px; }
+      .row-header {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
       .row-header span {
-        font-size: 10.5px; font-weight: 700; color: var(--col-text-muted);
-        letter-spacing: 0.5px; text-transform: uppercase;
+        font-size: 10.5px;
+        font-weight: 700;
+        color: var(--col-text-muted);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
       }
-      .row-header.spec-cols  { grid-template-columns: 1fr 1fr 36px; }
-      .row-header.item-cols  { grid-template-columns: 2fr 90px 130px 36px; }
-
-      .spec-row { display: grid; grid-template-columns: 1fr 1fr 36px; gap: 8px; align-items: center; }
-      .item-row { display: grid; grid-template-columns: 2fr 90px 130px 36px; gap: 8px; align-items: center; }
-
-      .spec-row input, .item-row input, .item-row select {
-        width: 100%; padding: 8px 11px;
-        border: 1px solid var(--col-border); border-radius: var(--radius-sm);
-        font-family: 'DM Sans', sans-serif; font-size: 13px;
-        color: var(--col-text-primary); background: #fff;
-        outline: none; transition: border-color 0.15s;
+      .row-header.spec-cols {
+        grid-template-columns: 1fr 1fr 36px;
       }
-      .spec-row input:focus, .item-row input:focus, .item-row select:focus {
+      .row-header.item-cols {
+        grid-template-columns: 2fr 90px 130px 36px;
+      }
+
+      .spec-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 36px;
+        gap: 8px;
+        align-items: center;
+      }
+      .item-row {
+        display: grid;
+        grid-template-columns: 2fr 90px 130px 36px;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .spec-row input,
+      .item-row input,
+      .item-row select {
+        width: 100%;
+        padding: 8px 11px;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        color: var(--col-text-primary);
+        background: #fff;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .spec-row input:focus,
+      .item-row input:focus,
+      .item-row select:focus {
         border-color: var(--col-accent);
-        box-shadow: 0 0 0 3px rgba(29,107,243,0.1);
+        box-shadow: 0 0 0 3px rgba(29, 107, 243, 0.1);
       }
       .item-row select {
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a90b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 9px center;
-        padding-right: 28px; cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: right 9px center;
+        padding-right: 28px;
+        cursor: pointer;
       }
 
       .btn-remove {
-        width: 36px; height: 36px; border: 1px solid var(--col-border);
-        background: none; border-radius: var(--radius-sm);
-        cursor: pointer; color: var(--col-text-muted);
-        font-size: 17px; display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; transition: all 0.12s;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--col-border);
+        background: none;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        color: var(--col-text-muted);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.12s;
       }
-      .btn-remove:hover { border-color: var(--col-danger); color: var(--col-danger); background: var(--col-danger-light); }
+      .btn-remove:hover {
+        border-color: var(--col-danger);
+        color: var(--col-danger);
+        background: var(--col-danger-light);
+      }
 
       .btn-add-row {
-        display: inline-flex; align-items: center; gap: 6px;
-        background: none; border: 1.5px dashed var(--col-border-strong);
-        border-radius: var(--radius-sm); padding: 7px 14px;
-        font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500;
-        color: var(--col-text-muted); cursor: pointer;
-        transition: border-color 0.15s, color 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: 1.5px dashed var(--col-border-strong);
+        border-radius: var(--radius-sm);
+        padding: 7px 14px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--col-text-muted);
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
       }
-      .btn-add-row:hover { border-color: var(--col-accent); color: var(--col-accent); }
+      .btn-add-row:hover {
+        border-color: var(--col-accent);
+        color: var(--col-accent);
+      }
 
       /* Budget */
-      .budget-wrap { position: relative; }
+      .budget-wrap {
+        position: relative;
+      }
       .budget-prefix {
-        position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-        font-size: 13px; color: var(--col-text-muted); pointer-events: none;
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 13px;
+        color: var(--col-text-muted);
+        pointer-events: none;
         font-family: 'DM Mono', monospace;
       }
-      .budget-wrap input { padding-left: 26px; }
+      .budget-wrap input {
+        padding-left: 26px;
+      }
 
       /* Supplier select */
       .field select[multiple] {
-        height: auto; min-height: 100px; padding: 6px;
+        height: auto;
+        min-height: 100px;
+        padding: 6px;
         background-image: none;
       }
-      .field select[multiple] option { padding: 6px 8px; border-radius: 3px; }
+      .field select[multiple] option {
+        padding: 6px 8px;
+        border-radius: 3px;
+      }
 
       /* Submit bar */
       .submit-bar {
-        background: var(--col-surface); border: 1px solid var(--col-border);
-        border-radius: var(--radius-lg); padding: 18px 22px;
-        display: flex; align-items: center; justify-content: space-between;
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 4px;
       }
-      .submit-note { font-size: 12px; color: var(--col-text-muted); }
-      .submit-actions { display: flex; gap: 10px; }
+      .submit-note {
+        font-size: 12px;
+        color: var(--col-text-muted);
+      }
+      .submit-actions {
+        display: flex;
+        gap: 10px;
+      }
       .btn-discard {
-        background: none; border: 1px solid var(--col-border);
-        border-radius: var(--radius-sm); padding: 9px 18px;
-        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-        color: var(--col-text-secondary); cursor: pointer; transition: all 0.15s;
+        background: none;
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 9px 18px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
       }
-      .btn-discard:hover { border-color: var(--col-danger); color: var(--col-danger); background: var(--col-danger-light); }
+      .btn-discard:hover {
+        border-color: var(--col-danger);
+        color: var(--col-danger);
+        background: var(--col-danger-light);
+      }
       .btn-submit-rfq {
-        background: var(--col-accent); border: none;
-        border-radius: var(--radius-sm); padding: 9px 24px;
-        font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 700;
-        color: #fff; cursor: pointer; transition: all 0.15s;
-        display: flex; align-items: center; gap: 8px;
+        background: var(--col-accent);
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 9px 24px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-      .btn-submit-rfq:hover { background: var(--col-accent-hover); }
+      .btn-submit-rfq:hover {
+        background: var(--col-accent-hover);
+      }
 
       /* Toast */
       .toast-wrap {
-        position: fixed; bottom: 24px; right: 24px;
-        display: flex; flex-direction: column; gap: 8px; z-index: 9999;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 9999;
       }
       .toast-msg {
-        background: #0f1e3d; color: #fff;
-        padding: 11px 18px; border-radius: var(--radius-md);
-        font-size: 13px; font-weight: 500;
-        display: flex; align-items: center; gap: 10px;
-        box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+        background: #0f1e3d;
+        color: #fff;
+        padding: 11px 18px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
         animation: slideUp 0.25s ease;
         min-width: 240px;
       }
-      .toast-msg i { font-size: 15px; }
-      .toast-msg.success i { color: #4ade80; }
-      .toast-msg.warning i { color: #fbbf24; }
+      .toast-msg i {
+        font-size: 15px;
+      }
+      .toast-msg.success i {
+        color: #4ade80;
+      }
+      .toast-msg.warning i {
+        color: #fbbf24;
+      }
       @keyframes slideUp {
-        from { opacity: 0; transform: translateY(12px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       /* Responsive */
       @media (max-width: 1000px) {
-        .rfq-layout { grid-template-columns: 1fr; }
-        .form-nav { display: none; }
+        .rfq-layout {
+          grid-template-columns: 1fr;
+        }
+        .form-nav {
+          display: none;
+        }
       }
       @media (max-width: 768px) {
-        .sidebar { transform: translateX(-100%); }
-        .sidebar.open { transform: translateX(0); }
-        .main { margin-left: 0; }
-        .page-content { padding: 16px; }
-        .field-row, .field-row-3 { grid-template-columns: 1fr; }
-        .item-row { grid-template-columns: 1fr 80px 36px; }
-        .item-row .rfq-item-spec { display: none; }
-        .row-header.item-cols { grid-template-columns: 1fr 80px 36px; }
-        .row-header.item-cols span:nth-child(3) { display: none; }
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .page-content {
+          padding: 16px;
+        }
+        .field-row,
+        .field-row-3 {
+          grid-template-columns: 1fr;
+        }
+        .item-row {
+          grid-template-columns: 1fr 80px 36px;
+        }
+        .item-row .rfq-item-spec {
+          display: none;
+        }
+        .row-header.item-cols {
+          grid-template-columns: 1fr 80px 36px;
+        }
+        .row-header.item-cols span:nth-child(3) {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
     <div class="shell">
-
       <!-- ── Sidebar ── -->
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
@@ -530,38 +1046,56 @@
 
         <nav class="sidebar-nav">
           <div class="sidebar-section-label">Main</div>
-          <a href="/dashboard" class="nav-item"><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a>
-          <a href="/marketplace" class="nav-item"><i class="bi bi-shop"></i><span>Marketplace</span></a>
+          <a href="/dashboard" class="nav-item"
+            ><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a
+          >
+          <a href="/marketplace" class="nav-item"
+            ><i class="bi bi-shop"></i><span>Marketplace</span></a
+          >
           <a href="/rfq" class="nav-item active">
             <i class="bi bi-megaphone"></i><span>RFQ Center</span>
             <span class="nav-badge warning">5</span>
           </a>
 
           <div class="sidebar-section-label">Procurement</div>
-          <a href="/orders" class="nav-item"><i class="bi bi-cart-check"></i><span>Orders</span><span class="nav-badge">3</span></a>
-          <a href="/contracts" class="nav-item"><i class="bi bi-file-earmark-text"></i><span>Contracts</span></a>
-          <a href="/invoices" class="nav-item"><i class="bi bi-receipt"></i><span>Invoices</span></a>
-          <a href="/suppliers" class="nav-item"><i class="bi bi-people"></i><span>Suppliers</span></a>
+          <a href="/orders" class="nav-item"
+            ><i class="bi bi-cart-check"></i><span>Orders</span><span class="nav-badge">3</span></a
+          >
+          <a href="/contracts" class="nav-item"
+            ><i class="bi bi-file-earmark-text"></i><span>Contracts</span></a
+          >
+          <a href="/invoices" class="nav-item"
+            ><i class="bi bi-receipt"></i><span>Invoices</span></a
+          >
+          <a href="/suppliers" class="nav-item"
+            ><i class="bi bi-people"></i><span>Suppliers</span></a
+          >
 
           <div class="sidebar-section-label">Account</div>
-          <a href="/analytics" class="nav-item"><i class="bi bi-bar-chart-line"></i><span>Analytics</span></a>
-          <a href="/profile" class="nav-item"><i class="bi bi-person-circle"></i><span>Profile & Team</span></a>
+          <a href="/analytics" class="nav-item"
+            ><i class="bi bi-bar-chart-line"></i><span>Analytics</span></a
+          >
+          <a href="/profile" class="nav-item"
+            ><i class="bi bi-person-circle"></i><span>Profile & Team</span></a
+          >
           <a href="/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
         </nav>
 
         <div class="sidebar-footer">
           <div class="user-popup" id="userPopup">
             <div class="user-popup-header">My Account</div>
-            <a href="/profile" class="user-popup-item"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/profile" class="user-popup-item"
+              ><i class="bi bi-person-circle"></i> Profile</a
+            >
             <a href="/cart" class="user-popup-item"><i class="bi bi-cart3"></i> Cart</a>
             <a href="/settings" class="user-popup-item"><i class="bi bi-gear"></i> Settings</a>
             <div class="user-popup-divider"></div>
-            <a href="/company/login" class="user-popup-item danger"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+            <a href="/company/login" class="user-popup-item danger"
+              ><i class="bi bi-box-arrow-left"></i> Sign Out</a
+            >
           </div>
           <div class="user-card" id="userCard">
-            <div class="user-avatar">
-             
-            </div>
+            <div class="user-avatar"></div>
             <div>
               <div class="user-name"></div>
               <div class="user-role">Buyer Account</div>
@@ -573,11 +1107,10 @@
 
       <!-- ── Main ── -->
       <div class="main">
-
         <!-- Topbar -->
         <header class="topbar">
-          <button class="icon-btn d-lg-none" id="menuToggle" style="border:none">
-            <i class="bi bi-list" style="font-size:18px"></i>
+          <button class="icon-btn d-lg-none" id="menuToggle" style="border: none">
+            <i class="bi bi-list" style="font-size: 18px"></i>
           </button>
 
           <div class="topbar-breadcrumb">
@@ -588,7 +1121,7 @@
 
           <div class="topbar-actions">
             <div class="icon-btn" title="Notifications">
-              <i class="bi bi-bell" style="font-size:15px"></i>
+              <i class="bi bi-bell" style="font-size: 15px"></i>
               <span class="dot"></span>
             </div>
             <button class="btn-draft" id="saveDraftBtn" onclick="saveDraft()">
@@ -602,7 +1135,6 @@
 
         <!-- Page content -->
         <div class="page-content">
-
           <!-- Draft resume banner -->
           <div class="draft-banner" id="draftBanner">
             <i class="bi bi-clock-history"></i>
@@ -614,7 +1146,6 @@
           </div>
 
           <div class="rfq-layout">
-
             <!-- Left: section nav -->
             <aside class="form-nav">
               <div class="form-nav-label">Sections</div>
@@ -635,10 +1166,6 @@
                   <span class="fnav-num">4</span>
                   <span class="fnav-label">Budget & Deadline</span>
                 </a>
-                <a class="fnav-item" href="#sec-suppliers">
-                  <span class="fnav-num">5</span>
-                  <span class="fnav-label">Invite Suppliers</span>
-                </a>
               </div>
             </aside>
 
@@ -646,7 +1173,6 @@
             <div>
               <form id="createRFQForm" onsubmit="handleSubmit(event)">
                 <div class="form-sections">
-
                   <!-- 1 · Basic Info -->
                   <div class="section-card" id="sec-basic">
                     <div class="section-head">
@@ -654,40 +1180,54 @@
                       <span class="section-title">Basic Information</span>
                     </div>
                     <div class="section-body">
-
                       <div class="field">
                         <label for="rfqTitle">RFQ Title <span class="req">*</span></label>
-                        <input type="text" id="rfqTitle" name="rfqTitle"
-                          placeholder="e.g. Procurement of Industrial Valves — Q3 2025" required />
+                        <input
+                          type="text"
+                          id="rfqTitle"
+                          name="rfqTitle"
+                          placeholder="e.g. Procurement of Industrial Valves — Q3 2025"
+                          required
+                        />
                       </div>
 
                       <div class="field-row">
                         <div class="field">
                           <label for="rfqCategory">Category <span class="req">*</span></label>
                           <select id="rfqCategory" name="rfqCategory" required>
-                            <option value="">Select category</option>
-                            <option value="mechanical">Mechanical Components</option>
-                            <option value="electrical">Electrical & Electronics</option>
-                            <option value="pneumatic">Pneumatic & Hydraulic</option>
-                            <option value="raw">Raw Materials</option>
-                            <option value="safety">Safety Equipment</option>
-                            <option value="tools">Tools & Machinery</option>
-                            <option value="packaging">Packaging</option>
                             <option value="other">Other</option>
                           </select>
                         </div>
                         <div class="field">
                           <label>Priority <span class="req">*</span></label>
                           <div class="priority-pills">
-                            <input type="radio" class="ppill-input" name="rfqPriority" id="p-low"  value="low"    />
+                            <input
+                              type="radio"
+                              class="ppill-input"
+                              name="rfqPriority"
+                              id="p-low"
+                              value="low"
+                            />
                             <label class="ppill-label" for="p-low">Low</label>
-                            <input type="radio" class="ppill-input" name="rfqPriority" id="p-med"  value="medium" />
+                            <input
+                              type="radio"
+                              class="ppill-input"
+                              name="rfqPriority"
+                              id="p-med"
+                              value="medium"
+                            />
                             <label class="ppill-label" for="p-med">Medium</label>
-                            <input type="radio" class="ppill-input" name="rfqPriority" id="p-high" value="high"   />
+                            <input
+                              type="radio"
+                              class="ppill-input"
+                              name="rfqPriority"
+                              id="p-high"
+                              value="high"
+                            />
                             <label class="ppill-label" for="p-high">High</label>
                           </div>
                           <!-- hidden select keeps priority in form data -->
-                          <select name="rfqPriorityVal" id="rfqPriorityVal" style="display:none">
+                          <select name="rfqPriorityVal" id="rfqPriorityVal" style="display: none">
                             <option value="low">low</option>
                             <option value="medium">medium</option>
                             <option value="high">high</option>
@@ -697,16 +1237,26 @@
 
                       <div class="field">
                         <label for="rfqDescription">Description <span class="req">*</span></label>
-                        <textarea id="rfqDescription" name="rfqDescription"
-                          placeholder="Describe the procurement requirement — quantity expectations, technical standards, delivery conditions..." required></textarea>
+                        <textarea
+                          id="rfqDescription"
+                          name="rfqDescription"
+                          placeholder="Describe the procurement requirement — quantity expectations, technical standards, delivery conditions..."
+                          required
+                        ></textarea>
                       </div>
 
                       <div class="field">
-                        <label for="rfqLocation">Delivery Location <span class="req">*</span></label>
-                        <input type="text" id="rfqLocation" name="rfqLocation"
-                          placeholder="e.g. Pune Warehouse, Plot 14, Chakan MIDC" required />
+                        <label for="rfqLocation"
+                          >Delivery Location <span class="req">*</span></label
+                        >
+                        <input
+                          type="text"
+                          id="rfqLocation"
+                          name="rfqLocation"
+                          placeholder="e.g. Pune Warehouse, Plot 14, Chakan MIDC"
+                          required
+                        />
                       </div>
-
                     </div>
                   </div>
 
@@ -717,7 +1267,6 @@
                       <span class="section-title">Specifications</span>
                     </div>
                     <div class="section-body">
-
                       <div class="row-header spec-cols">
                         <span>Spec Name</span>
                         <span>Spec Value</span>
@@ -726,16 +1275,27 @@
 
                       <div class="dynamic-rows" id="specificationsContainer">
                         <div class="spec-row">
-                          <input type="text" class="spec-name" name="spec_name[]" placeholder="e.g. Material Grade" />
-                          <input type="text" class="spec-value" name="spec_value[]" placeholder="e.g. SS 316" />
-                          <button type="button" class="btn-remove remove-spec-btn" title="Remove">×</button>
+                          <input
+                            type="text"
+                            class="spec-name"
+                            name="spec_name[]"
+                            placeholder="e.g. Material Grade"
+                          />
+                          <input
+                            type="text"
+                            class="spec-value"
+                            name="spec_value[]"
+                            placeholder="e.g. SS 316"
+                          />
+                          <button type="button" class="btn-remove remove-spec-btn" title="Remove">
+                            ×
+                          </button>
                         </div>
                       </div>
 
                       <button type="button" class="btn-add-row" id="addSpecificationBtn">
                         <i class="bi bi-plus-lg"></i> Add Specification
                       </button>
-
                     </div>
                   </div>
 
@@ -746,7 +1306,6 @@
                       <span class="section-title">RFQ Items</span>
                     </div>
                     <div class="section-body">
-
                       <div class="row-header item-cols">
                         <span>Product / Item</span>
                         <span>Qty</span>
@@ -758,20 +1317,31 @@
                         <div class="item-row">
                           <select class="rfq-item-product" name="item_product[]">
                             <option value="">Select item</option>
-                          
-                              <option value=""></option>
-                            
+
+                            <option value=""></option>
                           </select>
-                          <input type="number" class="rfq-item-qty" name="item_qty[]" placeholder="Qty" min="1" />
-                          <input type="text"   class="rfq-item-spec" name="item_spec[]" placeholder="e.g. 50mm dia" />
-                          <button type="button" class="btn-remove remove-item-btn" title="Remove">×</button>
+                          <input
+                            type="number"
+                            class="rfq-item-qty"
+                            name="item_qty[]"
+                            placeholder="Qty"
+                            min="1"
+                          />
+                          <input
+                            type="text"
+                            class="rfq-item-spec"
+                            name="item_spec[]"
+                            placeholder="e.g. 50mm dia"
+                          />
+                          <button type="button" class="btn-remove remove-item-btn" title="Remove">
+                            ×
+                          </button>
                         </div>
                       </div>
 
                       <button type="button" class="btn-add-row" id="addItemBtn">
                         <i class="bi bi-plus-lg"></i> Add Another Item
                       </button>
-
                     </div>
                   </div>
 
@@ -782,20 +1352,33 @@
                       <span class="section-title">Budget & Deadline</span>
                     </div>
                     <div class="section-body">
-
                       <div class="field-row field">
                         <div class="field">
                           <label for="budgetMin">Minimum Budget <span class="req">*</span></label>
                           <div class="budget-wrap">
                             <span class="budget-prefix">₹</span>
-                            <input type="number" id="budgetMin" name="budgetMin" placeholder="0" min="0" required />
+                            <input
+                              type="number"
+                              id="budgetMin"
+                              name="budgetMin"
+                              placeholder="0"
+                              min="0"
+                              required
+                            />
                           </div>
                         </div>
                         <div class="field">
                           <label for="budgetMax">Maximum Budget <span class="req">*</span></label>
                           <div class="budget-wrap">
                             <span class="budget-prefix">₹</span>
-                            <input type="number" id="budgetMax" name="budgetMax" placeholder="0" min="0" required />
+                            <input
+                              type="number"
+                              id="budgetMax"
+                              name="budgetMax"
+                              placeholder="0"
+                              min="0"
+                              required
+                            />
                           </div>
                         </div>
                       </div>
@@ -803,39 +1386,27 @@
                       <div class="field">
                         <label for="rfqDeadline">Bid Deadline <span class="req">*</span></label>
                         <input type="date" id="rfqDeadline" name="rfqDeadline" required />
-                        <p class="field-hint">Suppliers will not be able to submit quotes after this date.</p>
+                        <p class="field-hint">
+                          Suppliers will not be able to submit quotes after this date.
+                        </p>
                       </div>
-
                     </div>
                   </div>
 
                   <!-- 5 · Invite Suppliers -->
-                  <div class="section-card" id="sec-suppliers">
-                    <div class="section-head">
-                      <span class="section-index">05</span>
-                      <span class="section-title">Invite Suppliers</span>
-                    </div>
-                    <div class="section-body">
-
-                      <div class="field">
-                        <label for="supplierInvitation">Select Suppliers</label>
-                        <select id="supplierInvitation" name="supplierInvitation[]" multiple>
-                          <!-- Populated dynamically based on selected category -->
-                        </select>
-                        <p class="field-hint">Suppliers are filtered by selected category. Hold Ctrl / ⌘ to select multiple.</p>
-                      </div>
-
-                    </div>
-                  </div>
+                  
 
                   <!-- Submit bar -->
                   <div class="submit-bar">
                     <span class="submit-note">
-                      Fields marked <strong style="color:var(--col-danger)">*</strong> are required &nbsp;·&nbsp;
-                      <span id="autosaveStatus" style="color:var(--col-text-muted)"></span>
+                      Fields marked <strong style="color: var(--col-danger)">*</strong> are required
+                      &nbsp;·&nbsp;
+                      <span id="autosaveStatus" style="color: var(--col-text-muted)"></span>
                     </span>
                     <div class="submit-actions">
-                      <button type="button" class="btn-discard" onclick="confirmDiscard()">Discard</button>
+                      <button type="button" class="btn-discard" onclick="confirmDiscard()">
+                        Discard
+                      </button>
                       <button type="button" class="btn-draft" onclick="saveDraft()">
                         <i class="bi bi-floppy"></i> Save Draft
                       </button>
@@ -844,42 +1415,47 @@
                       </button>
                     </div>
                   </div>
-
-                </div><!-- /form-sections -->
+                </div>
+                <!-- /form-sections -->
               </form>
             </div>
-
-          </div><!-- /rfq-layout -->
-        </div><!-- /page-content -->
-      </div><!-- /main -->
-    </div><!-- /shell -->
+          </div>
+          <!-- /rfq-layout -->
+        </div>
+        <!-- /page-content -->
+      </div>
+      <!-- /main -->
+    </div>
+    <!-- /shell -->
 
     <!-- Toast container -->
     <div class="toast-wrap" id="toastWrap"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/company.js"></script>
+    <script type="module" src="../assets/js/company/newRFQ/newRFQ.main.js"></script>
     <script>
       // ── Mobile sidebar toggle ──
       const menuToggle = document.getElementById('menuToggle');
-      const sidebar    = document.getElementById('sidebar');
+      const sidebar = document.getElementById('sidebar');
       if (menuToggle) {
         menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-        document.addEventListener('click', e => {
+        document.addEventListener('click', (e) => {
           if (!sidebar.contains(e.target) && !menuToggle.contains(e.target))
             sidebar.classList.remove('open');
         });
       }
 
       // ── User popup ──
-      const userCard  = document.getElementById('userCard');
+      const userCard = document.getElementById('userCard');
       const userPopup = document.getElementById('userPopup');
       if (userCard && userPopup) {
-        userCard.addEventListener('click', e => {
+        userCard.addEventListener('click', (e) => {
           e.stopPropagation();
           const open = userPopup.classList.toggle('open');
           userCard.classList.toggle('active', open);
         });
-        document.addEventListener('click', e => {
+        document.addEventListener('click', (e) => {
           if (!userCard.contains(e.target) && !userPopup.contains(e.target)) {
             userPopup.classList.remove('open');
             userCard.classList.remove('active');
@@ -888,7 +1464,7 @@
       }
 
       // ── Priority pills → hidden select sync ──
-      document.querySelectorAll('.ppill-input').forEach(r => {
+      document.querySelectorAll('.ppill-input').forEach((r) => {
         r.addEventListener('change', () => {
           document.getElementById('rfqPriorityVal').value = r.value;
         });
@@ -900,7 +1476,7 @@
       // ── Toast helper ──
       function showToast(msg, type = 'success') {
         const wrap = document.getElementById('toastWrap');
-        const el   = document.createElement('div');
+        const el = document.createElement('div');
         el.className = `toast-msg ${type}`;
         el.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}"></i> ${msg}`;
         wrap.appendChild(el);
@@ -922,68 +1498,88 @@
 
       // ── Add / Remove Items ──
       document.getElementById('addItemBtn').addEventListener('click', () => {
-        const row = document.createElement('div');
-        row.className = 'item-row';
-        row.innerHTML = `
-          <select class="rfq-item-product" name="item_product[]">
-            <option value="">Select item</option>
-          </select>
-          <input type="number" class="rfq-item-qty"  name="item_qty[]"  placeholder="Qty" min="1" />
-          <input type="text"   class="rfq-item-spec" name="item_spec[]" placeholder="e.g. 50mm dia" />
-          <button type="button" class="btn-remove remove-item-btn" title="Remove">×</button>
-        `;
-        document.getElementById('rfqItemsContainer').appendChild(row);
-        bindRemove();
+        const product = document.querySelector('.rfq-item-product').value;
+        const qty = document.querySelector('.rfq-item-qty').value;
+        const spec = document.querySelector('.rfq-item-spec').value;
+
+        if (!product || !qty) {
+          alert('Select product and quantity first');
+          return;
+        }
+
+        rfqState.rfqItems.push({
+          product,
+          qty,
+          spec,
+        });
+
+        renderSavedItems();
+
+        // reset fields
+        document.querySelector('.rfq-item-product').value = '';
+        document.querySelector('.rfq-item-qty').value = '';
+        document.querySelector('.rfq-item-spec').value = '';
       });
 
-      function bindRemove() {
-        document.querySelectorAll('.remove-spec-btn').forEach(btn => {
-          btn.onclick = () => {
-            if (document.querySelectorAll('#specificationsContainer .spec-row').length > 1)
-              btn.closest('.spec-row').remove();
-          };
-        });
-        document.querySelectorAll('.remove-item-btn').forEach(btn => {
-          btn.onclick = () => {
-            if (document.querySelectorAll('#rfqItemsContainer .item-row').length > 1)
-              btn.closest('.item-row').remove();
-          };
+      function renderSavedItems() {
+        const container = document.getElementById('savedItemsContainer');
+
+        container.innerHTML = '';
+
+        rfqState.rfqItems.forEach((item, index) => {
+          container.innerHTML += `
+      <div>
+        ${item.product} — Qty: ${item.qty} — ${item.spec}
+        <button onclick="removeItem(${index})">X</button>
+      </div>
+    `;
         });
       }
-      bindRemove();
+      window.removeItem = function(index) {
+  rfqState.rfqItems.splice(index, 1);
+  renderSavedItems();
+};
+      function bindRemove() {
+  document.querySelectorAll('.remove-spec-btn').forEach((btn) => {
+    btn.onclick = () => {
+      if (document.querySelectorAll('#specificationsContainer .spec-row').length > 1) {
+        btn.closest('.spec-row').remove();
+      }
+    };
+  });
+}
+
+bindRemove();
+      
 
       // ── Collect form data ──
       function collectFormData() {
         const specs = [];
-        document.querySelectorAll('#specificationsContainer .spec-row').forEach(row => {
+        document.querySelectorAll('#specificationsContainer .spec-row').forEach((row) => {
           const n = row.querySelector('.spec-name').value.trim();
           const v = row.querySelector('.spec-value').value.trim();
           if (n || v) specs.push({ spec_name: n, spec_value: v });
         });
 
         const items = [];
-        document.querySelectorAll('#rfqItemsContainer .item-row').forEach(row => {
+        document.querySelectorAll('#rfqItemsContainer .item-row').forEach((row) => {
           const product = row.querySelector('.rfq-item-product').value;
-          const qty     = row.querySelector('.rfq-item-qty').value;
-          const spec    = row.querySelector('.rfq-item-spec').value.trim();
+          const qty = row.querySelector('.rfq-item-qty').value;
+          const spec = row.querySelector('.rfq-item-spec').value.trim();
           if (product || qty) items.push({ product_id: product, quantity: qty, item_spec: spec });
         });
 
-        const supplierEl = document.getElementById('supplierInvitation');
-        const invited    = Array.from(supplierEl.selectedOptions).map(o => o.value);
-
         return {
-          rfqTitle:           document.getElementById('rfqTitle').value.trim(),
-          rfqCategory:        document.getElementById('rfqCategory').value,
-          rfqDescription:     document.getElementById('rfqDescription').value.trim(),
-          rfqLocation:        document.getElementById('rfqLocation').value.trim(),
-          rfqPriority:        document.getElementById('rfqPriorityVal').value,
-          specifications:     specs,
-          items:              items,
-          budgetMin:          document.getElementById('budgetMin').value,
-          budgetMax:          document.getElementById('budgetMax').value,
-          rfqDeadline:        document.getElementById('rfqDeadline').value,
-          supplierInvitation: invited,
+          rfqTitle: document.getElementById('rfqTitle').value.trim(),
+          rfqCategory: document.getElementById('rfqCategory').value,
+          rfqDescription: document.getElementById('rfqDescription').value.trim(),
+          rfqLocation: document.getElementById('rfqLocation').value.trim(),
+          rfqPriority: document.getElementById('rfqPriorityVal').value,
+          specifications: specs,
+          items: items,
+          budgetMin: document.getElementById('budgetMin').value,
+          budgetMax: document.getElementById('budgetMax').value,
+          rfqDeadline: document.getElementById('rfqDeadline').value,
         };
       }
 
@@ -1014,7 +1610,7 @@
 
       function updateAutosaveStatus(isoDate) {
         if (!isoDate) return;
-        const d    = new Date(isoDate);
+        const d = new Date(isoDate);
         const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         document.getElementById('autosaveStatus').textContent = `Draft auto-saved at ${time}`;
       }
@@ -1025,28 +1621,32 @@
         if (!raw) return;
         const data = JSON.parse(raw);
 
-        if (data.rfqTitle)       document.getElementById('rfqTitle').value       = data.rfqTitle;
-        if (data.rfqCategory)    document.getElementById('rfqCategory').value    = data.rfqCategory;
-        if (data.rfqDescription) document.getElementById('rfqDescription').value = data.rfqDescription;
-        if (data.rfqLocation)    document.getElementById('rfqLocation').value    = data.rfqLocation;
-        if (data.rfqDeadline)    document.getElementById('rfqDeadline').value    = data.rfqDeadline;
-        if (data.budgetMin)      document.getElementById('budgetMin').value      = data.budgetMin;
-        if (data.budgetMax)      document.getElementById('budgetMax').value      = data.budgetMax;
+        if (data.rfqTitle) document.getElementById('rfqTitle').value = data.rfqTitle;
+        if (data.rfqCategory) document.getElementById('rfqCategory').value = data.rfqCategory;
+        if (data.rfqDescription)
+          document.getElementById('rfqDescription').value = data.rfqDescription;
+        if (data.rfqLocation) document.getElementById('rfqLocation').value = data.rfqLocation;
+        if (data.rfqDeadline) document.getElementById('rfqDeadline').value = data.rfqDeadline;
+        if (data.budgetMin) document.getElementById('budgetMin').value = data.budgetMin;
+        if (data.budgetMax) document.getElementById('budgetMax').value = data.budgetMax;
 
         if (data.rfqPriority) {
           const radio = document.querySelector(`.ppill-input[value="${data.rfqPriority}"]`);
-          if (radio) { radio.checked = true; document.getElementById('rfqPriorityVal').value = data.rfqPriority; }
+          if (radio) {
+            radio.checked = true;
+            document.getElementById('rfqPriorityVal').value = data.rfqPriority;
+          }
         }
 
         // Specs
         if (data.specifications && data.specifications.length) {
           const container = document.getElementById('specificationsContainer');
           container.innerHTML = '';
-          data.specifications.forEach(s => {
+          data.specifications.forEach((s) => {
             const row = document.createElement('div');
             row.className = 'spec-row';
             row.innerHTML = `
-              <input type="text" class="spec-name"  name="spec_name[]"  value="${s.spec_name  || ''}" placeholder="Specification Name" />
+              <input type="text" class="spec-name"  name="spec_name[]"  value="${s.spec_name || ''}" placeholder="Specification Name" />
               <input type="text" class="spec-value" name="spec_value[]" value="${s.spec_value || ''}" placeholder="Specification Value" />
               <button type="button" class="btn-remove remove-spec-btn" title="Remove">×</button>
             `;
@@ -1059,14 +1659,14 @@
         if (data.items && data.items.length) {
           const container = document.getElementById('rfqItemsContainer');
           container.innerHTML = '';
-          data.items.forEach(item => {
+          data.items.forEach((item) => {
             const row = document.createElement('div');
             row.className = 'item-row';
             row.innerHTML = `
               <select class="rfq-item-product" name="item_product[]">
                 <option value="${item.product_id || ''}">${item.product_id ? 'Product #' + item.product_id : 'Select item'}</option>
               </select>
-              <input type="number" class="rfq-item-qty"  name="item_qty[]"  value="${item.quantity  || ''}" placeholder="Qty" min="1" />
+              <input type="number" class="rfq-item-qty"  name="item_qty[]"  value="${item.quantity || ''}" placeholder="Qty" min="1" />
               <input type="text"   class="rfq-item-spec" name="item_spec[]" value="${item.item_spec || ''}" placeholder="e.g. 50mm dia" />
               <button type="button" class="btn-remove remove-item-btn" title="Remove">×</button>
             `;
@@ -1096,7 +1696,9 @@
               document.getElementById('draftBanner').classList.add('show');
               updateAutosaveStatus(d._savedAt);
             }
-          } catch(e) { localStorage.removeItem(DRAFT_KEY); }
+          } catch (e) {
+            localStorage.removeItem(DRAFT_KEY);
+          }
         }
       });
 
@@ -1111,18 +1713,22 @@
       }, 60000);
 
       // ── Scrollspy for form nav ──
-      const sections  = ['sec-basic','sec-specs','sec-items','sec-budget','sec-suppliers'];
-      const navLinks  = document.querySelectorAll('.fnav-item');
-      window.addEventListener('scroll', () => {
-        let current = sections[0];
-        sections.forEach(id => {
-          const el = document.getElementById(id);
-          if (el && el.getBoundingClientRect().top <= 100) current = id;
-        });
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-        });
-      }, { passive: true });
+      const sections = ['sec-basic', 'sec-specs', 'sec-items', 'sec-budget', 'sec-suppliers'];
+      const navLinks = document.querySelectorAll('.fnav-item');
+      window.addEventListener(
+        'scroll',
+        () => {
+          let current = sections[0];
+          sections.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el && el.getBoundingClientRect().top <= 100) current = id;
+          });
+          navLinks.forEach((link) => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+          });
+        },
+        { passive: true },
+      );
 
       // ── Discard confirmation ──
       function confirmDiscard() {

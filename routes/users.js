@@ -9,6 +9,5 @@ router.route('/:id').delete(userControllers.deleteUser);
 router.route('/signup').post(authController.signup);
 router.route('/login').post(authController.login);
 router.route('/logout').post(authController.logout);
-router.route('/vendor/by-category/:categoryId').get(userControllers.getVendorByCategory);
 
 module.exports = router

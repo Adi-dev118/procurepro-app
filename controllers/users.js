@@ -616,34 +616,12 @@ exports.approveSupplier = async (req, res) => {
   try {
     const supplierId = req.params.supplierId;
 
-
     await db.query(`UPDATE suppliers SET verification_status = 'approved' WHERE id = ?`, [
       supplierId,
     ]);
-  
 
     res.json({ message: 'supplier approved' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-
-exports.getVendorByCategory = async (req, res) => {
-  try {
-    const categoryId = req.params.categoryId;
-    const [Vendor] = await db.query(`SELECT DISTINCT
-    s.id,
-    s.business_name
-FROM suppliers s
-INNER JOIN products p
-    ON s.id = p.supplier_id
-WHERE p.category_id = ? `, [categoryId]);
-    res.json({
-      Vendor,
-    });
-  } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
