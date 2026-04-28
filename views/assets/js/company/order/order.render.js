@@ -111,7 +111,7 @@ function renderOrders(orders) {
         <td>
           <div class="action-btns">
 
-            <button class="action-btn" title="View">
+            <button class="action-btn " title="View">
               <i class="bi bi-eye"></i>
             </button>
 

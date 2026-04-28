@@ -527,3 +527,47 @@ exports.getOrderProducts = async (req, res) => {
     });
   }
 };
+
+exports.getOrderItemsByOrderId = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+
+    // Fetch only items of this specific order
+    const [items] = await db.query(
+      `
+      SELECT
+        oi.id,
+        oi.quantity,
+        oi.price_at_purchase,
+        (oi.quantity * oi.price_at_purchase ) AS subtotal,
+        p.name AS product_name
+      FROM order_items oi
+      LEFT JOIN products p
+        ON oi.product_id = p.id
+      WHERE oi.order_id = ?
+      ORDER BY oi.id DESC
+      `,
+      [orderId]
+    );
+
+    if (!items.length) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "No order items found"
+      });
+    }
+
+    res.status(200).json({
+      status: "Success",
+      items
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      status: "Failed",
+      message: "Server Error"
+    });
+  }
+};
