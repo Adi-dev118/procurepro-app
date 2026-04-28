@@ -274,7 +274,6 @@ exports.createRFQ = async (req, res) => {
       priority,
       items,
       specifications,
-      suppliers
     } = req.body;
 
     // =========================
@@ -370,16 +369,14 @@ exports.createRFQ = async (req, res) => {
         (
           rfq_id,
           product_name,
-          quantity,
-          specifications
+          quantity
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?)
         `,
         [
           rfqId,
           item.productName,
-          item.quantity,
-          item.specifications || null
+          item.quantity
         ]
       );
     }
@@ -410,34 +407,6 @@ exports.createRFQ = async (req, res) => {
         );
       }
     }
-
-    // =========================
-    // Insert Supplier Invitations
-    // =========================
-
-    if (suppliers && Array.isArray(suppliers)) {
-      for (const supplierId of suppliers) {
-        if (!supplierId) continue;
-
-        await connection.query(
-          `
-          INSERT INTO rfq_invitations
-          (
-            rfq_id,
-            supplier_id,
-            status
-          )
-          VALUES (?, ?, ?)
-          `,
-          [
-            rfqId,
-            supplierId,
-            "invited"
-          ]
-        );
-      }
-    }
-
     // =========================
     // Commit
     // =========================

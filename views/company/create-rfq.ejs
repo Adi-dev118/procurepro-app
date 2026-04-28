@@ -1309,7 +1309,6 @@
                       <div class="row-header item-cols">
                         <span>Product / Item</span>
                         <span>Qty</span>
-                        <span>Item Spec</span>
                         <span></span>
                       </div>
 
@@ -1326,12 +1325,6 @@
                             name="item_qty[]"
                             placeholder="Qty"
                             min="1"
-                          />
-                          <input
-                            type="text"
-                            class="rfq-item-spec"
-                            name="item_spec[]"
-                            placeholder="e.g. 50mm dia"
                           />
                           <button type="button" class="btn-remove remove-item-btn" title="Remove">
                             ×
@@ -1394,7 +1387,6 @@
                   </div>
 
                   <!-- 5 · Invite Suppliers -->
-                  
 
                   <!-- Submit bar -->
                   <div class="submit-bar">
@@ -1496,31 +1488,6 @@
         bindRemove();
       });
 
-      // ── Add / Remove Items ──
-      document.getElementById('addItemBtn').addEventListener('click', () => {
-        const product = document.querySelector('.rfq-item-product').value;
-        const qty = document.querySelector('.rfq-item-qty').value;
-        const spec = document.querySelector('.rfq-item-spec').value;
-
-        if (!product || !qty) {
-          alert('Select product and quantity first');
-          return;
-        }
-
-        rfqState.rfqItems.push({
-          product,
-          qty,
-          spec,
-        });
-
-        renderSavedItems();
-
-        // reset fields
-        document.querySelector('.rfq-item-product').value = '';
-        document.querySelector('.rfq-item-qty').value = '';
-        document.querySelector('.rfq-item-spec').value = '';
-      });
-
       function renderSavedItems() {
         const container = document.getElementById('savedItemsContainer');
 
@@ -1535,22 +1502,21 @@
     `;
         });
       }
-      window.removeItem = function(index) {
-  rfqState.rfqItems.splice(index, 1);
-  renderSavedItems();
-};
+      window.removeItem = function (index) {
+        rfqState.rfqItems.splice(index, 1);
+        renderSavedItems();
+      };
       function bindRemove() {
-  document.querySelectorAll('.remove-spec-btn').forEach((btn) => {
-    btn.onclick = () => {
-      if (document.querySelectorAll('#specificationsContainer .spec-row').length > 1) {
-        btn.closest('.spec-row').remove();
+        document.querySelectorAll('.remove-spec-btn').forEach((btn) => {
+          btn.onclick = () => {
+            if (document.querySelectorAll('#specificationsContainer .spec-row').length > 1) {
+              btn.closest('.spec-row').remove();
+            }
+          };
+        });
       }
-    };
-  });
-}
 
-bindRemove();
-      
+      bindRemove();
 
       // ── Collect form data ──
       function collectFormData() {
@@ -1558,28 +1524,36 @@ bindRemove();
         document.querySelectorAll('#specificationsContainer .spec-row').forEach((row) => {
           const n = row.querySelector('.spec-name').value.trim();
           const v = row.querySelector('.spec-value').value.trim();
-          if (n || v) specs.push({ spec_name: n, spec_value: v });
+          if (n || v) specs.push({ specName: n, specValue: v });
         });
 
         const items = [];
+        let totalQuantity = 0;
         document.querySelectorAll('#rfqItemsContainer .item-row').forEach((row) => {
-          const product = row.querySelector('.rfq-item-product').value;
-          const qty = row.querySelector('.rfq-item-qty').value;
-          const spec = row.querySelector('.rfq-item-spec').value.trim();
-          if (product || qty) items.push({ product_id: product, quantity: qty, item_spec: spec });
+          const productSelect = row.querySelector('.rfq-item-product');
+          const productName = productSelect.options[productSelect.selectedIndex].text;
+          const qty = Number(row.querySelector('.rfq-item-qty').value || 0);
+          if (productName && qty > 0) {
+            items.push({
+              productName,
+              quantity: qty,
+            });
+            totalQuantity += qty;
+          }
         });
 
         return {
-          rfqTitle: document.getElementById('rfqTitle').value.trim(),
-          rfqCategory: document.getElementById('rfqCategory').value,
-          rfqDescription: document.getElementById('rfqDescription').value.trim(),
-          rfqLocation: document.getElementById('rfqLocation').value.trim(),
-          rfqPriority: document.getElementById('rfqPriorityVal').value,
+          title: document.getElementById('rfqTitle').value.trim(),
+          categoryId: document.getElementById('rfqCategory').value,
+          description: document.getElementById('rfqDescription').value.trim(),
+          location: document.getElementById('rfqLocation').value.trim(),
+          priority: document.getElementById('rfqPriorityVal').value,
           specifications: specs,
           items: items,
+          totalQuantity,
           budgetMin: document.getElementById('budgetMin').value,
           budgetMax: document.getElementById('budgetMax').value,
-          rfqDeadline: document.getElementById('rfqDeadline').value,
+          deadline: document.getElementById('rfqDeadline').value,
         };
       }
 
@@ -1646,8 +1620,8 @@ bindRemove();
             const row = document.createElement('div');
             row.className = 'spec-row';
             row.innerHTML = `
-              <input type="text" class="spec-name"  name="spec_name[]"  value="${s.spec_name || ''}" placeholder="Specification Name" />
-              <input type="text" class="spec-value" name="spec_value[]" value="${s.spec_value || ''}" placeholder="Specification Value" />
+              <input type="text" class="spec-name"  name="spec_name[]"  value="${s.specName || ''}" placeholder="Specification Name" />
+              <input type="text" class="spec-value" name="spec_value[]" value="${s.specValue || ''}" placeholder="Specification Value" />
               <button type="button" class="btn-remove remove-spec-btn" title="Remove">×</button>
             `;
             container.appendChild(row);
@@ -1667,7 +1641,6 @@ bindRemove();
                 <option value="${item.product_id || ''}">${item.product_id ? 'Product #' + item.product_id : 'Select item'}</option>
               </select>
               <input type="number" class="rfq-item-qty"  name="item_qty[]"  value="${item.quantity || ''}" placeholder="Qty" min="1" />
-              <input type="text"   class="rfq-item-spec" name="item_spec[]" value="${item.item_spec || ''}" placeholder="e.g. 50mm dia" />
               <button type="button" class="btn-remove remove-item-btn" title="Remove">×</button>
             `;
             container.appendChild(row);
@@ -1739,20 +1712,35 @@ bindRemove();
       }
 
       // ── Form submit ──
+
       function handleSubmit(e) {
         e.preventDefault();
-        const payload = collectFormData();
-        console.log('RFQ Payload:', payload);
-        localStorage.removeItem(DRAFT_KEY);
 
-        // Uncomment to wire up:
-        // fetch('/api/rfq/create', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(payload)
-        // }).then(r => r.json()).then(d => {
-        //   if (d.success) window.location.href = '/rfq/' + d.rfqId;
-        // });
+        const payload = collectFormData();
+        console.log(payload);
+
+        fetch('/api/v1/rfq/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        })
+          .then((res) => res.json())
+          .then((d) => {
+            console.log(d);
+
+            if (d.status === 'Success') {
+              localStorage.removeItem(DRAFT_KEY);
+              window.location.href = '/rfq/' + d.data.rfqId;
+            } else {
+              alert(d.message || 'RFQ creation failed');
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert('Something went wrong');
+          });
       }
     </script>
   </body>

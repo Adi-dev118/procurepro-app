@@ -12,6 +12,7 @@ const cartRoutes = require('./routes/cart');
 const adminRoutes = require('./routes/admin');
 const companyRoutes = require('./routes/company');
 const vendorRoutes = require('./routes/vendor');
+const rfqRoutes = require('./routes/rfq');
 const { createClient } = require('redis');
 
 //EJS VIEW SETUP
@@ -53,6 +54,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/carts', cartRoutes);
+app.use('/api/v1/rfq', rfqRoutes);
 
 // VIEWS ROUTES
 app.use('/', vendorRoutes);
