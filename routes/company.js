@@ -38,4 +38,8 @@ router.get('/rfq/create', (req, res) => {
   res.render('company/create-rfq');
 });
 
+router.get('/rfq/:id', (req, res) => {
+  res.render('company/rfq-success');
+});
+
 module.exports = router;

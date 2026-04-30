@@ -23,10 +23,7 @@ function formatDate(date) {
 
 function getRFQStage(rfq) {
   const hasWinner =
-    rfq.quotes &&
-    rfq.quotes.some(
-      (q) => q.status === 'accepted' || q.status === 'won'
-    );
+    rfq.quotes && rfq.quotes.some((q) => q.status === 'accepted' || q.status === 'won');
 
   if (rfq.status === 'closed' || rfq.status === 'expired') {
     return hasWinner ? 'awarded' : 'pending';
@@ -65,13 +62,9 @@ export function renderRFQs() {
 
     const isAwarded = stage === 'awarded';
 
-    const winnerQuotes = rfq.quotes?.filter(
-      (q) => q.status === 'accepted' || q.status === 'won'
-    );
+    const winnerQuotes = rfq.quotes?.filter((q) => q.status === 'accepted' || q.status === 'won');
 
-    const displayQuotes = isAwarded
-      ? winnerQuotes
-      : rfq.quotes || [];
+    const displayQuotes = isAwarded ? winnerQuotes : rfq.quotes || [];
 
     /* ================= BIDS HTML ================= */
 
@@ -79,8 +72,7 @@ export function renderRFQs() {
       displayQuotes.length > 0
         ? displayQuotes
             .map((q) => {
-              const isWinner =
-                q.status === 'accepted' || q.status === 'won';
+              const isWinner = q.status === 'accepted' || q.status === 'won';
 
               return `
         <div class="bid-card ${isWinner ? 'winner' : ''}">
@@ -117,10 +109,10 @@ export function renderRFQs() {
               isWinner
                 ? `<span class="badge awarded">Winner</span>`
                 : !isAwarded
-                ? `<button class="btn-accept accept-bid-btn" data-bid-id="${q.id}">
+                  ? `<button class="btn-accept accept-bid-btn" data-bid-id="${q.id}">
                      Accept
                    </button>`
-                : ''
+                  : ''
             }
           </div>
 
@@ -139,45 +131,33 @@ export function renderRFQs() {
     } else if (stage === 'pending') {
       pendingCount++;
 
-      pendingEl.innerHTML += rfqCard(
-        rfq,
-        bidsHTML,
-        'Pending Review',
-        'awaiting'
-      );
+      pendingEl.innerHTML += rfqCard(rfq, bidsHTML, 'Pending Review', 'awaiting');
     } else if (stage === 'awarded') {
       closedCount++;
 
-      closedEl.innerHTML += rfqCard(
-        rfq,
-        bidsHTML,
-        'Awarded',
-        'awarded'
-      );
+      closedEl.innerHTML += rfqCard(rfq, bidsHTML, 'Awarded', 'awarded');
     }
   });
 
   /* ================= COUNTS ================= */
 
-  document.querySelector('[data-tab="active"] .tab-count').textContent =
-    activeCount;
-  document.querySelector('[data-tab="pending"] .tab-count').textContent =
-    pendingCount;
-  document.querySelector('[data-tab="closed"] .tab-count').textContent =
-    closedCount;
+  document.querySelector('[data-tab="active"] .tab-count').textContent = activeCount;
+  document.querySelector('[data-tab="pending"] .tab-count').textContent = pendingCount;
+  document.querySelector('[data-tab="closed"] .tab-count').textContent = closedCount;
 
   attachAcceptHandlers();
 }
 
 /* ================= CARD ================= */
-
 function rfqCard(rfq, bidsHTML, label, badgeClass) {
   return `
     <div class="rfq-card">
 
       <div class="rfq-card-header">
+
         <div>
           <div class="rfq-id">#RFQ-${rfq.id}</div>
+
           <div class="rfq-title">
             ${rfq.title} ${rfq.quantity ? `— ${rfq.quantity} Units` : ''}
           </div>
@@ -188,7 +168,12 @@ function rfqCard(rfq, bidsHTML, label, badgeClass) {
           </div>
         </div>
 
-        <span class="badge ${badgeClass}">${label}</span>
+        <!-- RIGHT SIDE -->
+        <div class="rfq-actions">
+          <span class="badge ${badgeClass}">${label}</span>
+          <button class="btn details-btn" onclick="window.location.href='/rfq/${rfq.id}'">Details</button>
+        </div>
+
       </div>
 
       <div class="rfq-body">
@@ -204,7 +189,6 @@ function rfqCard(rfq, bidsHTML, label, badgeClass) {
     </div>
   `;
 }
-
 /* ================= ACCEPT ================= */
 
 function attachAcceptHandlers() {

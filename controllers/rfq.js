@@ -435,3 +435,37 @@ exports.createRFQ = async (req, res) => {
     connection.release();
   }
 };
+
+exports.getRFQById = async (req, res) => {
+  try {
+    const rfqId = req.params.id;
+
+    const [[rfq]] = await db.query(
+      `SELECT r.* , c.name AS category FROM rfqs r LEFT JOIN categories c ON r.category_id = c.id WHERE r.id = ?`,
+      [rfqId]
+    );
+
+    if (!rfq) {
+      return res.status(404).json({ message: "RFQ not found" });
+    }
+
+    const [items] = await db.query(
+      `SELECT product_name, quantity FROM rfq_items WHERE rfq_id = ?`,
+      [rfqId]
+    );
+
+    const [specs] = await db.query(
+      `SELECT spec_name, spec_value FROM rfq_specifications WHERE rfq_id = ?`,
+      [rfqId]
+    );
+
+    rfq.items = items;
+    rfq.specifications = specs;
+
+    res.json({ rfq });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

@@ -895,11 +895,9 @@
 
         <div class="sidebar-footer">
           <div class="user-card" id="userCard">
-            <div class="user-avatar">
-              <%= typeof user !== 'undefined' ? user.name.charAt(0).toUpperCase() : 'B' %>
-            </div>
+            <div class="user-avatar"></div>
             <div>
-              <div class="user-name"><%= typeof user !== 'undefined' ? user.name : 'Buyer' %></div>
+              <div class="user-name"></div>
               <div class="user-role">Buyer Account</div>
             </div>
             <i class="bi bi-chevron-up user-chevron"></i>
@@ -919,7 +917,7 @@
             <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
             <a href="/rfq">RFQs</a>
             <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
-            <span class="current">RFQ #<%= rfq.rfqId %></span>
+            <span class="current">RFQ #</span>
           </nav>
           <div class="topbar-actions ms-auto">
             <div class="icon-btn" title="Notifications">
@@ -946,7 +944,7 @@
                 Your RFQ is now live and visible to matched suppliers. You'll receive quotations
                 soon.
               </div>
-              <div class="sb-rfq-id"><i class="bi bi-hash"></i> RFQ-<%= rfq.rfqId %></div>
+              <div class="sb-rfq-id"><i class="bi bi-hash"></i> RFQ-</div>
             </div>
             <div class="success-banner-actions">
               <a href="/rfq" class="btn-success-outline">
@@ -978,41 +976,36 @@
               <div class="detail-item">
                 <div class="detail-label">RFQ ID</div>
                 <div class="detail-value mono">
-                  <i class="bi bi-hash" style="color: var(--col-text-muted)"></i
-                  >RFQ-<%= rfq.rfqId %>
+                  <i class="bi bi-hash" style="color: var(--col-text-muted)"></i>RFQ-
                 </div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Title</div>
-                <div class="detail-value"><%= rfq.title %></div>
+                <div class="detail-value" id="rfqTitle"></div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Category</div>
-                <div class="detail-value">
-                  <i class="bi bi-tag" style="color: var(--col-accent)"></i
-                  ><%= rfq.category || ('Category #' + rfq.categoryId) %>
+                <div class="detail-value" id="rfqCategory">
+                  <i class="bi bi-tag" style="color: var(--col-accent)" ></i>
                 </div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Total Quantity</div>
-                <div class="detail-value">
-                  <i class="bi bi-boxes" style="color: var(--col-text-muted)"></i
-                  ><%= rfq.totalQuantity.toLocaleString() %>
+                <div class="detail-value" id="rfqQuantity">
+                  <i class="bi bi-boxes" style="color: var(--col-text-muted)"></i>
                   units
                 </div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Deadline</div>
-                <div class="detail-value">
-                  <i class="bi bi-calendar-event" style="color: var(--col-warning)"></i
-                  ><%= new Date(rfq.deadline).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) %>
+                <div class="detail-value" id="rfqDeadline">
+                  <i class="bi bi-calendar-event" style="color: var(--col-warning)"></i>
                 </div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Location</div>
-                <div class="detail-value">
-                  <i class="bi bi-geo-alt" style="color: var(--col-danger)"></i
-                  ><%= rfq.location %>
+                <div class="detail-value" id="rfqLocation">
+                  <i class="bi bi-geo-alt" style="color: var(--col-danger)"></i>
                 </div>
               </div>
               <div
@@ -1023,21 +1016,14 @@
                 <div
                   class="detail-value"
                   style="font-weight: 400; font-size: 13.5px; line-height: 1.6; display: block"
-                >
-                  <%= rfq.description %>
-                </div>
+                  id="rfqDesc"
+                ></div>
               </div>
               <div class="detail-item">
                 <div class="detail-label">Priority</div>
                 <div class="detail-value">
-                  <% const p = (rfq.priority || '').toLowerCase(); %>
-                  <span
-                    class="priority-badge <%= p === 'high' ? 'high' : p === 'medium' ? 'medium' : 'low' %>"
-                  >
-                    <i
-                      class="bi bi-<%= p === 'high' ? 'arrow-up-circle-fill' : p === 'medium' ? 'dash-circle-fill' : 'arrow-down-circle-fill' %>"
-                    ></i>
-                    <%= rfq.priority.charAt(0).toUpperCase() + rfq.priority.slice(1) %>
+                  <span class="priority-badge">
+                    <i></i>
                   </span>
                 </div>
               </div>
@@ -1061,16 +1047,12 @@
             <div class="budget-row">
               <div class="budget-block">
                 <div class="budget-label">Minimum Budget</div>
-                <div class="budget-value" style="color: var(--col-success)">
-                  ₹<%= Number(rfq.budgetMin).toLocaleString('en-IN') %>
-                </div>
+                <div class="budget-value" style="color: var(--col-success)">₹</div>
               </div>
               <div class="budget-divider">—</div>
               <div class="budget-block">
                 <div class="budget-label">Maximum Budget</div>
-                <div class="budget-value" style="color: var(--col-accent)">
-                  ₹<%= Number(rfq.budgetMax).toLocaleString('en-IN') %>
-                </div>
+                <div class="budget-value" style="color: var(--col-accent)">₹</div>
               </div>
               <div class="budget-range-bar" title="Budget range visualization">
                 <div class="budget-range-fill"></div>
@@ -1086,12 +1068,10 @@
                   <i class="bi bi-box-seam" style="color: var(--col-purple); margin-right: 6px"></i
                   >Requested Items
                 </div>
-                <div class="section-subtitle">
-                  <%= rfq.items ? rfq.items.length : 0 %> item(s) in this RFQ
-                </div>
+                <div class="section-subtitle">item(s) in this RFQ</div>
               </div>
             </div>
-            <% if (rfq.items && rfq.items.length > 0) { %>
+
             <div class="items-table-wrap">
               <table class="items-table">
                 <thead>
@@ -1101,30 +1081,27 @@
                     <th>Quantity</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <% rfq.items.forEach(function(item, idx) { %>
+                <tbody id="itemsTable">
                   <tr>
-                    <td><span class="item-num"><%= idx + 1 %></span></td>
-                    <td class="product-name"><%= item.productName %></td>
+                    <td><span class="item-num"></span></td>
+                    <td class="product-name"></td>
                     <td>
-                      <strong><%= Number(item.quantity).toLocaleString() %></strong>
+                      <strong></strong>
                       <span style="color: var(--col-text-muted); font-size: 12px">units</span>
                     </td>
                   </tr>
-                  <% }); %>
                 </tbody>
               </table>
             </div>
-            <% } else { %>
+
             <div class="empty-state">
               <i class="bi bi-box"></i>
               No items listed for this RFQ.
             </div>
-            <% } %>
           </div>
 
           <!-- ── Specifications ── -->
-          <% if (rfq.specifications && rfq.specifications.length > 0) { %>
+
           <div class="section-card">
             <div class="section-header">
               <div>
@@ -1132,36 +1109,29 @@
                   <i class="bi bi-sliders" style="color: var(--col-warning); margin-right: 6px"></i
                   >Specifications
                 </div>
-                <div class="section-subtitle">
-                  <%= rfq.specifications.length %> specification(s) defined
-                </div>
+                <div class="section-subtitle">specification(s) defined</div>
               </div>
             </div>
             <div class="specs-grid">
-              <% rfq.specifications.forEach(function(spec) { %>
               <div class="spec-item">
                 <div class="spec-icon"><i class="bi bi-ui-checks-grid"></i></div>
                 <div>
-                  <div class="spec-name"><%= spec.specName %></div>
-                  <div class="spec-value"><%= spec.specValue %></div>
+                  <div class="spec-name"></div>
+                  <div class="spec-value"></div>
                 </div>
               </div>
-              <% }); %>
             </div>
           </div>
-          <% } %>
 
           <!-- ── Action Footer ── -->
           <div class="section-card" style="margin-bottom: 0">
             <div class="action-footer">
-              <a href="/rfq/<%= rfq.rfqId %>/quotes" class="btn-primary">
+              <a href="/rfq//quotes" class="btn-primary">
                 <i class="bi bi-collection"></i> View Incoming Quotes
               </a>
-              <a href="/rfq/<%= rfq.rfqId %>/edit" class="btn-outline">
-                <i class="bi bi-pencil"></i> Edit RFQ
-              </a>
+              <a href="/rfq/edit" class="btn-outline"> <i class="bi bi-pencil"></i> Edit RFQ </a>
               <a href="/rfq" class="btn-outline"> <i class="bi bi-list-ul"></i> Back to RFQs </a>
-              <a href="/rfq/<%= rfq.rfqId %>/close" class="btn-outline danger ms-auto">
+              <a href="/rfq//close" class="btn-outline danger ms-auto">
                 <i class="bi bi-x-circle"></i> Close RFQ
               </a>
             </div>
@@ -1185,6 +1155,110 @@
             sidebar.classList.remove('open');
           }
         });
+      }
+      const pathParts = window.location.pathname.split('/');
+      const rfqId = pathParts[pathParts.length - 1];
+
+      console.log('RFQ ID:', rfqId);
+
+      if (rfqId) {
+        fetch(`/api/v1/rfq/rfq-data/${rfqId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const rfq = data.rfq;
+
+            // =====================
+            // BASIC INFO
+            // =====================
+
+            document.querySelector('.sb-rfq-id').innerText = `#RFQ-${rfq.id}`;
+            document.querySelector('#rfqTitle').innerText = rfq.title;
+
+            // RFQ ID (top section)
+            document.querySelector('.detail-value.mono').innerHTML = `
+    <i class="bi bi-hash"></i> RFQ-${rfq.id}
+  `;
+
+            // Description
+            document.querySelector('#rfqDesc').innerText = rfq.description;
+
+            // Quantity
+            document.querySelector('#rfqQuantity').innerHTML = `
+    <i class="bi bi-boxes"></i> ${rfq.quantity} units
+  `;
+
+            // Deadline
+            const date = new Date(rfq.deadline).toLocaleDateString();
+            document.querySelector('#rfqDeadline').innerHTML = `
+    <i class="bi bi-calendar-event"></i> ${date}
+  `;
+             // Category
+            document.querySelector('#rfqCategory').innerHTML =`<i class="bi bi-tag" style="color: var(--col-accent)" ></i> ${rfq.category}`;
+            // Location
+            document.querySelector('#rfqLocation').innerHTML = `
+    <i class="bi bi-geo-alt"></i> ${rfq.location}
+  `;
+
+            // =====================
+            // PRIORITY
+            // =====================
+
+            const priorityEl = document.querySelector('.priority-badge');
+            priorityEl.classList.add(rfq.priority);
+            priorityEl.innerText = rfq.priority.toUpperCase();
+
+            // =====================
+            // BUDGET
+            // =====================
+
+            document.querySelectorAll('.budget-value')[0].innerText = `₹${rfq.budget_min}`;
+            document.querySelectorAll('.budget-value')[1].innerText = `₹${rfq.budget_max}`;
+
+            // =====================
+            // ITEMS
+            // =====================
+
+            const itemsContainer = document.querySelector('#itemsTable');
+
+            if (rfq.items && rfq.items.length > 0) {
+              itemsContainer.innerHTML = rfq.items
+                .map(
+                  (item, index) => `
+        <tr>
+          <td><span class="item-num">${index + 1}</span></td>
+          <td class="product-name">${item.product_name}</td>
+          <td><strong>${item.quantity}</strong> units</td>
+        </tr>
+      `,
+                )
+                .join('');
+
+              document.querySelector('.empty-state').style.display = 'none';
+            }
+
+            // =====================
+            // SPECIFICATIONS
+            // =====================
+
+            const specContainer = document.querySelector('.specs-grid');
+
+            if (rfq.specifications && rfq.specifications.length > 0) {
+              specContainer.innerHTML = rfq.specifications
+                .map(
+                  (spec) => `
+        <div class="spec-item">
+          <div class="spec-icon"><i class="bi bi-ui-checks-grid"></i></div>
+          <div>
+            <div class="spec-name">${spec.spec_name}</div>
+            <div class="spec-value">${spec.spec_value}</div>
+          </div>
+        </div>
+      `,
+                )
+                .join('');
+            }
+          });
+        //
       }
     </script>
   </body>
