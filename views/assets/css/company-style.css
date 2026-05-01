@@ -315,6 +315,18 @@ body {
 .kpi-change.negative {
   color: #e74c3c;
 }
+.btn-reject {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-reject:hover {
+  background: #fecaca;
+}
 
 /* ===== Marketplace ===== */
 .marketplace-filters {

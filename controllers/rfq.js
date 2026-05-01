@@ -165,6 +165,7 @@ AND q.status = 'submitted'
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 exports.getCompanyRFQs = async (req, res) => {
   try {
     const companyId = req.session.user.id;
@@ -435,6 +436,7 @@ exports.createRFQ = async (req, res) => {
     connection.release();
   }
 };
+
 
 exports.getRFQById = async (req, res) => {
   try {

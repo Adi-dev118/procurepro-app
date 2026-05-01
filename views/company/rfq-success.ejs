@@ -541,6 +541,10 @@
         background: var(--col-warning-light);
         color: var(--col-warning);
       }
+      .status-badge.closed {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+      }
 
       /* ── Priority Badge ── */
       .priority-badge {
@@ -969,7 +973,7 @@
                 </div>
                 <div class="section-subtitle">Core details of your request</div>
               </div>
-              <span class="status-badge active">Active</span>
+              <span class="status-badge"></span>
             </div>
 
             <div class="detail-grid">
@@ -986,7 +990,7 @@
               <div class="detail-item">
                 <div class="detail-label">Category</div>
                 <div class="detail-value" id="rfqCategory">
-                  <i class="bi bi-tag" style="color: var(--col-accent)" ></i>
+                  <i class="bi bi-tag" style="color: var(--col-accent)"></i>
                 </div>
               </div>
               <div class="detail-item">
@@ -1187,13 +1191,27 @@
     <i class="bi bi-boxes"></i> ${rfq.quantity} units
   `;
 
+            const badge = document.querySelector('.status-badge');
+            console.log(badge);
+            if (rfq.status === 'active') {
+              badge.classList.add('active');
+              badge.innerHTML = `Active`;
+            } else if (rfq.status === 'closed') {
+              badge.classList.add('closed');
+              badge.innerHTML = `Closed`;
+            } else {
+              badge.classList.add('pending');
+              badge.innerHTML = `Pending`;
+            }
+
             // Deadline
             const date = new Date(rfq.deadline).toLocaleDateString();
             document.querySelector('#rfqDeadline').innerHTML = `
     <i class="bi bi-calendar-event"></i> ${date}
   `;
-             // Category
-            document.querySelector('#rfqCategory').innerHTML =`<i class="bi bi-tag" style="color: var(--col-accent)" ></i> ${rfq.category}`;
+            // Category
+            document.querySelector('#rfqCategory').innerHTML =
+              `<i class="bi bi-tag" style="color: var(--col-accent)" ></i> ${rfq.category}`;
             // Location
             document.querySelector('#rfqLocation').innerHTML = `
     <i class="bi bi-geo-alt"></i> ${rfq.location}
