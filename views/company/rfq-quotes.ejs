@@ -1373,34 +1373,41 @@
           btn.addEventListener('click', () => handleAction(btn.dataset.quoteId, 'rejected'));
         });
       }
-
       function handleAction(quoteId, action) {
-        // Optimistic UI update
-        const q = allQuotes.find((q) => String(q.id) === String(quoteId));
-        if (!q) return;
-        q.status = action;
+        const prevState = JSON.parse(JSON.stringify(allQuotes));
 
-        // Update card visually
-        const card = document.querySelector(`.quote-card[data-quote-id="${quoteId}"]`);
-        if (card) {
-          card.className = `quote-card ${action}`;
-          card.dataset.status = action;
-          card.querySelector('.status-badge').className = `status-badge ${action}`;
-          card.querySelector('.status-badge').textContent = statusLabel(action);
-          const actionsRow = card.querySelector('.quote-actions');
-          actionsRow.classList.add('actioned');
-          const label = actionsRow.querySelector('.actioned-label');
-          label.className = `actioned-label ${action}`;
-          label.innerHTML = `<i class="bi bi-${action === 'accepted' ? 'check-circle-fill' : 'x-circle-fill'}"></i> ${action === 'accepted' ? 'Accepted' : 'Rejected'}`;
+        // ⚡ Optimistic UI update
+        const selected = allQuotes.find((q) => q.id == quoteId);
+        if (!selected) return;
+
+        selected.status = action;
+
+        if (action === 'accepted') {
+          allQuotes.forEach((q) => {
+            if (q.id != quoteId) q.status = 'rejected';
+          });
         }
 
-        // ── Replace with your actual API call ──
-        // fetch(`/api/v1/rfq/quotes/${quoteId}/${action}`, { method: 'PATCH' })
-        //   .then(res => res.json())
-        //   .then(data => { /* handle success */ })
-        //   .catch(err => { console.error(err); });
-      }
+        applyFilterSort(); // instant UI update
 
+        const url =
+          action === 'accepted'
+            ? `/api/v1/rfq/quotes/${quoteId}/accept`
+            : `/api/v1/rfq/quotes/${quoteId}/reject`;
+
+        fetch(url, { method: 'PATCH' })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error(err);
+
+            // ❌ rollback UI if failed
+            allQuotes = prevState;
+            applyFilterSort();
+
+            alert('Action failed. Reverted changes.');
+          });
+      }
+      
       // ─────────────────────────────────────────────
       // LOAD DATA  — replace fetch URL with your API
       // ─────────────────────────────────────────────

@@ -259,6 +259,99 @@ exports.getQuotesByRFQ = async (req, res) => {
 
 // controllers/rfq.js
 
+exports.acceptQuote = async (req, res) => {
+  const connection = await db.getConnection();
+
+  try {
+    const quoteId = req.params.quoteId;
+    const userId = req.session.user.id;
+
+    await connection.beginTransaction();
+
+    // 1. Get RFQ ID and verify ownership
+    const [[quote]] = await connection.query(
+      `
+      SELECT q.rfq_id
+      FROM rfq_quotes q
+      JOIN rfqs r ON r.id = q.rfq_id
+      WHERE q.id = ? AND r.user_id = ?
+      `,
+      [quoteId, userId]
+    );
+
+    if (!quote) {
+      await connection.rollback();
+      return res.status(404).json({ message: "Quote not found" });
+    }
+
+    const rfqId = quote.rfq_id;
+
+    // 2. Accept selected quote
+    await connection.query(
+      `UPDATE rfq_quotes SET status = 'accepted' WHERE id = ?`,
+      [quoteId]
+    );
+
+    // 3. Reject all other quotes
+    await connection.query(
+      `UPDATE rfq_quotes 
+       SET status = 'rejected' 
+       WHERE rfq_id = ? AND id != ?`,
+      [rfqId, quoteId]
+    );
+
+    // 4. Close RFQ
+    await connection.query(
+      `UPDATE rfqs SET status = 'closed' WHERE id = ?`,
+      [rfqId]
+    );
+
+    await connection.commit();
+
+    res.json({ message: "Quote accepted successfully" });
+
+  } catch (err) {
+    await connection.rollback();
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  } finally {
+    connection.release();
+  }
+};
+
+exports.rejectQuote = async (req, res) => {
+  try {
+    const quoteId = req.params.quoteId;
+    const userId = req.session.user.id;
+
+    // Verify ownership
+    const [[quote]] = await db.query(
+      `
+      SELECT q.id
+      FROM rfq_quotes q
+      JOIN rfqs r ON r.id = q.rfq_id
+      WHERE q.id = ? AND r.user_id = ?
+      `,
+      [quoteId, userId]
+    );
+
+    if (!quote) {
+      return res.status(404).json({ message: "Quote not found" });
+    }
+
+    await db.query(
+      `UPDATE rfq_quotes SET status = 'rejected' WHERE id = ?`,
+      [quoteId]
+    );
+
+    res.json({ message: "Quote rejected" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 exports.createRFQ = async (req, res) => {
   const connection = await db.getConnection();
 
