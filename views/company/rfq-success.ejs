@@ -1150,6 +1150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // Sidebar toggle (mobile)
+      
       const menuToggle = document.getElementById('menuToggle');
       const sidebar = document.getElementById('sidebar');
       if (menuToggle) {
@@ -1162,6 +1163,9 @@
       }
       const pathParts = window.location.pathname.split('/');
       const rfqId = pathParts[pathParts.length - 1];
+
+document.querySelector('.btn-primary').href = `/rfq/${rfqId}/quotes`;
+document.querySelector('.btn-outline.danger').href = `/rfq/${rfqId}/close`;
 
       console.log('RFQ ID:', rfqId);
 

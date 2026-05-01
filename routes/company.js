@@ -42,4 +42,10 @@ router.get('/rfq/:id', (req, res) => {
   res.render('company/rfq-success');
 });
 
+router.get('/rfq/:id/quotes', (req, res) => {
+  res.render('company/rfq-quotes');
+});
+
+
+
 module.exports = router;

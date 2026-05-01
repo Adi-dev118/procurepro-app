@@ -179,12 +179,10 @@ exports.getCompanyRFQs = async (req, res) => {
         r.quantity,
         r.description,
         r.status,
-
-        COUNT(DISTINCT i.supplier_id) AS suppliers_invited,
         COUNT(DISTINCT q.id) AS bids_received
 
       FROM rfqs r
-      LEFT JOIN rfq_invitations i ON r.id = i.rfq_id
+      
       LEFT JOIN rfq_quotes q ON r.id = q.rfq_id
 
       WHERE r.user_id = ?
@@ -195,47 +193,6 @@ exports.getCompanyRFQs = async (req, res) => {
       [companyId],
     );
 
-    // 🔥 attach specs + quotes
-    for (let rfq of rfqs) {
-      const [specs] = await db.query(
-        `SELECT spec_name, spec_value FROM rfq_specifications WHERE rfq_id = ?`,
-        [rfq.id],
-      );
-
-      const [quotes] = await db.query(
-        `
-        SELECT 
-          q.id,
-          q.price,
-          q.delivery_days,
-          q.warranty,
-          q.payment_terms,
-          q.message,
-          q.status,
-          s.business_name AS company,
-
-          ROUND(COALESCE(AVG(pr.rating),0),1) AS rating,
-          COUNT(DISTINCT pr.id) AS review_count,
-
-          MAX(o.id) AS order_id
-
-        FROM rfq_quotes q
-        JOIN suppliers s ON s.id = q.supplier_id
-        LEFT JOIN products p ON p.supplier_id = s.id
-        LEFT JOIN product_reviews pr ON pr.product_id = p.id
-        LEFT JOIN orders o 
-          ON o.rfq_id = q.rfq_id AND q.status = 'accepted'
-
-        WHERE q.rfq_id = ?
-        GROUP BY q.id
-      `,
-        [rfq.id],
-      );
-
-      rfq.specifications = specs;
-      rfq.quotes = quotes;
-    }
-
     res.json({ rfqs });
   } catch (err) {
     console.error(err);
@@ -243,9 +200,64 @@ exports.getCompanyRFQs = async (req, res) => {
   }
 };
 
+exports.getQuotesByRFQ = async (req, res) => {
+  try {
+    const rfqId = req.params.rfqId;
+    const userId = req.session.user.id;
+
+    // 🔒 SECURITY: Check RFQ belongs to user
+    const [[rfq]] = await db.query(
+      `SELECT id FROM rfqs WHERE id = ? AND user_id = ?`,
+      [rfqId, userId]
+    );
+
+    if (!rfq) {
+      return res.status(404).json({ message: "RFQ not found" });
+    }
+
+    // 📦 GET QUOTES
+    const [quotes] = await db.query(
+      `
+      SELECT 
+        q.id,
+        q.price,
+        q.delivery_days,
+        q.warranty,
+        q.payment_terms,
+        q.message,
+        q.status,
+
+        s.business_name AS company,
+
+        ROUND(COALESCE(AVG(pr.rating), 0), 1) AS rating,
+        COUNT(DISTINCT pr.id) AS review_count
+
+      FROM rfq_quotes q
+      JOIN suppliers s ON s.id = q.supplier_id
+
+      LEFT JOIN products p ON p.supplier_id = s.id
+      LEFT JOIN product_reviews pr ON pr.product_id = p.id
+
+      WHERE q.rfq_id = ?
+
+      GROUP BY q.id
+
+      ORDER BY 
+        (q.status = 'accepted') DESC,
+        q.price ASC
+      `,
+      [rfqId]
+    );
+
+    res.json({ quotes });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // controllers/rfq.js
-
 
 exports.createRFQ = async (req, res) => {
   const connection = await db.getConnection();
@@ -295,8 +307,8 @@ exports.createRFQ = async (req, res) => {
       await connection.rollback();
 
       return res.status(400).json({
-        status: "Failed",
-        message: "Required fields are missing"
+        status: 'Failed',
+        message: 'Required fields are missing',
       });
     }
 
@@ -304,8 +316,8 @@ exports.createRFQ = async (req, res) => {
       await connection.rollback();
 
       return res.status(400).json({
-        status: "Failed",
-        message: "Minimum budget cannot exceed maximum budget"
+        status: 'Failed',
+        message: 'Minimum budget cannot exceed maximum budget',
       });
     }
 
@@ -313,8 +325,8 @@ exports.createRFQ = async (req, res) => {
       await connection.rollback();
 
       return res.status(400).json({
-        status: "Failed",
-        message: "At least one RFQ item is required"
+        status: 'Failed',
+        message: 'At least one RFQ item is required',
       });
     }
 
@@ -351,8 +363,8 @@ exports.createRFQ = async (req, res) => {
         deadline,
         location,
         priority,
-        "active"
-      ]
+        'active',
+      ],
     );
 
     const rfqId = rfqResult.insertId;
@@ -374,11 +386,7 @@ exports.createRFQ = async (req, res) => {
         )
         VALUES (?, ?, ?)
         `,
-        [
-          rfqId,
-          item.productName,
-          item.quantity
-        ]
+        [rfqId, item.productName, item.quantity],
       );
     }
 
@@ -400,11 +408,7 @@ exports.createRFQ = async (req, res) => {
           )
           VALUES (?, ?, ?)
           `,
-          [
-            rfqId,
-            spec.specName,
-            spec.specValue
-          ]
+          [rfqId, spec.specName, spec.specValue],
         );
       }
     }
@@ -415,28 +419,25 @@ exports.createRFQ = async (req, res) => {
     await connection.commit();
 
     return res.status(201).json({
-      status: "Success",
-      message: "RFQ created successfully",
+      status: 'Success',
+      message: 'RFQ created successfully',
       data: {
-        rfqId
-      }
+        rfqId,
+      },
     });
-
   } catch (error) {
     await connection.rollback();
 
     console.error(error);
 
     return res.status(500).json({
-      status: "Failed",
-      message: error.message
+      status: 'Failed',
+      message: error.message,
     });
-
   } finally {
     connection.release();
   }
 };
-
 
 exports.getRFQById = async (req, res) => {
   try {
@@ -444,30 +445,29 @@ exports.getRFQById = async (req, res) => {
 
     const [[rfq]] = await db.query(
       `SELECT r.* , c.name AS category FROM rfqs r LEFT JOIN categories c ON r.category_id = c.id WHERE r.id = ?`,
-      [rfqId]
+      [rfqId],
     );
 
     if (!rfq) {
-      return res.status(404).json({ message: "RFQ not found" });
+      return res.status(404).json({ message: 'RFQ not found' });
     }
 
     const [items] = await db.query(
       `SELECT product_name, quantity FROM rfq_items WHERE rfq_id = ?`,
-      [rfqId]
+      [rfqId],
     );
 
     const [specs] = await db.query(
       `SELECT spec_name, spec_value FROM rfq_specifications WHERE rfq_id = ?`,
-      [rfqId]
+      [rfqId],
     );
 
     rfq.items = items;
     rfq.specifications = specs;
 
     res.json({ rfq });
-
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   }
 };

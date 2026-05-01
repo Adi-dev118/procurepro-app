@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProcurePro — Incoming Quotes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/company-style.css" />
+    <style>
+      :root {
+        --col-bg: #eef2f9;
+        --col-surface: #f7f9fd;
+        --col-surface-2: #edf1f8;
+        --col-border: #cdd8ee;
+        --col-border-strong: #b3c3e0;
+        --col-text-primary: #0f1e3d;
+        --col-text-secondary: #3d5070;
+        --col-text-muted: #7a90b8;
+        --col-accent: #1d6bf3;
+        --col-accent-light: #dce8fd;
+        --col-accent-hover: #1558d6;
+        --col-success: #0f9960;
+        --col-success-light: #d6f0e6;
+        --col-warning: #b45309;
+        --col-warning-light: #fef3d9;
+        --col-danger: #dc2626;
+        --col-danger-light: #fde8e8;
+        --col-purple: #5b21b6;
+        --col-purple-light: #ede9fe;
+        --nav-w: 240px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --radius-xl: 20px;
+        --shadow-sm: 0 1px 3px rgba(29, 107, 243, 0.08);
+        --shadow-md: 0 4px 16px rgba(29, 107, 243, 0.12);
+        --shadow-lg: 0 8px 28px rgba(29, 107, 243, 0.15);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+        min-height: 100vh;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      /* ── Layout Shell ── */
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: var(--nav-w);
+        background: #0f1e3d;
+        border-right: 1px solid #1a3060;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform 0.25s ease;
+      }
+      .sidebar-logo {
+        padding: 24px 20px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        background: var(--col-accent);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .logo-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
+      .logo-badge {
+        font-size: 10px;
+        color: var(--col-accent);
+        background: var(--col-accent-light);
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+      .sidebar-section-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 18px 20px 6px;
+      }
+      .sidebar-nav {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        flex: 1;
+        padding: 8px 14px;
+      }
+      .sidebar-nav::-webkit-scrollbar {
+        width: 0;
+      }
+      .sidebar-nav:hover::-webkit-scrollbar {
+        width: 6px;
+      }
+      .sidebar-nav:hover::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 10px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+        cursor: pointer;
+      }
+      .nav-item i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .nav-item.active {
+        background: rgba(29, 107, 243, 0.25);
+        color: #fff;
+        font-weight: 600;
+      }
+      .nav-item.active i {
+        color: #5ba4fb;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--col-danger);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 20px;
+        min-width: 18px;
+        text-align: center;
+      }
+
+      .sidebar-footer {
+        padding: 16px 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.07);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .user-card:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--col-accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #fff;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .user-card > i {
+        margin-left: auto;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+      }
+
+      /* ── Main ── */
+      .main {
+        margin-left: var(--nav-w);
+        flex: 1;
+        min-height: 100vh;
+      }
+
+      /* ── Top Bar ── */
+      .topbar {
+        background: #f7f9fd;
+        border-bottom: 1px solid #cdd8ee;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 4px rgba(29, 107, 243, 0.07);
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        background: var(--col-bg);
+        color: var(--col-text-primary);
+      }
+      .icon-btn .dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--col-danger);
+        border: 1.5px solid var(--col-surface);
+      }
+      .breadcrumb-nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--col-text-muted);
+      }
+      .breadcrumb-nav a {
+        color: var(--col-text-muted);
+        text-decoration: none;
+        transition: color 0.15s;
+      }
+      .breadcrumb-nav a:hover {
+        color: var(--col-accent);
+      }
+      .breadcrumb-nav .sep {
+        font-size: 10px;
+      }
+      .breadcrumb-nav .current {
+        color: var(--col-text-primary);
+        font-weight: 600;
+      }
+
+      /* ── Page Content ── */
+      .page-content {
+        padding: 28px;
+        max-width: 1000px;
+      }
+
+      /* ── Page Header Banner ── */
+      .quotes-banner {
+        background: linear-gradient(135deg, #0f1e3d 0%, #1a3a7a 60%, #1d6bf3 100%);
+        border-radius: var(--radius-xl);
+        padding: 28px 32px;
+        color: #fff;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 6px 24px rgba(29, 107, 243, 0.25);
+      }
+      .quotes-banner::before {
+        content: '';
+        position: absolute;
+        right: -40px;
+        top: -60px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        pointer-events: none;
+      }
+      .quotes-banner::after {
+        content: '';
+        position: absolute;
+        right: 60px;
+        bottom: -80px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+        pointer-events: none;
+      }
+      .banner-icon-wrap {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+      .banner-text {
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+      .banner-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 4px;
+      }
+      .banner-heading {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+        margin-bottom: 2px;
+      }
+      .banner-rfq-ref {
+        font-family: 'DM Mono', monospace;
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.6);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      /* quote count pill */
+      .banner-count {
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius-lg);
+        padding: 12px 24px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .banner-count-num {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1;
+        /* JS will populate */
+      }
+      .banner-count-lbl {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 3px;
+      }
+
+      /* ── Section Card ── */
+      .section-card {
+        background: var(--col-surface);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--col-border);
+      }
+      .section-title {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: var(--col-text-primary);
+      }
+      .section-subtitle {
+        font-size: 12.5px;
+        color: var(--col-text-muted);
+        margin-top: 1px;
+      }
+
+      /* ── Filter Bar ── */
+      .filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 12.5px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        transition: all 0.15s;
+        font-family: inherit;
+      }
+      .filter-btn:hover {
+        border-color: var(--col-accent);
+        color: var(--col-accent);
+      }
+      .filter-btn.active {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+        border-color: var(--col-accent);
+        font-weight: 600;
+      }
+      .sort-select {
+        padding: 5px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--col-border);
+        background: var(--col-surface);
+        font-family: inherit;
+        font-size: 12.5px;
+        color: var(--col-text-secondary);
+        cursor: pointer;
+        outline: none;
+      }
+      .sort-select:focus {
+        border-color: var(--col-accent);
+      }
+
+      /* ── Quotes List ── */
+      #quotesList {
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      /* ── Quote Card ── */
+      .quote-card {
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        background: var(--col-surface);
+        transition:
+          box-shadow 0.2s,
+          border-color 0.2s,
+          transform 0.2s;
+        overflow: hidden;
+      }
+      .quote-card:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--col-border-strong);
+        transform: translateY(-1px);
+      }
+      .quote-card.accepted {
+        border-left: 4px solid var(--col-success);
+      }
+      .quote-card.rejected {
+        border-left: 4px solid var(--col-danger);
+        opacity: 0.72;
+      }
+      .quote-card.submitted {
+        border-left: 4px solid var(--col-accent);
+      }
+
+      /* card top row */
+      .quote-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 16px 18px 12px;
+        gap: 12px;
+      }
+      .quote-company-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+      }
+      .company-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: var(--radius-md);
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        font-weight: 700;
+        flex-shrink: 0;
+        /* JS sets initials as text content */
+      }
+      .company-name {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: var(--col-text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .company-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+        flex-wrap: wrap;
+      }
+      /* star rating */
+      .rating-wrap {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .rating-stars {
+        color: #f59e0b;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+      .rating-val {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--col-text-primary);
+      }
+      .review-count {
+        font-size: 11.5px;
+        color: var(--col-text-muted);
+      }
+
+      /* status badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        flex-shrink: 0;
+      }
+      .status-badge::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .status-badge.submitted {
+        background: var(--col-accent-light);
+        color: var(--col-accent);
+      }
+      .status-badge.submitted::before {
+        background: var(--col-accent);
+      }
+      .status-badge.accepted {
+        background: var(--col-success-light);
+        color: var(--col-success);
+      }
+      .status-badge.accepted::before {
+        background: var(--col-success);
+      }
+      .status-badge.rejected {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+      }
+      .status-badge.rejected::before {
+        background: var(--col-danger);
+      }
+
+      /* card meta grid */
+      .quote-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--col-border);
+      }
+      .quote-meta-item {
+        padding: 12px 18px;
+        border-right: 1px solid var(--col-border);
+      }
+      .quote-meta-item:last-child {
+        border-right: none;
+      }
+      .qm-label {
+        font-size: 10.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--col-text-muted);
+        margin-bottom: 3px;
+      }
+      .qm-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--col-text-primary);
+      }
+      .qm-value.price {
+        color: var(--col-success);
+        font-size: 15.5px;
+        letter-spacing: -0.3px;
+      }
+      .qm-sub {
+        font-size: 11px;
+        color: var(--col-text-muted);
+        margin-top: 1px;
+      }
+
+      /* message row */
+      .quote-message {
+        padding: 12px 18px;
+        border-top: 1px solid var(--col-border);
+        background: var(--col-surface-2);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .quote-message i {
+        color: var(--col-text-muted);
+        font-size: 14px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+      .quote-message-text {
+        font-size: 13px;
+        color: var(--col-text-secondary);
+        line-height: 1.55;
+        /* JS sets text content */
+      }
+
+      /* action row */
+      .quote-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-top: 1px solid var(--col-border);
+        background: var(--col-surface);
+      }
+      .btn-accept {
+        background: var(--col-success);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 18px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+      .btn-accept:hover {
+        background: #0a7a48;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(15, 153, 96, 0.3);
+      }
+      .btn-reject {
+        background: var(--col-surface);
+        color: var(--col-danger);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 8px 18px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+      .btn-reject:hover {
+        border-color: var(--col-danger);
+        background: var(--col-danger-light);
+      }
+      .btn-view-supplier {
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 8px 16px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        transition: all 0.15s;
+        margin-left: auto;
+      }
+      .btn-view-supplier:hover {
+        border-color: var(--col-border-strong);
+        color: var(--col-text-primary);
+      }
+
+      /* disabled state for already actioned cards */
+      .quote-actions.actioned .btn-accept,
+      .quote-actions.actioned .btn-reject {
+        opacity: 0.45;
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+      .actioned-label {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 20px;
+        display: none;
+      }
+      .actioned-label.accepted {
+        background: var(--col-success-light);
+        color: var(--col-success);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .actioned-label.rejected {
+        background: var(--col-danger-light);
+        color: var(--col-danger);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* ── Action Footer ── */
+      .action-footer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 18px 22px;
+        border-top: 1px solid var(--col-border);
+        background: var(--col-surface-2);
+      }
+      .btn-primary {
+        background: var(--col-accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 10px 20px;
+        font-family: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.15s;
+        text-decoration: none;
+      }
+      .btn-primary:hover {
+        background: var(--col-accent-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+        color: #fff;
+      }
+      .btn-outline {
+        background: var(--col-surface);
+        color: var(--col-text-secondary);
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-sm);
+        padding: 10px 20px;
+        font-family: inherit;
+        font-size: 13.5px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.15s;
+        text-decoration: none;
+      }
+      .btn-outline:hover {
+        border-color: var(--col-border-strong);
+        color: var(--col-text-primary);
+      }
+
+      /* ── Empty State ── */
+      .empty-state {
+        padding: 52px 22px;
+        text-align: center;
+        color: var(--col-text-muted);
+        font-size: 13.5px;
+      }
+      .empty-state i {
+        font-size: 36px;
+        display: block;
+        margin-bottom: 12px;
+        color: var(--col-border-strong);
+      }
+      .empty-state p {
+        margin-top: 4px;
+      }
+
+      /* ── Loading Skeleton ── */
+      .skeleton-card {
+        border: 1px solid var(--col-border);
+        border-radius: var(--radius-lg);
+        background: var(--col-surface);
+        padding: 18px;
+        overflow: hidden;
+      }
+      .skeleton-line {
+        height: 14px;
+        border-radius: 6px;
+        background: linear-gradient(
+          90deg,
+          var(--col-surface-2) 25%,
+          var(--col-border) 50%,
+          var(--col-surface-2) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        margin-bottom: 10px;
+      }
+      .skeleton-line.short {
+        width: 40%;
+      }
+      .skeleton-line.medium {
+        width: 65%;
+      }
+      .skeleton-line.full {
+        width: 100%;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 900px) {
+        .main {
+          margin-left: 0;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .quote-meta-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .quote-meta-item:nth-child(2) {
+          border-right: none;
+        }
+        .quote-meta-item:nth-child(3) {
+          border-top: 1px solid var(--col-border);
+        }
+        .quotes-banner {
+          flex-wrap: wrap;
+        }
+        .banner-count {
+          width: 100%;
+        }
+      }
+      @media (max-width: 600px) {
+        .page-content {
+          padding: 16px;
+        }
+        .quote-meta-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .quote-actions {
+          flex-wrap: wrap;
+        }
+        .btn-view-supplier {
+          margin-left: 0;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- ── Sidebar ── -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-mark">P</div>
+          <div>
+            <div class="logo-name">ProcurePro</div>
+            <div class="logo-badge">Buyer</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="sidebar-section-label">Main</div>
+          <a href="/dashboard" class="nav-item"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+          <a href="/marketplace" class="nav-item"><i class="bi bi-shop"></i> Marketplace</a>
+          <a href="/rfq" class="nav-item active"
+            ><i class="bi bi-megaphone"></i> My RFQs <span class="nav-badge" id="rfqNavBadge"></span
+          ></a>
+          <a href="/quotes" class="nav-item"><i class="bi bi-file-earmark-text"></i> Quotations</a>
+          <a href="/orders" class="nav-item"><i class="bi bi-cart-check"></i> Orders</a>
+
+          <div class="sidebar-section-label">Manage</div>
+          <a href="/suppliers" class="nav-item"><i class="bi bi-people"></i> Suppliers</a>
+          <a href="/invoices" class="nav-item"><i class="bi bi-receipt"></i> Invoices</a>
+          <a href="/reports" class="nav-item"><i class="bi bi-bar-chart-line"></i> Reports</a>
+
+          <div class="sidebar-section-label">Account</div>
+          <a href="/settings" class="nav-item"><i class="bi bi-gear"></i> Settings</a>
+          <a href="/help" class="nav-item"><i class="bi bi-question-circle"></i> Help & Support</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-card" id="userCard">
+            <div class="user-avatar" id="userAvatarInitial"></div>
+            <div>
+              <div class="user-name" id="userNameLabel"></div>
+              <div class="user-role">Buyer Account</div>
+            </div>
+            <i class="bi bi-chevron-up user-chevron"></i>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── Main ── -->
+      <div class="main">
+        <!-- Top Bar -->
+        <header class="topbar">
+          <button class="icon-btn d-md-none" id="menuToggle" style="border: none">
+            <i class="bi bi-list" style="font-size: 18px"></i>
+          </button>
+          <nav class="breadcrumb-nav">
+            <a href="/dashboard">Dashboard</a>
+            <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
+            <a href="/rfq">RFQs</a>
+            <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
+            <!-- JS populates rfqId here -->
+            <a href="#" id="breadcrumbRfqLink">RFQ #<span id="breadcrumbRfqId"></span></a>
+            <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
+            <span class="current">Incoming Quotes</span>
+          </nav>
+          <div class="topbar-actions ms-auto">
+            <div class="icon-btn" title="Notifications">
+              <i class="bi bi-bell" style="font-size: 15px"></i>
+              <span class="dot"></span>
+            </div>
+            <div class="icon-btn" title="Help">
+              <i class="bi bi-question-circle" style="font-size: 15px"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+          <!-- ── Page Banner ── -->
+          <div class="quotes-banner">
+            <div class="banner-icon-wrap">
+              <i class="bi bi-collection"></i>
+            </div>
+            <div class="banner-text">
+              <div class="banner-label">Request for Quotation</div>
+              <!-- JS populates rfq title -->
+              <div class="banner-heading" id="bannerRfqTitle">Incoming Quotes</div>
+              <div class="banner-rfq-ref">
+                <i class="bi bi-hash"></i>
+                <!-- JS populates -->
+                <span id="bannerRfqId"></span>
+                &nbsp;·&nbsp;
+                <i class="bi bi-calendar-event"></i>
+                <span id="bannerRfqDeadline"></span>
+              </div>
+            </div>
+            <!-- Quote count pill -->
+            <div class="banner-count">
+              <div class="banner-count-num" id="quoteCountNum">—</div>
+              <div class="banner-count-lbl">Quotes Received</div>
+            </div>
+          </div>
+
+          <!-- ── Quotes Section ── -->
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">
+                  <i
+                    class="bi bi-collection"
+                    style="color: var(--col-accent); margin-right: 6px"
+                  ></i>
+                  Supplier Quotes
+                </div>
+                <!-- JS updates subtitle with count -->
+                <div class="section-subtitle" id="quotesSubtitle">Loading quotes…</div>
+              </div>
+              <!-- Filter / sort controls -->
+              <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all" id="filterAll">All</button>
+                <button class="filter-btn" data-filter="submitted" id="filterSubmitted">
+                  Pending
+                </button>
+                <button class="filter-btn" data-filter="accepted" id="filterAccepted">
+                  Accepted
+                </button>
+                <button class="filter-btn" data-filter="rejected" id="filterRejected">
+                  Rejected
+                </button>
+                <select class="sort-select" id="sortSelect">
+                  <option value="price_asc">Price: Low → High</option>
+                  <option value="price_desc">Price: High → Low</option>
+                  <option value="delivery_asc">Delivery: Fastest</option>
+                  <option value="rating_desc">Rating: Best</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ── Quotes List — JS renders .quote-card items here ── -->
+            <div id="quotesList">
+              <!-- Loading skeletons shown before data arrives -->
+              <div class="skeleton-card" id="skeleton1">
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line full" style="margin-top: 14px"></div>
+                <div class="skeleton-line full"></div>
+              </div>
+              <div class="skeleton-card" id="skeleton2">
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line full" style="margin-top: 14px"></div>
+                <div class="skeleton-line full"></div>
+              </div>
+
+              <!--
+                JS renders one .quote-card per quote using this structure:
+
+                <div class="quote-card [submitted|accepted|rejected]" data-quote-id="14" data-status="submitted">
+
+                  <div class="quote-card-header">
+                    <div class="quote-company-wrap">
+                      <div class="company-avatar">A</div>          <- first letter of company
+                      <div>
+                        <div class="company-name">Aditya Electronics</div>
+                        <div class="company-meta">
+                          <div class="rating-wrap">
+                            <span class="rating-stars">★★★★☆</span>
+                            <span class="rating-val">4.0</span>
+                            <span class="review-count">(4 reviews)</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="status-badge submitted">Pending</span>
+                  </div>
+
+                  <div class="quote-meta-grid">
+                    <div class="quote-meta-item">
+                      <div class="qm-label">Quoted Price</div>
+                      <div class="qm-value price">₹6,90,000</div>
+                    </div>
+                    <div class="quote-meta-item">
+                      <div class="qm-label">Delivery</div>
+                      <div class="qm-value">5 days</div>
+                    </div>
+                    <div class="quote-meta-item">
+                      <div class="qm-label">Warranty</div>
+                      <div class="qm-value">5 years</div>
+                    </div>
+                    <div class="quote-meta-item">
+                      <div class="qm-label">Payment Terms</div>
+                      <div class="qm-value" style="font-size:12.5px;font-weight:500">30% advance, 70% on delivery</div>
+                    </div>
+                  </div>
+
+                  <div class="quote-message">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="quote-message-text">Premium SSD and HDD…</span>
+                  </div>
+
+                  <div class="quote-actions" data-quote-id="14">
+                    <button class="btn-accept" data-quote-id="14"><i class="bi bi-check-circle"></i> Accept Quote</button>
+                    <button class="btn-reject" data-quote-id="14"><i class="bi bi-x-circle"></i> Reject</button>
+                    <span class="actioned-label"></span>         <- shown when already accepted/rejected
+                    <a href="/suppliers/SUPPLIER_ID" class="btn-view-supplier">
+                      <i class="bi bi-building"></i> View Supplier
+                    </a>
+                  </div>
+
+                </div>
+              -->
+            </div>
+
+            <!-- Empty state — shown by JS if quotes array is empty -->
+            <div class="empty-state" id="quotesEmptyState" style="display: none">
+              <i class="bi bi-inbox"></i>
+              <strong>No quotes yet</strong>
+              <p>Suppliers haven't responded to this RFQ yet. Check back soon.</p>
+            </div>
+          </div>
+          <!-- /section-card -->
+
+          <!-- ── Footer Actions ── -->
+          <div class="section-card" style="margin-bottom: 0">
+            <div class="action-footer">
+              <!-- JS sets correct rfqId in href -->
+              <a href="#" class="btn-outline" id="backToRfqBtn">
+                <i class="bi bi-arrow-left"></i> Back to RFQ
+              </a>
+              <a href="/rfq" class="btn-outline"> <i class="bi bi-list-ul"></i> All RFQs </a>
+            </div>
+          </div>
+        </div>
+        <!-- /page-content -->
+      </div>
+      <!-- /main -->
+    </div>
+    <!-- /shell -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // ── Sidebar toggle (mobile) ──
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+          }
+        });
+      }
+
+      // ── Extract rfqId from URL: /rfq/:rfqId/quotes ──
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      // expected: ['rfq', '<id>', 'quotes']
+      const rfqId = pathParts[1] || null;
+
+      // ── Breadcrumb & back-button ──
+      if (rfqId) {
+        document.getElementById('breadcrumbRfqId').textContent = rfqId;
+        document.getElementById('breadcrumbRfqLink').href = `/rfq/${rfqId}`;
+        document.getElementById('backToRfqBtn').href = `/rfq/${rfqId}`;
+        document.getElementById('bannerRfqId').textContent = `RFQ-${rfqId}`;
+      }
+
+      // ─────────────────────────────────────────────
+      // HELPER: render star string from numeric rating
+      // ─────────────────────────────────────────────
+      function renderStars(rating) {
+        const full = Math.floor(rating);
+        const half = rating - full >= 0.5 ? 1 : 0;
+        const empty = 5 - full - half;
+        return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+      }
+
+      // ─────────────────────────────────────────────
+      // HELPER: format price as ₹ with Indian commas
+      // ─────────────────────────────────────────────
+      function formatINR(val) {
+        return '₹' + Number(val).toLocaleString('en-IN');
+      }
+
+      // ─────────────────────────────────────────────
+      // HELPER: status label text
+      // ─────────────────────────────────────────────
+      function statusLabel(status) {
+        if (status === 'accepted') return 'Accepted';
+        if (status === 'rejected') return 'Rejected';
+        return 'Pending';
+      }
+
+      // ─────────────────────────────────────────────
+      // BUILD a single quote card DOM element
+      // ─────────────────────────────────────────────
+      function buildQuoteCard(quote) {
+        const card = document.createElement('div');
+        card.className = `quote-card ${quote.status}`;
+        card.dataset.quoteId = quote.id;
+        card.dataset.status = quote.status;
+
+        const isActioned = quote.status === 'accepted' || quote.status === 'rejected';
+        const initial = (quote.company || '?').charAt(0).toUpperCase();
+
+        card.innerHTML = `
+          <div class="quote-card-header">
+            <div class="quote-company-wrap">
+              <div class="company-avatar">${initial}</div>
+              <div>
+                <div class="company-name">${quote.company}</div>
+                <div class="company-meta">
+                  <div class="rating-wrap">
+                    <span class="rating-stars">${renderStars(parseFloat(quote.rating))}</span>
+                    <span class="rating-val">${parseFloat(quote.rating).toFixed(1)}</span>
+                    <span class="review-count">(${quote.review_count} reviews)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="status-badge ${quote.status}">${statusLabel(quote.status)}</span>
+          </div>
+
+          <div class="quote-meta-grid">
+            <div class="quote-meta-item">
+              <div class="qm-label">Quoted Price</div>
+              <div class="qm-value price">${formatINR(quote.price)}</div>
+            </div>
+            <div class="quote-meta-item">
+              <div class="qm-label">Delivery</div>
+              <div class="qm-value">${quote.delivery_days} day${quote.delivery_days !== 1 ? 's' : ''}</div>
+            </div>
+            <div class="quote-meta-item">
+              <div class="qm-label">Warranty</div>
+              <div class="qm-value">${quote.warranty} yr${quote.warranty !== '1' ? 's' : ''}</div>
+            </div>
+            <div class="quote-meta-item">
+              <div class="qm-label">Payment Terms</div>
+              <div class="qm-value" style="font-size:12.5px;font-weight:500;line-height:1.4">${quote.payment_terms}</div>
+            </div>
+          </div>
+
+          <div class="quote-message">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="quote-message-text">${quote.message}</span>
+          </div>
+
+          <div class="quote-actions${isActioned ? ' actioned' : ''}" data-quote-id="${quote.id}">
+            <button class="btn-accept" data-quote-id="${quote.id}">
+              <i class="bi bi-check-circle"></i> Accept Quote
+            </button>
+            <button class="btn-reject" data-quote-id="${quote.id}">
+              <i class="bi bi-x-circle"></i> Reject
+            </button>
+            ${
+              isActioned
+                ? `<span class="actioned-label ${quote.status}">
+                   <i class="bi bi-${quote.status === 'accepted' ? 'check-circle-fill' : 'x-circle-fill'}"></i>
+                   ${quote.status === 'accepted' ? 'Accepted' : 'Rejected'}
+                 </span>`
+                : '<span class="actioned-label"></span>'
+            }
+            <a href="/suppliers/${quote.id}" class="btn-view-supplier">
+              <i class="bi bi-building"></i> View Supplier
+            </a>
+          </div>
+        `;
+
+        return card;
+      }
+
+      // ─────────────────────────────────────────────
+      // RENDER quotes list
+      // ─────────────────────────────────────────────
+      let allQuotes = []; // master list; JS from your fetch sets this
+      let activeFilter = 'all';
+
+      function renderQuotes(quotes) {
+        const list = document.getElementById('quotesList');
+        // Clear skeletons & previous cards
+        list.innerHTML = '';
+
+        if (!quotes || quotes.length === 0) {
+          document.getElementById('quotesEmptyState').style.display = 'block';
+          document.getElementById('quotesSubtitle').textContent = '0 quotes received';
+          return;
+        }
+
+        document.getElementById('quotesEmptyState').style.display = 'none';
+        document.getElementById('quotesSubtitle').textContent =
+          `${quotes.length} quote${quotes.length !== 1 ? 's' : ''} received`;
+
+        quotes.forEach((q) => list.appendChild(buildQuoteCard(q)));
+        attachActionListeners();
+      }
+
+      // ─────────────────────────────────────────────
+      // FILTER + SORT
+      // ─────────────────────────────────────────────
+      function applyFilterSort() {
+        let result = [...allQuotes];
+        if (activeFilter !== 'all') {
+          result = result.filter((q) => q.status === activeFilter);
+        }
+        const sort = document.getElementById('sortSelect').value;
+        if (sort === 'price_asc') result.sort((a, b) => a.price - b.price);
+        if (sort === 'price_desc') result.sort((a, b) => b.price - a.price);
+        if (sort === 'delivery_asc') result.sort((a, b) => a.delivery_days - b.delivery_days);
+        if (sort === 'rating_desc') result.sort((a, b) => b.rating - a.rating);
+        renderQuotes(result);
+      }
+
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          applyFilterSort();
+        });
+      });
+
+      // Sort select
+      document.getElementById('sortSelect').addEventListener('change', applyFilterSort);
+
+      // ─────────────────────────────────────────────
+      // ACCEPT / REJECT handlers
+      // ─────────────────────────────────────────────
+      function attachActionListeners() {
+        document.querySelectorAll('.btn-accept').forEach((btn) => {
+          btn.addEventListener('click', () => handleAction(btn.dataset.quoteId, 'accepted'));
+        });
+        document.querySelectorAll('.btn-reject').forEach((btn) => {
+          btn.addEventListener('click', () => handleAction(btn.dataset.quoteId, 'rejected'));
+        });
+      }
+
+      function handleAction(quoteId, action) {
+        // Optimistic UI update
+        const q = allQuotes.find((q) => String(q.id) === String(quoteId));
+        if (!q) return;
+        q.status = action;
+
+        // Update card visually
+        const card = document.querySelector(`.quote-card[data-quote-id="${quoteId}"]`);
+        if (card) {
+          card.className = `quote-card ${action}`;
+          card.dataset.status = action;
+          card.querySelector('.status-badge').className = `status-badge ${action}`;
+          card.querySelector('.status-badge').textContent = statusLabel(action);
+          const actionsRow = card.querySelector('.quote-actions');
+          actionsRow.classList.add('actioned');
+          const label = actionsRow.querySelector('.actioned-label');
+          label.className = `actioned-label ${action}`;
+          label.innerHTML = `<i class="bi bi-${action === 'accepted' ? 'check-circle-fill' : 'x-circle-fill'}"></i> ${action === 'accepted' ? 'Accepted' : 'Rejected'}`;
+        }
+
+        // ── Replace with your actual API call ──
+        // fetch(`/api/v1/rfq/quotes/${quoteId}/${action}`, { method: 'PATCH' })
+        //   .then(res => res.json())
+        //   .then(data => { /* handle success */ })
+        //   .catch(err => { console.error(err); });
+      }
+
+      // ─────────────────────────────────────────────
+      // LOAD DATA  — replace fetch URL with your API
+      // ─────────────────────────────────────────────
+      if (rfqId) {
+        fetch(`/api/v1/rfq/${rfqId}/quotes`)
+          .then((res) => res.json())
+          .then((data) => {
+            // Remove skeletons
+            document.getElementById('skeleton1')?.remove();
+            document.getElementById('skeleton2')?.remove();
+
+            // Populate banner meta from RFQ details if returned
+            if (data.rfq) {
+              document.getElementById('bannerRfqTitle').textContent =
+                data.rfq.title || 'Incoming Quotes';
+              if (data.rfq.deadline) {
+                document.getElementById('bannerRfqDeadline').textContent = new Date(
+                  data.rfq.deadline,
+                ).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+              }
+            }
+
+            allQuotes = data.quotes || [];
+            document.getElementById('quoteCountNum').textContent = allQuotes.length;
+            document.getElementById('rfqNavBadge').textContent = allQuotes.length || '';
+            applyFilterSort();
+          })
+          .catch((err) => {
+            document.getElementById('skeleton1')?.remove();
+            document.getElementById('skeleton2')?.remove();
+            document.getElementById('quotesSubtitle').textContent = 'Failed to load quotes';
+            console.error('Quotes fetch error:', err);
+          });
+      }
+    </script>
+  </body>
+</html>
