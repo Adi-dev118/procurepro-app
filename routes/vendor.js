@@ -25,8 +25,12 @@ router.get('/vendor/order/orders-data', orderController.getVendorOrderManagement
 
 router.get('/vendor/rfq/rfq-data', rfqController.getVendorRFQs);
 
-router.get('/vendor/logout', (res, req) => {
+router.get('/vendor/logout', (req, res) => {
   res.render('company/login');
+});
+
+router.get('/vendor/rfq/:id', (req, res) => {
+  res.render('vendor/rfq-details');
 });
 
 module.exports = router;

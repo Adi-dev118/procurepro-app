@@ -36,7 +36,7 @@ export function renderRFQs(data, status) {
 
           <div class="d-flex gap-2">
           <button class="btn btn-primary btn-sm">Submit Quote</button>
-          <button class="btn btn-outline-secondary btn-sm">View Details</button>
+          <button class="btn btn-outline-secondary btn-sm" ><a href="rfq/${rfq.id}">View Details</a></button>
           </div>
           </div>
           `;

@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RFQ Details - VendorHub</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="/assets/css/vendor.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+
+    <style>
+      /* ── RFQ Detail – page-scoped style additions only ────────────────── */
+
+      /* Hero banner */
+      .rfq-hero {
+        background: linear-gradient(135deg, var(--vendor-primary) 0%, var(--vendor-secondary) 100%);
+        border-radius: 12px;
+        padding: 28px 32px;
+        margin-bottom: 28px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .rfq-hero::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .rfq-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        right: 90px;
+        width: 140px;
+        height: 140px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .rfq-hero-breadcrumb {
+        font-size: 13px;
+        margin-bottom: 10px;
+        opacity: 0.75;
+      }
+      .rfq-hero-breadcrumb a {
+        color: #fff;
+        text-decoration: none;
+        opacity: 0.85;
+        transition: opacity 0.2s;
+      }
+      .rfq-hero-breadcrumb a:hover {
+        opacity: 1;
+      }
+      .rfq-hero-breadcrumb .sep {
+        margin: 0 7px;
+        opacity: 0.45;
+      }
+      .rfq-hero-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 14px;
+        line-height: 1.35;
+      }
+      .rfq-hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      /* Pill badges inside the hero */
+      .rfq-hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #fff;
+      }
+      .rfq-hero-pill.status-active {
+        background: rgba(46, 204, 113, 0.22);
+        border-color: rgba(46, 204, 113, 0.45);
+      }
+      .rfq-hero-pill.status-closed {
+        background: rgba(52, 152, 219, 0.22);
+        border-color: rgba(52, 152, 219, 0.45);
+      }
+      .rfq-hero-pill.status-pending {
+        background: rgba(241, 196, 15, 0.22);
+        border-color: rgba(241, 196, 15, 0.45);
+      }
+      .rfq-hero-pill.status-cancelled {
+        background: rgba(231, 76, 60, 0.22);
+        border-color: rgba(231, 76, 60, 0.45);
+      }
+      .rfq-hero-pill.priority-high {
+        background: rgba(247, 37, 133, 0.25);
+        border-color: rgba(247, 37, 133, 0.45);
+      }
+      .rfq-hero-pill.priority-medium {
+        background: rgba(248, 150, 30, 0.25);
+        border-color: rgba(248, 150, 30, 0.45);
+      }
+      .rfq-hero-pill.priority-low {
+        background: rgba(76, 201, 240, 0.25);
+        border-color: rgba(76, 201, 240, 0.45);
+      }
+
+      /* Compact stat strip – 4 columns */
+      .rfq-stat-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .rfq-stat-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-top: 3px solid var(--vendor-primary);
+      }
+      .rfq-stat-card.budget {
+        border-top-color: #4cc9f0;
+      }
+      .rfq-stat-card.quantity {
+        border-top-color: #7209b7;
+      }
+      .rfq-stat-card.deadline {
+        border-top-color: #f8961e;
+      }
+      .rfq-stat-card.location {
+        border-top-color: #f72585;
+      }
+      .rfq-stat-icon {
+        font-size: 17px;
+        color: #ccc;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .rfq-stat-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #aaa;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .rfq-stat-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--vendor-dark);
+        display: block;
+        line-height: 1.25;
+        margin-bottom: 4px;
+      }
+      .rfq-stat-sub {
+        font-size: 12px;
+        color: #aaa;
+        display: block;
+      }
+      .rfq-stat-sub.safe {
+        color: #27ae60;
+        font-weight: 600;
+      }
+      .rfq-stat-sub.urgent {
+        color: #e74c3c;
+        font-weight: 600;
+      }
+
+      /* Overview card – borderless info grid */
+      .rfq-overview-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      .rfq-overview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 22px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .rfq-overview-header h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--vendor-dark);
+      }
+      .rfq-overview-id {
+        font-size: 12px;
+        font-weight: 600;
+        color: #bbb;
+        letter-spacing: 0.05em;
+      }
+      .rfq-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .rfq-info-cell {
+        padding: 14px 22px;
+        border-bottom: 1px solid #f5f5f5;
+        border-right: 1px solid #f5f5f5;
+      }
+      .rfq-info-cell:nth-child(3n) {
+        border-right: none;
+      }
+      .rfq-info-cell:nth-last-child(-n + 3) {
+        border-bottom: none;
+      }
+      .rfq-info-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #bbb;
+        margin-bottom: 5px;
+      }
+      .rfq-info-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--vendor-dark);
+      }
+      .rfq-description-block {
+        padding: 18px 22px;
+        border-top: 1px solid #f0f0f0;
+      }
+      .rfq-description-text {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+        margin: 6px 0 0;
+      }
+
+      /* Right sidebar cards */
+      .rfq-side-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      .rfq-side-card-header {
+        padding: 13px 18px;
+        border-bottom: 1px solid #f5f5f5;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #aaa;
+      }
+      .rfq-side-card-header i {
+        color: var(--vendor-primary);
+        font-size: 14px;
+      }
+      .rfq-side-card-body {
+        padding: 6px 0;
+      }
+
+      /* Key-value rows in sidebar */
+      .rfq-kv-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 18px;
+        border-bottom: 1px solid #f9f9f9;
+        font-size: 13px;
+      }
+      .rfq-kv-row:last-child {
+        border-bottom: none;
+      }
+      .rfq-kv-key {
+        color: #999;
+      }
+      .rfq-kv-val {
+        font-weight: 600;
+        color: var(--vendor-dark);
+        text-align: right;
+      }
+      .rfq-kv-val.accent {
+        color: var(--vendor-primary);
+      }
+
+      /* Table row-number column */
+      .vendor-table th.col-num,
+      .vendor-table td.col-num {
+        width: 36px;
+        color: #ccc;
+        font-size: 12px;
+        padding-left: 18px;
+      }
+      /* Item icon chip */
+      .item-chip {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: rgba(67, 97, 238, 0.08);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .item-chip i {
+        font-size: 13px;
+        color: var(--vendor-primary);
+      }
+
+      /* Loading / error centred boxes */
+      .rfq-state-box {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 70px 30px;
+        text-align: center;
+      }
+
+      /* Responsive */
+      @media (max-width: 1100px) {
+        .rfq-stat-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .rfq-info-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .rfq-info-cell:nth-child(3n) {
+          border-right: 1px solid #f5f5f5;
+        }
+        .rfq-info-cell:nth-child(2n) {
+          border-right: none;
+        }
+        .rfq-info-cell:nth-last-child(-n + 3) {
+          border-bottom: 1px solid #f5f5f5;
+        }
+        .rfq-info-cell:nth-last-child(-n + 2) {
+          border-bottom: none;
+        }
+      }
+      @media (max-width: 576px) {
+        .rfq-stat-row {
+          grid-template-columns: 1fr;
+        }
+        .rfq-info-grid {
+          grid-template-columns: 1fr;
+        }
+        .rfq-info-cell {
+          border-right: none !important;
+        }
+        .rfq-hero {
+          padding: 22px 18px;
+        }
+        .rfq-hero-title {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="vendor-container">
+      <!-- ── Sidebar ──────────────────────────────────────────────────── -->
+      <aside class="vendor-sidebar">
+        <div class="vendor-sidebar-header">
+          <div class="vendor-logo">
+            <i class="bi bi-shop vendor-logo-icon"></i>
+            <span class="vendor-logo-text">VendorHub</span>
+          </div>
+          <button class="vendor-toggle-btn"><i class="bi bi-chevron-left"></i></button>
+        </div>
+
+        <nav class="vendor-sidebar-menu">
+          <ul>
+            <li>
+              <a href="/vendor/dashboard"
+                ><i class="bi bi-speedometer2"></i
+                ><span class="vendor-menu-text">Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="/vendor/products"
+                ><i class="bi bi-box-seam"></i><span class="vendor-menu-text">Products</span></a
+              >
+            </li>
+            <li>
+              <a href="/vendor/orders"
+                ><i class="bi bi-cart-check"></i><span class="vendor-menu-text">Orders</span></a
+              >
+            </li>
+            <li>
+              <a href="/vendor/rfqs" class="active"
+                ><i class="bi bi-chat-left-text"></i><span class="vendor-menu-text">RFQs</span></a
+              >
+            </li>
+            <li>
+              <a href="/vendor/finance"
+                ><i class="bi bi-credit-card"></i><span class="vendor-menu-text">Finance</span></a
+              >
+            </li>
+            <li>
+              <a href="/vendor/profile"
+                ><i class="bi bi-person-circle"></i><span class="vendor-menu-text">Profile</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="vendor-sidebar-footer">
+          <p id="sidebarVendorName">--</p>
+          <small>Vendor Account</small>
+        </div>
+      </aside>
+
+      <!-- Mobile overlay -->
+      <div class="vendor-mobile-overlay"></div>
+
+      <!-- ── Main Content ─────────────────────────────────────────────── -->
+      <main class="vendor-main-content">
+        <!-- Topbar -->
+        <header class="vendor-topbar">
+          <button class="vendor-mobile-menu-btn"><i class="bi bi-list"></i></button>
+          <h1 class="vendor-page-title">RFQ Details</h1>
+
+          <div class="vendor-topbar-actions">
+            <div class="vendor-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <div class="vendor-notification-badge">
+              <i class="bi bi-bell"></i>
+              <span>3</span>
+            </div>
+
+            <div class="vendor-user-profile" id="profileTrigger">
+              <div class="vendor-user-avatar"><span id="topbarAvatarInitials">--</span></div>
+              <span class="vendor-user-name" id="topbarVendorName">--</span>
+              <i class="bi bi-chevron-down" id="profileChevron"></i>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="vendor-profile-dropdown" id="profileDropdown">
+              <div class="vendor-profile-dropdown-header">
+                <div class="vendor-profile-dropdown-avatar">
+                  <span id="dropdownAvatarInitials">--</span>
+                </div>
+                <div class="vendor-profile-dropdown-info">
+                  <strong id="dropdownVendorName">--</strong>
+                  <small id="dropdownVendorEmail">--</small>
+                </div>
+              </div>
+              <div class="vendor-profile-dropdown-divider"></div>
+              <a href="/company/login" class="vendor-profile-dropdown-signout">
+                <i class="bi bi-box-arrow-right"></i>Sign Out
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- ── Page Content ──────────────────────────────────────────── -->
+        <div class="vendor-content-wrapper">
+          <!-- Loading -->
+          <div id="rfqLoadingState">
+            <div class="rfq-state-box">
+              <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading…</span>
+              </div>
+              <p class="text-muted mb-0" style="font-size: 14px">Fetching RFQ details…</p>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="rfqErrorState" class="d-none">
+            <div class="rfq-state-box">
+              <i class="bi bi-exclamation-circle text-danger" style="font-size: 44px"></i>
+              <h5 class="mt-3 mb-1 fw-semibold">Could not load RFQ</h5>
+              <p class="text-muted mb-3" id="rfqErrorMessage" style="font-size: 14px">
+                An unexpected error occurred.
+              </p>
+              <a href="/vendor/rfqs" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Back to RFQs
+              </a>
+            </div>
+          </div>
+
+          <!-- ── RFQ Content ── -->
+          <div id="rfqContent" class="d-none">
+            <!-- Hero -->
+            <div class="rfq-hero">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                <div style="flex: 1; min-width: 0">
+                  <div class="rfq-hero-breadcrumb">
+                    <a href="/vendor/dashboard">Dashboard</a>
+                    <span class="sep">›</span>
+                    <a href="/vendor/rfqs">RFQs</a>
+                    <span class="sep">›</span>
+                    <span id="heroBreadcrumb">Details</span>
+                  </div>
+                  <h2 class="rfq-hero-title" id="heroTitle">—</h2>
+                  <div class="rfq-hero-meta">
+                    <span class="rfq-hero-pill" id="heroStatus">
+                      <i class="bi bi-circle-fill" style="font-size: 7px"></i> —
+                    </span>
+                    <span class="rfq-hero-pill" id="heroPriority">
+                      <i class="bi bi-flag-fill" style="font-size: 10px"></i> —
+                    </span>
+                    <span class="rfq-hero-pill">
+                      <i class="bi bi-tag" style="font-size: 10px"></i>
+                      <span id="heroCategory">—</span>
+                    </span>
+                    <span class="rfq-hero-pill">
+                      <i class="bi bi-geo-alt" style="font-size: 10px"></i>
+                      <span id="heroLocation">—</span>
+                    </span>
+                  </div>
+                </div>
+                <!-- CTA in hero -->
+                <div class="d-flex align-items-center" style="padding-top: 2px">
+                  <button
+                    class="btn btn-light fw-semibold btn-sm"
+                    style="border-radius: 8px; padding: 8px 20px; font-size: 14px"
+                    data-bs-toggle="modal"
+                    data-bs-target="#submitQuoteModal"
+                  >
+                    <i class="bi bi-send me-1"></i>Submit Quote
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stat strip -->
+            <div class="rfq-stat-row">
+              <div class="rfq-stat-card budget">
+                <span class="rfq-stat-icon"><i class="bi bi-currency-rupee"></i></span>
+                <span class="rfq-stat-label">Budget Range</span>
+                <span class="rfq-stat-value" id="statBudget">—</span>
+                <span class="rfq-stat-sub">Total estimated budget</span>
+              </div>
+              <div class="rfq-stat-card quantity">
+                <span class="rfq-stat-icon"><i class="bi bi-boxes"></i></span>
+                <span class="rfq-stat-label">Total Quantity</span>
+                <span class="rfq-stat-value" id="statQuantity">—</span>
+                <span class="rfq-stat-sub">Units required</span>
+              </div>
+              <div class="rfq-stat-card deadline">
+                <span class="rfq-stat-icon"><i class="bi bi-calendar-event"></i></span>
+                <span class="rfq-stat-label">Deadline</span>
+                <span class="rfq-stat-value" id="statDeadline">—</span>
+                <span class="rfq-stat-sub" id="statDeadlineSub">Submission deadline</span>
+              </div>
+              <div class="rfq-stat-card location">
+                <span class="rfq-stat-icon"><i class="bi bi-geo-alt"></i></span>
+                <span class="rfq-stat-label">Location</span>
+                <span class="rfq-stat-value" id="statLocation">—</span>
+                <span class="rfq-stat-sub">Delivery city</span>
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="row g-4">
+              <!-- ── Left col ── -->
+              <div class="col-lg-8">
+                <!-- Overview -->
+                <div class="rfq-overview-card mb-4">
+                  <div class="rfq-overview-header">
+                    <h3>
+                      <i class="bi bi-info-circle me-2" style="color: var(--vendor-primary)"></i>
+                      RFQ Overview
+                    </h3>
+                    <span class="rfq-overview-id">ID&nbsp; #<span id="rfqId">—</span></span>
+                  </div>
+
+                  <div class="rfq-info-grid">
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Category</div>
+                      <div class="rfq-info-value" id="rfqCategory">—</div>
+                    </div>
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Status</div>
+                      <div class="rfq-info-value" id="rfqStatusCell">—</div>
+                    </div>
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Priority</div>
+                      <div class="rfq-info-value" id="rfqPriorityCell">—</div>
+                    </div>
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Location</div>
+                      <div class="rfq-info-value" id="rfqLocation">—</div>
+                    </div>
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Posted On</div>
+                      <div class="rfq-info-value" id="rfqCreatedAt">—</div>
+                    </div>
+                    <div class="rfq-info-cell">
+                      <div class="rfq-info-label">Last Updated</div>
+                      <div class="rfq-info-value" id="rfqUpdatedAt">—</div>
+                    </div>
+                  </div>
+
+                  <div class="rfq-description-block">
+                    <div class="rfq-info-label">Description</div>
+                    <p class="rfq-description-text" id="rfqDescription">—</p>
+                  </div>
+                </div>
+
+                <!-- Items Table -->
+                <div class="vendor-table-container mb-4">
+                  <div class="vendor-table-header">
+                    <h3 class="vendor-section-title" style="font-size: 15px; margin: 0">
+                      <i class="bi bi-list-ul me-2" style="color: var(--vendor-primary)"></i>
+                      Requested Items
+                    </h3>
+                    <span
+                      class="badge rounded-pill bg-primary"
+                      id="itemsCount"
+                      style="font-size: 12px"
+                      >0 items</span
+                    >
+                  </div>
+                  <div class="vendor-table-responsive">
+                    <table class="vendor-table">
+                      <thead>
+                        <tr>
+                          <th class="col-num">#</th>
+                          <th>Product Name</th>
+                          <th style="text-align: right; padding-right: 22px">Qty</th>
+                        </tr>
+                      </thead>
+                      <tbody id="rfqItemsTableBody">
+                        <tr>
+                          <td colspan="3" class="text-center text-muted py-4">No items found.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Specs Table -->
+                <div class="vendor-table-container">
+                  <div class="vendor-table-header">
+                    <h3 class="vendor-section-title" style="font-size: 15px; margin: 0">
+                      <i class="bi bi-sliders me-2" style="color: var(--vendor-primary)"></i>
+                      Specifications
+                    </h3>
+                    <span
+                      class="badge rounded-pill bg-secondary"
+                      id="specsCount"
+                      style="font-size: 12px"
+                      >0 specs</span
+                    >
+                  </div>
+                  <div class="vendor-table-responsive">
+                    <table class="vendor-table">
+                      <thead>
+                        <tr>
+                          <th class="col-num">#</th>
+                          <th>Specification</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody id="rfqSpecsTableBody">
+                        <tr>
+                          <td colspan="3" class="text-center text-muted py-4">
+                            No specifications found.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- /col-lg-8 -->
+
+              <!-- ── Right sidebar ── -->
+              <div class="col-lg-4">
+                <!-- Actions -->
+                <div class="rfq-side-card">
+                  <div class="rfq-side-card-header">
+                    <i class="bi bi-lightning-charge"></i>Actions
+                  </div>
+                  <div class="rfq-side-card-body" style="padding: 14px 16px">
+                    <div class="d-grid gap-2">
+                      <button
+                        class="btn btn-primary"
+                        style="border-radius: 8px"
+                        data-bs-toggle="modal"
+                        data-bs-target="#submitQuoteModal"
+                      >
+                        <i class="bi bi-send me-2"></i>Submit Quote
+                      </button>
+                      <a
+                        href="/vendor/rfqs"
+                        class="btn btn-outline-secondary"
+                        style="border-radius: 8px"
+                      >
+                        <i class="bi bi-arrow-left me-2"></i>Back to RFQs
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Budget Info -->
+                <div class="rfq-side-card">
+                  <div class="rfq-side-card-header"><i class="bi bi-wallet2"></i>Budget Info</div>
+                  <div class="rfq-side-card-body">
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Min Budget</span>
+                      <span class="rfq-kv-val accent" id="budgetMin">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Max Budget</span>
+                      <span class="rfq-kv-val accent" id="budgetMax">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Total Qty</span>
+                      <span class="rfq-kv-val" id="budgetQty">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Deadline</span>
+                      <span class="rfq-kv-val" id="budgetDeadline">—</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- RFQ Meta -->
+                <div class="rfq-side-card">
+                  <div class="rfq-side-card-header"><i class="bi bi-tag"></i>RFQ Meta</div>
+                  <div class="rfq-side-card-body">
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">RFQ ID</span>
+                      <span class="rfq-kv-val" id="metaRfqId">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Category</span>
+                      <span class="rfq-kv-val" id="metaCategory">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Location</span>
+                      <span class="rfq-kv-val" id="metaLocation">—</span>
+                    </div>
+                    <div class="rfq-kv-row">
+                      <span class="rfq-kv-key">Posted</span>
+                      <span class="rfq-kv-val" id="metaPosted">—</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /col-lg-4 -->
+            </div>
+          </div>
+          <!-- /rfqContent -->
+        </div>
+      </main>
+    </div>
+
+    <!-- ── Submit Quote Modal ─────────────────────────────────────────── -->
+    <div class="modal fade" id="submitQuoteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border: none; border-radius: 12px; overflow: hidden">
+          <div class="modal-header" style="padding: 20px 24px; border-bottom: 1px solid #f0f0f0">
+            <h5 class="modal-title fw-semibold">
+              <i class="bi bi-send me-2" style="color: var(--vendor-primary)"></i>Submit Quote
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" style="padding: 24px">
+            <!-- RFQ label in modal -->
+            <div
+              class="mb-4 p-3 rounded-3"
+              style="background: #f8f9fa; border-left: 3px solid var(--vendor-primary)"
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: #bbb;
+                  margin-bottom: 4px;
+                "
+              >
+                Responding to
+              </div>
+              <div
+                id="quoteRfqTitle"
+                style="font-size: 15px; font-weight: 600; color: var(--vendor-dark)"
+              >
+                —
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="vendor-form-label" style="font-size: 13px">
+                  Your Price (₹) <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="vendor-form-control"
+                  id="quotePrice"
+                  placeholder="e.g. 720000"
+                  min="0"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="vendor-form-label" style="font-size: 13px">
+                  Delivery Days <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="vendor-form-control"
+                  id="quoteDeliveryDays"
+                  placeholder="e.g. 7"
+                  min="1"
+                />
+              </div>
+              <div class="col-12">
+                <label class="vendor-form-label" style="font-size: 13px">Message / Notes</label>
+                <textarea
+                  class="vendor-form-control"
+                  id="quoteMessage"
+                  rows="4"
+                  placeholder="Describe your offer, delivery terms, warranty, or any additional details…"
+                  style="resize: vertical"
+                ></textarea>
+              </div>
+            </div>
+
+            <div id="quoteError" class="alert alert-danger mt-3 mb-0 d-none"></div>
+            <div id="quoteSuccess" class="alert alert-success mt-3 mb-0 d-none"></div>
+          </div>
+          <div
+            class="modal-footer"
+            style="padding: 16px 24px; border-top: 1px solid #f0f0f0; gap: 10px"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+              style="border-radius: 8px"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="btnSubmitQuoteConfirm"
+              style="border-radius: 8px; min-width: 140px"
+            >
+              <i class="bi bi-send me-1"></i>Submit Quote
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Vendor JS -->
+    <script src="../assets/js/vendor.js"></script>
+
+    <script>
+      /* ── Helpers ───────────────────────────────────────────────────────── */
+
+      const fmt = {
+        currency(v) {
+          const n = parseFloat(v);
+          return isNaN(n)
+            ? '—'
+            : '₹\u202f' + n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+        },
+        date(s) {
+          if (!s) return '—';
+          return new Date(s).toLocaleDateString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          });
+        },
+        initials(name) {
+          return (
+            (name || '')
+              .split(' ')
+              .map((w) => w[0])
+              .join('')
+              .toUpperCase() || '--'
+          );
+        },
+        cap(s) {
+          return s ? s.charAt(0).toUpperCase() + s.slice(1) : '—';
+        },
+        daysUntil(s) {
+          return s ? Math.ceil((new Date(s) - Date.now()) / 86400000) : null;
+        },
+      };
+
+      function esc(str) {
+        const d = document.createElement('div');
+        d.appendChild(document.createTextNode(str || ''));
+        return d.innerHTML;
+      }
+
+      /* hero pill classes */
+      const STATUS_HERO = {
+        active: 'status-active',
+        closed: 'status-closed',
+        pending: 'status-pending',
+        cancelled: 'status-cancelled',
+      };
+      const PRIORITY_HERO = {
+        high: 'priority-high',
+        medium: 'priority-medium',
+        low: 'priority-low',
+      };
+
+      /* existing vendor-status-badge classes */
+      const STATUS_BADGE = {
+        active: 'active',
+        closed: 'completed',
+        pending: 'pending',
+        cancelled: 'cancelled',
+      };
+      const PRIORITY_BADGE = { high: 'cancelled', medium: 'pending', low: 'active' };
+
+      function heroClass(map, val) {
+        return map[(val || '').toLowerCase()] || '';
+      }
+      function badgeClass(map, val) {
+        return map[(val || '').toLowerCase()] || 'pending';
+      }
+
+      /* ── Session ───────────────────────────────────────────────────────── */
+      async function loadVendorSession() {
+        try {
+          const r = await fetch('/vendor/me');
+          if (!r.ok) return;
+          const { name = '', email = '' } = await r.json();
+          const i = fmt.initials(name);
+          document.getElementById('sidebarVendorName').textContent = name;
+          document.getElementById('topbarVendorName').textContent = name;
+          document.getElementById('topbarAvatarInitials').textContent = i;
+          document.getElementById('dropdownAvatarInitials').textContent = i;
+          document.getElementById('dropdownVendorName').textContent = name;
+          document.getElementById('dropdownVendorEmail').textContent = email;
+        } catch (_) {}
+      }
+
+      /* ── URL id ────────────────────────────────────────────────────────── */
+      function rfqIdFromUrl() {
+        const p = window.location.pathname.split('/');
+        return p[p.length - 1];
+      }
+
+      /* ── Render ────────────────────────────────────────────────────────── */
+      function renderRFQ(rfq) {
+        document.title = `RFQ – ${rfq.title} | VendorHub`;
+
+        /* Hero */
+        document.getElementById('heroBreadcrumb').textContent = rfq.title;
+        document.getElementById('heroTitle').textContent = rfq.title;
+        document.getElementById('heroCategory').textContent = rfq.category || '—';
+        document.getElementById('heroLocation').textContent = rfq.location || '—';
+
+        const hStatus = document.getElementById('heroStatus');
+        hStatus.innerHTML = `<i class="bi bi-circle-fill" style="font-size:7px;"></i> ${fmt.cap(rfq.status)}`;
+        hStatus.classList.add(heroClass(STATUS_HERO, rfq.status));
+
+        const hPriority = document.getElementById('heroPriority');
+        hPriority.innerHTML = `<i class="bi bi-flag-fill" style="font-size:10px;"></i> ${fmt.cap(rfq.priority)} Priority`;
+        hPriority.classList.add(heroClass(PRIORITY_HERO, rfq.priority));
+
+        /* Stat strip */
+        document.getElementById('statBudget').textContent =
+          `${fmt.currency(rfq.budget_min)} – ${fmt.currency(rfq.budget_max)}`;
+        document.getElementById('statQuantity').textContent = rfq.quantity + ' units';
+        document.getElementById('statLocation').textContent = rfq.location || '—';
+        document.getElementById('statDeadline').textContent = fmt.date(rfq.deadline);
+
+        const days = fmt.daysUntil(rfq.deadline);
+        const subEl = document.getElementById('statDeadlineSub');
+        if (days !== null) {
+          if (days > 0) {
+            subEl.textContent = `${days} day${days !== 1 ? 's' : ''} remaining`;
+            subEl.className = 'rfq-stat-sub safe';
+          } else if (days === 0) {
+            subEl.textContent = 'Due today';
+            subEl.className = 'rfq-stat-sub urgent';
+          } else {
+            subEl.textContent = 'Deadline passed';
+            subEl.className = 'rfq-stat-sub urgent';
+          }
+        }
+
+        /* Overview card */
+        document.getElementById('rfqId').textContent = rfq.id;
+        document.getElementById('rfqCategory').textContent = rfq.category || '—';
+        document.getElementById('rfqLocation').textContent = rfq.location || '—';
+        document.getElementById('rfqCreatedAt').textContent = fmt.date(rfq.created_at);
+        document.getElementById('rfqUpdatedAt').textContent = fmt.date(rfq.updated_at);
+        document.getElementById('rfqDescription').textContent = rfq.description || '—';
+
+        document.getElementById('rfqStatusCell').innerHTML =
+          `<span class="vendor-status-badge ${badgeClass(STATUS_BADGE, rfq.status)}">${fmt.cap(rfq.status)}</span>`;
+        document.getElementById('rfqPriorityCell').innerHTML =
+          `<span class="vendor-status-badge ${badgeClass(PRIORITY_BADGE, rfq.priority)}">${fmt.cap(rfq.priority)}</span>`;
+
+        /* Modal */
+        document.getElementById('quoteRfqTitle').textContent = rfq.title;
+
+        /* Budget sidebar */
+        document.getElementById('budgetMin').textContent = fmt.currency(rfq.budget_min);
+        document.getElementById('budgetMax').textContent = fmt.currency(rfq.budget_max);
+        document.getElementById('budgetQty').textContent = rfq.quantity + ' units';
+        document.getElementById('budgetDeadline').textContent = fmt.date(rfq.deadline);
+
+        /* Meta sidebar */
+        document.getElementById('metaRfqId').textContent = '#' + rfq.id;
+        document.getElementById('metaCategory').textContent = rfq.category || '—';
+        document.getElementById('metaLocation').textContent = rfq.location || '—';
+        document.getElementById('metaPosted').textContent = fmt.date(rfq.created_at);
+
+        /* Items table */
+        const items = rfq.items || [];
+        document.getElementById('itemsCount').textContent =
+          items.length + (items.length === 1 ? ' item' : ' items');
+        document.getElementById('rfqItemsTableBody').innerHTML = items.length
+          ? items
+              .map(
+                (item, i) => `
+              <tr>
+                <td class="col-num">${i + 1}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="item-chip"><i class="bi bi-box-seam"></i></span>
+                    <strong style="font-size:14px;">${esc(item.product_name)}</strong>
+                  </div>
+                </td>
+                <td style="text-align:right; padding-right:22px;">
+                  <span class="vendor-status-badge processing" style="font-size:12px;">${item.quantity} units</span>
+                </td>
+              </tr>`,
+              )
+              .join('')
+          : `<tr><td colspan="3" class="text-center text-muted py-4" style="font-size:14px;">No items listed for this RFQ.</td></tr>`;
+
+        /* Specs table */
+        const specs = rfq.specifications || [];
+        document.getElementById('specsCount').textContent =
+          specs.length + (specs.length === 1 ? ' spec' : ' specs');
+        document.getElementById('rfqSpecsTableBody').innerHTML = specs.length
+          ? specs
+              .map(
+                (spec, i) => `
+              <tr>
+                <td class="col-num">${i + 1}</td>
+                <td style="font-size:14px; color:#555;">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-check2-circle" style="color:var(--vendor-primary); font-size:15px;"></i>
+                    ${esc(spec.spec_name)}
+                  </div>
+                </td>
+                <td><strong style="font-size:14px;">${esc(spec.spec_value)}</strong></td>
+              </tr>`,
+              )
+              .join('')
+          : `<tr><td colspan="3" class="text-center text-muted py-4" style="font-size:14px;">No specifications listed for this RFQ.</td></tr>`;
+      }
+
+      /* ── Fetch ─────────────────────────────────────────────────────────── */
+      async function loadRFQ() {
+        const id = rfqIdFromUrl();
+        const loadEl = document.getElementById('rfqLoadingState');
+        const errorEl = document.getElementById('rfqErrorState');
+        const contentEl = document.getElementById('rfqContent');
+
+        try {
+          const res = await fetch(`/api/v1/rfq/rfq-data/${id}`);
+          if (!res.ok) {
+            const e = await res.json().catch(() => ({}));
+            throw new Error(e.message || `HTTP ${res.status}`);
+          }
+          const { rfq } = await res.json();
+          if (!rfq) throw new Error('RFQ data missing in response.');
+
+          renderRFQ(rfq);
+          loadEl.classList.add('d-none');
+          contentEl.classList.remove('d-none');
+        } catch (err) {
+          loadEl.classList.add('d-none');
+          errorEl.classList.remove('d-none');
+          document.getElementById('rfqErrorMessage').textContent =
+            err.message || 'Something went wrong.';
+        }
+      }
+
+      /* ── Submit Quote ──────────────────────────────────────────────────── */
+      document.getElementById('btnSubmitQuoteConfirm').addEventListener('click', async function () {
+        const id = rfqIdFromUrl();
+        const price = document.getElementById('quotePrice').value.trim();
+        const deliveryDays = document.getElementById('quoteDeliveryDays').value.trim();
+        const message = document.getElementById('quoteMessage').value.trim();
+        const errEl = document.getElementById('quoteError');
+        const okEl = document.getElementById('quoteSuccess');
+
+        errEl.classList.add('d-none');
+        okEl.classList.add('d-none');
+
+        if (!price || !deliveryDays) {
+          errEl.textContent = 'Price and Delivery Days are required.';
+          errEl.classList.remove('d-none');
+          return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
+
+        try {
+          const res = await fetch(`/api/rfqs/${id}/quote`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ price, delivery_days: deliveryDays, message }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Failed to submit quote.');
+
+          okEl.textContent = 'Quote submitted successfully!';
+          okEl.classList.remove('d-none');
+          document.getElementById('quotePrice').value = '';
+          document.getElementById('quoteDeliveryDays').value = '';
+          document.getElementById('quoteMessage').value = '';
+
+          setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('submitQuoteModal'))?.hide();
+          }, 1600);
+        } catch (err) {
+          errEl.textContent = err.message || 'An error occurred.';
+          errEl.classList.remove('d-none');
+        } finally {
+          this.disabled = false;
+          this.innerHTML = '<i class="bi bi-send me-1"></i>Submit Quote';
+        }
+      });
+
+      /* ── Init ──────────────────────────────────────────────────────────── */
+      loadVendorSession();
+      loadRFQ();
+    </script>
+  </body>
+</html>
