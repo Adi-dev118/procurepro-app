@@ -22,6 +22,48 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+
+    <style>
+      .tab-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .tab-btn {
+        padding: 10px 24px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        background: white;
+        color: #555;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .tab-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .tab-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+
+      .tab-content-panel {
+        display: none;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .tab-content-panel.active {
+        display: grid;
+      }
+    </style>
   </head>
   <body>
     <div class="dashboard-container">
@@ -89,7 +131,7 @@
         </div>
       </aside>
 
-      <!-- Mobile overlay (for mobile menu) -->
+      <!-- Mobile overlay -->
       <div class="mobile-overlay"></div>
 
       <!-- Main Content -->
@@ -158,78 +200,183 @@
 
         <!-- Content Wrapper -->
         <div class="content-wrapper dashboard-page">
-          <!-- KPI Cards -->
-          <div class="kpi-cards">
-            <div class="kpi-card revenue">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Total Revenue</h3>
-                <i class="bi bi-currency-dollar"></i>
-              </div>
-              <div class="kpi-card-value">$<%=ordersStats.totalRevenue %></div>
-              <div class="kpi-card-change positive">↑ 12% from last month</div>
+          <!-- KPI Section -->
+          <div class="section-block">
+            <!-- Tab Buttons -->
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="business">
+                <i class="bi bi-briefcase me-1"></i> Business Overview
+              </button>
+
+              <button class="tab-btn" data-tab="operations">
+                <i class="bi bi-gear me-1"></i> Operations
+              </button>
+
+              <button class="tab-btn" data-tab="rfq">
+                <i class="bi bi-file-earmark-text me-1"></i> RFQ Analytics
+              </button>
             </div>
 
-            <div class="kpi-card orders">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Total Orders</h3>
-                <i class="bi bi-cart"></i>
+            <!-- Tab 1: Business Overview -->
+            <div class="tab-content-panel active" id="tab-business">
+              <div class="kpi-card revenue">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Total Revenue</h3>
+                  <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="kpi-card-value" id="total-revenue"></div>
+                <div class="kpi-card-change positive" id="revenue-change">
+                  ↑ 12% from last month
+                </div>
               </div>
-              <div class="kpi-card-value"><%=ordersStats.totalOrders %></div>
-              <div class="kpi-card-change positive">↑ 8% from last week</div>
+
+              <div class="kpi-card orders">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Total Orders</h3>
+                  <i class="bi bi-cart"></i>
+                </div>
+                <div class="kpi-card-value" id="total-order"></div>
+                <div class="kpi-card-change positive">↑ 8% from last week</div>
+              </div>
+
+              <div class="kpi-card users">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Total Users</h3>
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="kpi-card-value" id="total-user"></div>
+                <div class="kpi-card-change positive">↑ 5% from last month</div>
+              </div>
+
+              <div class="kpi-card suppliers">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Active Vendors</h3>
+                  <i class="bi bi-building"></i>
+                </div>
+                <div class="kpi-card-value" id="total-vendor"></div>
+                <div class="kpi-card-change negative">↓ 2% from last month</div>
+              </div>
+              <!-- Avg Order Value -->
+              <div class="kpi-card revenue">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Avg Order Value</h3>
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="kpi-card-value" id="avg-order-value"></div>
+                <div class="kpi-card-change positive">Revenue quality</div>
+              </div>
+
+              <!-- Completion Rate -->
+              <div class="kpi-card orders">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Completion Rate</h3>
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="kpi-card-value" id="completion-rate"></div>
+                <div class="kpi-card-change positive">% orders delivered</div>
+              </div>
             </div>
 
-            <div class="kpi-card users">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Total Users</h3>
-                <i class="bi bi-people-fill"></i>
+            <!-- Tab 2: Operations -->
+            <div class="tab-content-panel" id="tab-operations">
+              <div class="kpi-card commission">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Commission Earned</h3>
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="kpi-card-value" id="total-commision"></div>
+                <div class="kpi-card-change positive">↑ 15% from last month</div>
               </div>
-              <div class="kpi-card-value"><%=platformStats.totalUsers%></div>
-              <div class="kpi-card-change positive">↑ 5% from last month</div>
+
+              <div class="kpi-card disputes">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Pending Disputes</h3>
+                  <i class="bi bi-exclamation-octagon"></i>
+                </div>
+                <div class="kpi-card-value" id="total-dispute"></div>
+                <div class="kpi-card-change positive">↓ 3 from yesterday</div>
+              </div>
+
+              <div class="kpi-card shipments">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Pending Shipments</h3>
+                  <i class="bi bi-truck"></i>
+                </div>
+                <div class="kpi-card-value" id="total-pendingShipments"></div>
+                <div class="kpi-card-change negative">↑ 12 from yesterday</div>
+              </div>
+
+              <div class="kpi-card uptime">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Platform Uptime</h3>
+                  <i class="bi bi-hdd-stack"></i>
+                </div>
+                <div class="kpi-card-value">99.9%</div>
+                <div class="kpi-card-change positive">Last 30 days</div>
+              </div>
+              <!-- Dispute Resolution Rate -->
+              <div class="kpi-card disputes">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Resolution Rate</h3>
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="kpi-card-value" id="resolution-rate"></div>
+                <div class="kpi-card-change positive">% disputes resolved</div>
+              </div>
             </div>
 
-            <div class="kpi-card suppliers">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Active Suppliers</h3>
-                <i class="bi bi-building"></i>
+            <!-- Tab 3: RFQ Analytics -->
+            <div class="tab-content-panel" id="tab-rfq">
+              <div class="kpi-card rfq">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Total RFQs</h3>
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div class="kpi-card-value" id="total-rfq"></div>
+                <div class="kpi-card-change positive">System demand</div>
               </div>
-              <div class="kpi-card-value"><%=platformStats.totalSuppliers%></div>
-              <div class="kpi-card-change negative">↓ 2% from last month</div>
-            </div>
 
-            <div class="kpi-card commission">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Commission Earned</h3>
-                <i class="bi bi-graph-up"></i>
+              <div class="kpi-card rfq-active">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Active RFQs</h3>
+                  <i class="bi bi-clock"></i>
+                </div>
+                <div class="kpi-card-value" id="active-rfq"></div>
+                <div class="kpi-card-change positive">Currently open</div>
               </div>
-              <div class="kpi-card-value">$ <%=ordersStats.totalCommission%></div>
-              <div class="kpi-card-change positive">↑ 15% from last month</div>
-            </div>
 
-            <div class="kpi-card disputes">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Pending Disputes</h3>
-                <i class="bi bi-exclamation-octagon"></i>
+              <div class="kpi-card quotes">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Quotes Submitted</h3>
+                  <i class="bi bi-send"></i>
+                </div>
+                <div class="kpi-card-value" id="total-quotes"></div>
+                <div class="kpi-card-change positive">Vendor activity</div>
               </div>
-              <div class="kpi-card-value"><%=platformStats.totalDisputes%></div>
-              <div class="kpi-card-change positive">↓ 3 from yesterday</div>
-            </div>
 
-            <div class="kpi-card shipments">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Pending Shipments</h3>
-                <i class="bi bi-truck"></i>
+              <div class="kpi-card conversion">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">RFQ Conversion</h3>
+                  <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <div class="kpi-card-value" id="rfq-conversion"></div>
+                <div class="kpi-card-change positive">RFQ → Order</div>
               </div>
-              <div class="kpi-card-value"><%=ordersStats.pendingShipments%></div>
-              <div class="kpi-card-change negative">↑ 12 from yesterday</div>
-            </div>
+              <div class="kpi-card quotes">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Avg Quotes / RFQ</h3>
+                  <i class="bi bi-bar-chart"></i>
+                </div>
+                <div class="kpi-card-value" id="avg-quotes"></div>
+              </div>
 
-            <div class="kpi-card uptime">
-              <div class="kpi-card-header">
-                <h3 class="kpi-card-title">Platform Uptime</h3>
-                <i class="bi bi-hdd-stack"></i>
+              <div class="kpi-card rfq">
+                <div class="kpi-card-header">
+                  <h3 class="kpi-card-title">Avg Response Time</h3>
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="kpi-card-value" id="avg-response"></div>
               </div>
-              <div class="kpi-card-value">99.9%</div>
-              <div class="kpi-card-change positive">Last 30 days</div>
             </div>
           </div>
 
@@ -312,5 +459,86 @@
 
     <!-- Custom JS -->
     <script src="/assets/js/main.js"></script>
+
+    <script>
+      // ===== Tab switching =====
+      // ===== Tab System (Clean Version) =====
+      function initTabs() {
+        const buttons = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.tab-content-panel');
+
+        buttons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const tabName = btn.dataset.tab;
+
+            // Remove active from all
+            buttons.forEach((b) => b.classList.remove('active'));
+            panels.forEach((p) => p.classList.remove('active'));
+
+            // Activate selected
+            btn.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+          });
+        });
+      }
+
+      // Init on load
+      initTabs();
+
+      // ===== Load dashboard data =====
+      async function loadDashboard() {
+        try {
+          const res = await fetch('/api/v1/admin/dashboard-data');
+          const data = await res.json();
+
+          const { business, operations, rfq } = data;
+
+          // =========================
+          // 🟢 BUSINESS
+          // =========================
+          document.getElementById('total-revenue').textContent =
+            '₹ ' + Number(business.totalRevenue).toLocaleString();
+
+          document.getElementById('total-order').textContent = business.totalOrders;
+          document.getElementById('total-user').textContent = business.totalUsers;
+          document.getElementById('total-vendor').textContent = business.totalSuppliers;
+
+          document.getElementById('avg-order-value').textContent =
+            '₹ ' + Number(business.avgOrderValue).toLocaleString();
+
+          document.getElementById('completion-rate').textContent = business.completionRate + '%';
+
+          // =========================
+          // 🟠 OPERATIONS
+          // =========================
+          document.getElementById('total-commision').textContent =
+            '₹ ' + Number(operations.totalCommission).toLocaleString();
+
+          document.getElementById('total-dispute').textContent = operations.pendingDisputes;
+
+          document.getElementById('total-pendingShipments').textContent =
+            operations.pendingShipments;
+
+          document.getElementById('resolution-rate').textContent =
+            operations.disputeResolutionRate + '%';
+
+          // =========================
+          // 🟣 RFQ
+          // =========================
+          document.getElementById('total-rfq').textContent = rfq.totalRfqs;
+          document.getElementById('active-rfq').textContent = rfq.activeRfqs;
+          document.getElementById('total-quotes').textContent = rfq.totalQuotes;
+          document.getElementById('rfq-conversion').textContent = rfq.conversionRate + '%';
+          document.getElementById('avg-quotes').textContent = Number(rfq.avgQuotesPerRfq).toFixed(
+            1,
+          );
+
+          document.getElementById('avg-response').textContent = rfq.avgResponseTime + ' hrs';
+        } catch (err) {
+          console.error('Dashboard load error:', err);
+        }
+      }
+      loadDashboard();
+    </script>
   </body>
 </html>

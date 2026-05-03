@@ -264,21 +264,21 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .kpi-card {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04); /* lighter */
   transition: all 0.3s;
   border-left: 4px solid var(--primary-color);
 }
 
 .kpi-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px); /* reduce jump */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .kpi-card.revenue {
@@ -320,9 +320,11 @@ body {
   margin-bottom: 15px;
 }
 
+
 .kpi-card-header i {
-  font-size: 24px;
   color: #777;
+   font-size: 20px;
+  opacity: 0.6;
 }
 
 .kpi-card-title {
@@ -333,7 +335,7 @@ body {
 }
 
 .kpi-card-value {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--dark-color);
   margin-bottom: 5px;
@@ -346,20 +348,28 @@ body {
 }
 
 .kpi-card-change.positive {
-  color: #2ecc71;
+  color: #16a34a;
 }
 
 .kpi-card-change.negative {
-  color: #e74c3c;
+  color: #dc2626;
+}
+.kpi-card-value:empty::before {
+  content: '--';
+  color: #bbb;
 }
 
 /* ===== Charts ===== */
 .charts-section {
   margin-bottom: 30px;
 }
-
+.section-block {
+  margin-bottom: 30px;
+}
 .section-title {
-  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 12px;
+  font-size: 22px; /* was 20px */
   font-weight: 600;
   margin-bottom: 20px;
   color: var(--dark-color);
@@ -917,6 +927,19 @@ th {
 
 .recent-activity-wrapper table tbody td {
   vertical-align: middle;
+}
+
+.rfq {
+  border-left: 4px solid #17a2b8;
+}
+.rfq-active {
+  border-left: 4px solid #ffc107;
+}
+.quotes {
+  border-left: 4px solid #6f42c1;
+}
+.conversion {
+  border-left: 4px solid #20c997;
 }
 /* ===== Responsive Design ===== */
 @media (max-width: 992px) {
