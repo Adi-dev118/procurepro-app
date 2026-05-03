@@ -138,23 +138,13 @@ exports.getCartItems = async (req, res) => {
     let cartId;
 
     const [cartRows] = await db.query(`SELECT id FROM carts WHERE user_id= ?`, [userId]);
-
-    const [rows] = await db.query(`SELECT role FROM users WHERE id = ?`, [userId]);
-    if (rows.length === 0) {
-      await connection.rollback();
-      return res.status(500).json({
-        status: 'Failed',
-        message: "The user doesn't exist",
-      });
-    }
-   
     if (cartRows.length > 0) {
       cartId = cartRows[0].id;
     } else {
-      const [result] = await connection.query(
-        `INSERT INTO carts (user_id, created_at) VALUES (?, ?)`,
-        [userId, new Date()],
-      );
+      const [result] = await db.query(`INSERT INTO carts (user_id, created_at) VALUES (?, ?)`, [
+        userId,
+        new Date(),
+      ]);
       cartId = result.insertId;
     }
 

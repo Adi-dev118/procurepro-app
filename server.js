@@ -1,8 +1,7 @@
-const app = require('./app');
 const dotenv = require('dotenv');
-const db = require('./config/db');
-
 dotenv.config({ path: './config.env' });
+const app = require('./app');
+const db = require('./config/db');
 
 async function testDB() {
   const [rows] = await db.query('SELECT 1');
@@ -11,7 +10,7 @@ async function testDB() {
 
 testDB();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.listen(port, (err) => {
   console.log(`The server has started to ${port}`);
 });

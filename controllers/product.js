@@ -1,4 +1,3 @@
-const { off } = require('../app');
 const db = require('./../config/db');
 
 exports.newProduct = async (req, res) => {
