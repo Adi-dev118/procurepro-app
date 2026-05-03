@@ -221,7 +221,26 @@ function renderActivities(activities) {
     `;
   });
 }
+// Stats
+function renderUserStats(stats) {
+  if (!stats) return;
 
+  document.getElementById('total-users').textContent =
+    stats.totalUsers ?? '--';
+
+  document.getElementById('active-buyers').textContent =
+    stats.totalBuyers ?? '--';
+
+  document.getElementById('active-vendor').textContent =
+    stats.activeSuppliers ?? '--';
+
+  // Pending = users + suppliers (better UX)
+  const pendingTotal =
+    (stats.pendingUsers || 0) + (stats.pendingSuppliers || 0);
+
+  document.getElementById('pending-approval').textContent =
+    pendingTotal;
+}
 // Pagination
 
 function renderPagination(totalPages) {
@@ -318,6 +337,7 @@ export {
   renderBuyers,
   renderSuppliers,
   renderActivities,
+  renderUserStats,
   renderPagination,
   updateUserCount,
 };

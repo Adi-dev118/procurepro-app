@@ -1,5 +1,5 @@
 import { userState } from './user.state.js';
-import { fetchUsers, fetchSuppliers, fetchRecentActivities } from './user.api.js';
+import { fetchUsers, fetchSuppliers, loadUserStats, fetchRecentActivities } from './user.api.js';
 
 function changePage(page) {
   if (page < 1) return;
@@ -171,6 +171,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   fetchUsers();
   fetchRecentActivities();
+  loadUserStats();
 
   let activeTab = '#profile-tab';
 

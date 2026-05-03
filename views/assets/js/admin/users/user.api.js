@@ -7,6 +7,7 @@ import {
   renderBuyers,
   renderSuppliers,
   renderActivities,
+  renderUserStats,
   renderPagination,
   updateUserCount,
 } from './user.render.js';
@@ -49,6 +50,17 @@ async function fetchSuppliers() {
   renderPagination(data.totalPages);
   updateUserCount(data.currentPage, data.totalSuppliers);
 }
+async function loadUserStats() {
+  try {
+    const res = await fetch('/api/v1/admin/users-data'); // your endpoint
+    const data = await res.json();
+
+    renderUserStats(data.stats);
+
+  } catch (err) {
+    console.error('User stats error:', err);
+  }
+}
 
 async function fetchRecentActivities() {
   const res = await fetch('/admin/user/users-data/recent-activities');
@@ -57,4 +69,4 @@ async function fetchRecentActivities() {
   renderActivities(data.activities);
 }
 
-export { fetchUsers, fetchSuppliers, fetchRecentActivities };
+export { fetchUsers, fetchSuppliers, loadUserStats, fetchRecentActivities };

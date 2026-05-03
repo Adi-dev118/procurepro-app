@@ -9,9 +9,9 @@ const { route } = require('./users');
 const router = express.Router();
 
 router.use(authController.restrictTo('admin'));
-router.get('/api/v1/admin/dashboard-data', adminController.admimStats);
 
-router.get('/admin/users', authController.restrictTo('admin'), adminController.userDashboard);
+router.get('/api/v1/admin/dashboard-data', adminController.admimStats);
+router.get('/api/v1/admin/users-data', adminController.userStats);
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/users-data', userController.getAllUsers);
@@ -65,6 +65,10 @@ router.get('/admin/supplier-details/:supplierId', (req, res) => {
 
 router.get('/admin/dashboard', (req, res) => {
   res.render('admin/dashboard');
+});
+
+router.get('/admin/users', (req, res) => {
+  res.render('admin/users');
 });
 
 router.get('/admin/order-detail/:orderId', (req, res) => {

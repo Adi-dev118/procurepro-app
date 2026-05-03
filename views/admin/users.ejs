@@ -54,7 +54,7 @@
             <li>
               <a href="/admin/suppliers">
                 <i class="bi bi-truck"></i>
-                <span class="menu-text">Supplier Management</span>
+                <span class="menu-text">Vendor Management</span>
               </a>
             </li>
             <li>
@@ -171,7 +171,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Total Users</h6>
-                      <h3 class="mb-0"><%=stats.totalUsers%></h3>
+                      <h3 class="mb-0" id="total-users"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-people"></i>
@@ -189,7 +189,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Active Buyers</h6>
-                      <h3 class="mb-0"><%=stats.totalBuyers%></h3>
+                      <h3 class="mb-0" id="active-buyers"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-person-check"></i>
@@ -206,8 +206,8 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="text-muted">Active Suppliers</h6>
-                      <h3 class="mb-0"><%=stats.activeSuppliers%></h3>
+                      <h6 class="text-muted">Active Vendors</h6>
+                      <h3 class="mb-0" id="active-vendor"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-building"></i>
@@ -225,7 +225,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Pending Approval</h6>
-                      <h3 class="mb-0"><%=stats.pendingUsers%></h3>
+                      <h3 class="mb-0" id="pending-approval"></h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-clock-history"></i>

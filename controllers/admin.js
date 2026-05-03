@@ -144,16 +144,9 @@ exports.admimStats = async (req, res) => {
 // Fetch Users, and seperate them in buyers, suppliers with their status of approval
 // and recent activities
 
-exports.userDashboard = async (req, res) => {
+exports.userStats = async (req, res) => {
   try {
-    const [
-      [[userStats]],
-      [usersData],
-      [suppliersData],
-      [suspendedData],
-      [pendingData],
-      [activityLogs],
-    ] = await Promise.all([
+    const [[[userStats]]] = await Promise.all([
       // Fetch User Stats such as suppliers, buyers, active or pending
       db.query(`SELECT
 (SELECT COUNT(*) FROM users) AS totalUsers,
@@ -173,117 +166,10 @@ WHERE verification_status='approved') AS activeSuppliers,
 (SELECT COUNT(*) 
 FROM suppliers 
 WHERE verification_status='pending') AS pendingSuppliers;`),
-
-      // Fetch buyers data to list them on dashboard
-      db.query(`SELECT 
-        u.id,
-        u.name,
-        u.email,
-        u.role,
-u.status,
-u.registration_date AS registrationDate,
-COUNT(o.id) AS totalOrders,
-IFNULL(SUM(o.total_amount),0) AS totalSpent
-FROM users u
-LEFT JOIN orders o 
-ON u.id = o.user_id 
-AND o.status IN ('paid','delivered')
-GROUP BY u.id
-ORDER BY u.id ASC
-LIMIT 5;`),
-      // Fetch vendors data to list them on dashboard
-      db.query(
-        `SELECT
-        u.id,
-        u.name,
-u.email,
-u.role,
-u.status,
-u.registration_date,
-s.business_name AS company,
-s.mobile_no AS contact,
-
-COUNT(DISTINCT p.id) AS totalProducts,
-
-GROUP_CONCAT(DISTINCT sd.document_type SEPARATOR ' | ') AS documents,
-
-ROUND(AVG(pr.rating),1) AS avgRating,
-COUNT(pr.id) AS totalReviews
-
-FROM users u
-
-LEFT JOIN suppliers s 
-    ON u.id = s.user_id
-
-    LEFT JOIN products p 
-    ON s.id = p.supplier_id
-    
-    LEFT JOIN supplier_documents sd 
-    ON s.id = sd.supplier_id
-
-    LEFT JOIN product_reviews pr 
-    ON p.id = pr.product_id
-
-WHERE u.role = 'supplier'
-
-GROUP BY 
-u.id,
-u.name,
-u.email,
-u.role,
-u.status,
-u.registration_date,
-s.business_name,
-s.mobile_no
-
-LIMIT 10;`,
-      ),
-      // Fetch Suspended Users data
-      db.query(
-        `SELECT 
-      id, 
-      name, 
-      role, 
-      suspended_on AS supendedDate, 
-      suspend_reason AS reason 
-      FROM users WHERE status= 'suspended' LIMIT 5`,
-      ),
-      // Fetch pending admin approval users
-      db.query(`
-SELECT 
-u.id,
-u.name,
-s.business_name AS company,
-u.role,
-u.registration_date AS date,
-GROUP_CONCAT(sd.document_type SEPARATOR ' | ') AS documents
-FROM users u
-LEFT JOIN suppliers s 
-    ON u.id = s.user_id
-LEFT JOIN supplier_documents sd 
-    ON s.id = sd.supplier_id
-WHERE u.status = 'pending'
-GROUP BY u.id, s.business_name LIMIT 5
-`),
-      // Fetch recent activity logs from user_activity_logs table
-      db.query(
-        `SELECT 
-      created_at AS timeStamp, 
-      user_name AS name, 
-      ip_address AS address, 
-      activity AS log, 
-      status 
-      FROM user_activity_logs ORDER BY created_at DESC LIMIT 5`,
-      ),
     ]);
 
-    res.render('admin/users', {
+    res.json({
       stats: userStats,
-      usersData,
-      suppliersData,
-      suspendedData,
-      pendingData,
-      activityLogs,
     });
   } catch (error) {
     res.status(500).send(error.message);
