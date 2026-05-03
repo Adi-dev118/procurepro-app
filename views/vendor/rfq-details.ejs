@@ -545,8 +545,9 @@
                 <!-- CTA in hero -->
                 <div class="d-flex align-items-center" style="padding-top: 2px">
                   <button
-                    class="btn btn-light fw-semibold btn-sm"
+                    class="btn btn-light fw-semibold btn-sm submit-quote-btn"
                     style="border-radius: 8px; padding: 8px 20px; font-size: 14px"
+                    data-rfq-id=""
                     data-bs-toggle="modal"
                     data-bs-target="#submitQuoteModal"
                   >
@@ -709,8 +710,9 @@
                   <div class="rfq-side-card-body" style="padding: 14px 16px">
                     <div class="d-grid gap-2">
                       <button
-                        class="btn btn-primary"
+                        class="btn btn-primary submit-quote-btn"
                         style="border-radius: 8px"
+                        data-rfq-id=""
                         data-bs-toggle="modal"
                         data-bs-target="#submitQuoteModal"
                       >
@@ -926,7 +928,7 @@
 
     <script>
       /* ── Helpers ───────────────────────────────────────────────────────── */
-
+      let currentRfqId = null;
       const fmt = {
         currency(v) {
           const n = parseFloat(v);
@@ -1019,6 +1021,9 @@
       /* ── Render ────────────────────────────────────────────────────────── */
       function renderRFQ(rfq) {
         document.title = `RFQ – ${rfq.title} | VendorHub`;
+        document.querySelectorAll('.submit-quote-btn').forEach((btn) => {
+          btn.dataset.rfqId = rfq.id;
+        });
 
         /* Hero */
         document.getElementById('heroBreadcrumb').textContent = rfq.title;
@@ -1130,6 +1135,11 @@
               .join('')
           : `<tr><td colspan="3" class="text-center text-muted py-4" style="font-size:14px;">No specifications listed for this RFQ.</td></tr>`;
       }
+      document.querySelectorAll('.submit-quote-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          currentRfqId = btn.dataset.rfqId;
+        });
+      });
       const paymentSelect = document.getElementById('quotePaymentTerms');
       const customWrapper = document.getElementById('customPaymentTermsWrapper');
 
@@ -1170,7 +1180,7 @@
 
       /* ── Submit Quote ──────────────────────────────────────────────────── */
       document.getElementById('btnSubmitQuoteConfirm').addEventListener('click', async function () {
-        const id = rfqIdFromUrl();
+        const id = currentRfqId;
         const price = document.getElementById('quotePrice').value.trim();
         const deliveryDays = document.getElementById('quoteDeliveryDays').value.trim();
         const message = document.getElementById('quoteMessage').value.trim();
@@ -1218,9 +1228,9 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               price,
-              delivery_days: deliveryDays,
+              deliveryDays: deliveryDays,
               message,
-              payment_terms: paymentTerms,
+              paymentTerms: paymentTerms,
             }),
           });
 

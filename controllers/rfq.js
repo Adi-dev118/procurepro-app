@@ -669,3 +669,37 @@ exports.submitQuote = async (req, res) => {
     connection.release();
   }
 };
+
+exports.getVendorQuoteById = async (req, res) => {
+  const vendorId = req.session.user.vendorId;
+  const quoteId = req.params.id;
+
+  try {
+    const [rows] = await db.query(
+      `SELECT rq.*, r.title AS rfq_title
+       FROM rfq_quotes rq
+       JOIN rfqs r ON rq.rfq_id = r.id
+       WHERE rq.id = ? AND rq.supplier_id = ?`,
+      [quoteId, vendorId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Quote not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      quote: rows[0]
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};

@@ -1,4 +1,5 @@
 import { rfqState } from './rfq.state.js';
+
 export function renderRFQs(data, status) {
   const activeCardsContainer = document.getElementById('active-rfq-cards-container');
   const submittedBody = document.getElementById('submitted-table-body');
@@ -11,6 +12,7 @@ export function renderRFQs(data, status) {
   if (wonBody) wonBody.innerHTML = '';
   if (lostBody) lostBody.innerHTML = '';
   if (expiredCardsContainer) expiredCardsContainer.innerHTML = '';
+
   // 🔵 ACTIVE → CARDS
   if (status === 'active' || status === 'expired') {
     let html = '';
@@ -35,7 +37,14 @@ export function renderRFQs(data, status) {
           <p>${rfq.description || ''}</p>
 
           <div class="d-flex gap-2">
-          <button class="btn btn-primary btn-sm">Submit Quote</button>
+          <button 
+  class="btn btn-primary btn-sm submit-quote-btn"
+  data-rfq-id="${rfq.id}"
+  data-bs-toggle="modal"
+  data-bs-target="#submitQuoteModal"
+>
+  Submit Quote
+</button>
           <button class="btn btn-outline-secondary btn-sm" ><a href="rfq/${rfq.id}">View Details</a></button>
           </div>
           </div>
@@ -72,7 +81,7 @@ export function renderRFQs(data, status) {
           <td>$${Number(q.price).toLocaleString()}</td>
           <td>${q.status}</td>
           <td>
-            <button class="btn btn-outline-secondary btn-sm">
+            <button class="btn btn-outline-secondary btn-sm btn-sm view-quote-btn" data-quote-id="${q.quote_id}">
               <i class="bi bi-eye me-1"></i> View
             </button>
             </td>
@@ -84,5 +93,35 @@ export function renderRFQs(data, status) {
     if (status === 'submitted') submittedBody.innerHTML = html;
     else if (status === 'won') wonBody.innerHTML = html;
     else if (status === 'lost') lostBody.innerHTML = html;
+  }
+}
+
+export function viewQuote(data) {
+  try {
+    const q = data.quote;
+    const statusEl = document.getElementById('viewStatus');
+
+    statusEl.textContent = q.status;
+
+    statusEl.className =
+      'quote-status ' +
+      (q.status === 'accepted'
+        ? 'status-accepted'
+        : q.status === 'rejected'
+          ? 'status-rejected'
+          : q.status === 'submitted'
+            ? 'status-submitted'
+            : 'status-default');
+
+    document.getElementById('viewRfqTitle').textContent = q.rfq_title;
+    document.getElementById('viewPrice').textContent = q.price;
+    document.getElementById('viewDelivery').textContent = q.delivery_days;
+    document.getElementById('viewPayment').textContent = q.payment_terms;
+    // document.getElementById('viewStatus').textContent = q.status;
+    document.getElementById('viewMessage').textContent = q.message || '—';
+
+    new bootstrap.Modal(document.getElementById('viewQuoteModal')).show();
+  } catch (err) {
+    alert(err.message);
   }
 }

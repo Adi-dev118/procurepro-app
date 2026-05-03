@@ -1,5 +1,5 @@
 import { rfqState } from './rfq.state.js';
-import { fetchRFQs } from './rfq.api.js';
+import { fetchRFQs, fetchQuotes } from './rfq.api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchRFQs();
@@ -19,4 +19,12 @@ document.querySelectorAll('[data-bs-toggle="tab"]').forEach((tab) => {
 
     fetchRFQs();
   });
+});
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.view-quote-btn');
+  if (!btn) return;
+
+  const id = btn.dataset.quoteId;
+  fetchQuotes(id);
 });
