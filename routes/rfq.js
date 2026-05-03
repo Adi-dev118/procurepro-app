@@ -10,5 +10,6 @@ router.route('/rfq-data/:id').get(rfqController.getRFQById);
 
 router.route('/quotes/:quoteId/accept').patch(rfqController.acceptQuote);
 router.route('/quotes/:quoteId/reject').patch(rfqController.rejectQuote);
+router.route('/quotes/:rfqId/submit').post(rfqController.submitQuote);
 
 module.exports = router;

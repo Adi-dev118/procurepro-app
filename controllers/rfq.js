@@ -564,3 +564,108 @@ exports.getRFQById = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.submitQuote = async (req, res) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // =========================
+    // Vendor from session
+    // =========================
+    const rfqId = req.params.rfqId; 
+    const vendorId = req.session.user.vendorId;
+
+
+    // =========================
+    // Request body
+    // =========================
+    const {
+      price,
+      message,
+      deliveryDays,
+      warranty,
+      paymentTerms
+    } = req.body;
+
+    // =========================
+    // Validation
+    // =========================
+    if (!rfqId || !price) {
+      return res.status(400).json({
+        success: false,
+        message: "RFQ ID and price are required"
+      });
+    }
+
+    // =========================
+    // Check if RFQ exists
+    // =========================
+    const [rfq] = await connection.query(
+      `SELECT id FROM rfqs WHERE id = ?`,
+      [rfqId]
+    );
+
+    if (rfq.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "RFQ not found"
+      });
+    }
+
+    // =========================
+    // Prevent duplicate quote
+    // =========================
+    const [existing] = await connection.query(
+      `SELECT id FROM rfq_quotes 
+       WHERE rfq_id = ? AND supplier_id = ?`,
+      [rfqId, vendorId]
+    );
+
+    if (existing.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "You have already submitted a quote for this RFQ"
+      });
+    }
+
+    // =========================
+    // Insert Quote
+    // =========================
+    const [result] = await connection.query(
+      `INSERT INTO rfq_quotes 
+      (rfq_id, supplier_id, price, message, status, delivery_days, warranty, payment_terms)
+      VALUES (?, ?, ?, ?, 'submitted', ?, ?, ?)`,
+      [
+        rfqId,
+        vendorId,
+        price,
+        message || null,
+        deliveryDays || null,
+        warranty || null,
+        paymentTerms || null
+      ]
+    );
+
+    await connection.commit();
+
+    return res.status(201).json({
+      success: true,
+      message: "Quote submitted successfully",
+      quoteId: result.insertId
+    });
+
+  } catch (error) {
+    await connection.rollback();
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
+    });
+
+  } finally {
+    connection.release();
+  }
+};

@@ -842,6 +842,43 @@
                   min="1"
                 />
               </div>
+              <div class="col-md-6">
+                <label class="vendor-form-label" style="font-size: 13px">
+                  Payment Terms <span class="text-danger">*</span>
+                </label>
+
+                <select class="vendor-form-control" id="quotePaymentTerms">
+                  <option value="">Select payment terms</option>
+                  <option value="100% advance">100% Advance</option>
+                  <option value="50% advance, 50% on delivery">50% Advance, 50% on Delivery</option>
+                  <option value="30% advance, 70% on delivery">30% Advance, 70% on Delivery</option>
+                  <option value="Net 30 days">Net 30 Days</option>
+                  <option value="Net 45 days">Net 45 Days</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+              <div class="col-12 d-none" id="customPaymentTermsWrapper">
+                <label class="vendor-form-label" style="font-size: 13px">
+                  Custom Payment Terms
+                </label>
+
+                <!-- Short structure -->
+                <input
+                  type="text"
+                  class="vendor-form-control mb-2"
+                  id="quotePaymentTermsCustom"
+                  placeholder="e.g. 40% advance, 60% after delivery"
+                />
+
+                <!-- Detailed explanation -->
+                <textarea
+                  class="vendor-form-control"
+                  id="quotePaymentTermsDetails"
+                  rows="3"
+                  placeholder="Describe detailed payment conditions (timelines, milestones, penalties, etc.)"
+                  style="resize: vertical"
+                ></textarea>
+              </div>
               <div class="col-12">
                 <label class="vendor-form-label" style="font-size: 13px">Message / Notes</label>
                 <textarea
@@ -885,7 +922,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Vendor JS -->
-    <script src="../assets/js/vendor.js"></script>
+    <script src="/assets/js/vendor.js"></script>
 
     <script>
       /* ── Helpers ───────────────────────────────────────────────────────── */
@@ -957,21 +994,21 @@
         return map[(val || '').toLowerCase()] || 'pending';
       }
 
-      /* ── Session ───────────────────────────────────────────────────────── */
-      async function loadVendorSession() {
-        try {
-          const r = await fetch('/vendor/me');
-          if (!r.ok) return;
-          const { name = '', email = '' } = await r.json();
-          const i = fmt.initials(name);
-          document.getElementById('sidebarVendorName').textContent = name;
-          document.getElementById('topbarVendorName').textContent = name;
-          document.getElementById('topbarAvatarInitials').textContent = i;
-          document.getElementById('dropdownAvatarInitials').textContent = i;
-          document.getElementById('dropdownVendorName').textContent = name;
-          document.getElementById('dropdownVendorEmail').textContent = email;
-        } catch (_) {}
-      }
+      // /* ── Session ───────────────────────────────────────────────────────── */
+      // async function loadVendorSession() {
+      //   try {
+      //     const r = await fetch('/vendor/me');
+      //     if (!r.ok) return;
+      //     const { name = '', email = '' } = await r.json();
+      //     const i = fmt.initials(name);
+      //     document.getElementById('sidebarVendorName').textContent = name;
+      //     document.getElementById('topbarVendorName').textContent = name;
+      //     document.getElementById('topbarAvatarInitials').textContent = i;
+      //     document.getElementById('dropdownAvatarInitials').textContent = i;
+      //     document.getElementById('dropdownVendorName').textContent = name;
+      //     document.getElementById('dropdownVendorEmail').textContent = email;
+      //   } catch (_) {}
+      // }
 
       /* ── URL id ────────────────────────────────────────────────────────── */
       function rfqIdFromUrl() {
@@ -1093,6 +1130,16 @@
               .join('')
           : `<tr><td colspan="3" class="text-center text-muted py-4" style="font-size:14px;">No specifications listed for this RFQ.</td></tr>`;
       }
+      const paymentSelect = document.getElementById('quotePaymentTerms');
+      const customWrapper = document.getElementById('customPaymentTermsWrapper');
+
+      paymentSelect.addEventListener('change', () => {
+        if (paymentSelect.value === 'custom') {
+          customWrapper.classList.remove('d-none');
+        } else {
+          customWrapper.classList.add('d-none');
+        }
+      });
 
       /* ── Fetch ─────────────────────────────────────────────────────────── */
       async function loadRFQ() {
@@ -1127,6 +1174,7 @@
         const price = document.getElementById('quotePrice').value.trim();
         const deliveryDays = document.getElementById('quoteDeliveryDays').value.trim();
         const message = document.getElementById('quoteMessage').value.trim();
+
         const errEl = document.getElementById('quoteError');
         const okEl = document.getElementById('quoteSuccess');
 
@@ -1139,23 +1187,57 @@
           return;
         }
 
+        // ✅ FIXED payment terms logic
+        const paymentSelect = document.getElementById('quotePaymentTerms');
+        let paymentTerms = paymentSelect.value;
+
+        if (paymentTerms === 'custom') {
+          const short = document.getElementById('quotePaymentTermsCustom').value.trim();
+          const details = document.getElementById('quotePaymentTermsDetails').value.trim();
+          if (!short) {
+            errEl.textContent = 'Please enter custom payment terms.';
+            errEl.classList.remove('d-none');
+            return;
+          }
+
+          paymentTerms = `${short}${details ? ' | ' + details : ''}`;
+        }
+
+        if (!paymentTerms) {
+          errEl.textContent = 'Please select payment terms.';
+          errEl.classList.remove('d-none');
+          return;
+        }
+
         this.disabled = true;
         this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
 
         try {
-          const res = await fetch(`/api/rfqs/${id}/quote`, {
+          const res = await fetch(`/api/v1/rfq/quotes/${id}/submit`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ price, delivery_days: deliveryDays, message }),
+            body: JSON.stringify({
+              price,
+              delivery_days: deliveryDays,
+              message,
+              payment_terms: paymentTerms,
+            }),
           });
+
           const data = await res.json();
           if (!res.ok) throw new Error(data.message || 'Failed to submit quote.');
 
           okEl.textContent = 'Quote submitted successfully!';
           okEl.classList.remove('d-none');
+
+          // Reset form
           document.getElementById('quotePrice').value = '';
           document.getElementById('quoteDeliveryDays').value = '';
           document.getElementById('quoteMessage').value = '';
+          document.getElementById('quotePaymentTerms').value = '';
+          document.getElementById('quotePaymentTermsCustom').value = '';
+          document.getElementById('quotePaymentTermsDetails').value = '';
+          customWrapper.classList.add('d-none');
 
           setTimeout(() => {
             bootstrap.Modal.getInstance(document.getElementById('submitQuoteModal'))?.hide();
@@ -1170,7 +1252,7 @@
       });
 
       /* ── Init ──────────────────────────────────────────────────────────── */
-      loadVendorSession();
+      // loadVendorSession();
       loadRFQ();
     </script>
   </body>
