@@ -210,9 +210,9 @@ FROM suppliers;
 
 // Product Dashboard
 // Fetch product statistics, recent product listings, and product categories
-exports.productDashboard = async (req, res) => {
+exports.productStats = async (req, res) => {
   try {
-    const [[[stats]], [productData], [categories]] = await Promise.all([
+    const [[[stats]], [categories]] = await Promise.all([
       // products statistics- total products, active, inactive listing, avg price
       db.query(`
         SELECT
@@ -226,29 +226,6 @@ exports.productDashboard = async (req, res) => {
 
         FROM products
       `),
-      // Fetch product data for dashboard
-      db.query(`
-        SELECT 
-        p.id,
-        p.name,
-        p.description,
-        p.sku,
-        c.name AS category,
-        c.badge_color AS color,
-        s.business_name AS supplier,
-        p.price,
-        p.icon,
-        p.stock,
-        p.verification_status AS status
-
-        FROM products p
-        JOIN categories c ON c.id = p.category_id
-        JOIN suppliers s ON s.id = p.supplier_id
-
-        ORDER BY p.id
-        LIMIT 5
-      `),
-      // Fetch existing product categories from category table
       db.query(`
         SELECT 
         c.id,
@@ -264,14 +241,12 @@ exports.productDashboard = async (req, res) => {
         LIMIT 3
       `),
     ]);
-    //TODO:- Add Search function to products
     //TODO:- Add recent product complains dynamically
-    res.render('admin/products', {
+    res.json({
       products: stats.totalProducts,
       approved: stats.approved,
       inactive: stats.inactive,
       avgPrice: stats.avgPrice,
-      productData,
       categories,
     });
   } catch (err) {
@@ -282,10 +257,10 @@ exports.productDashboard = async (req, res) => {
 
 // Order dashboard
 // Fetch order statistics- total, pending, processing and delivered
-// All order details
-exports.orderDashboard = async (req, res) => {
+
+exports.orderStats = async (req, res) => {
   try {
-    const [[[stats]], [orders], [ordersActivity]] = await Promise.all([
+    const [[[stats]], [ordersActivity]] = await Promise.all([
       // order statistics- total, pending, processing and delivered
       db.query(`
         SELECT
@@ -298,26 +273,6 @@ exports.orderDashboard = async (req, res) => {
         SUM(CASE WHEN status='delivered' THEN 1 ELSE 0 END) AS completedOrders
 
         FROM orders
-      `),
-      // order history in reverse order
-      db.query(`
-        SELECT 
-        o.id,
-        o.total_amount,
-        o.status,
-        o.created_at,
-        o.payment_status AS paymentStatus,
-        u.name AS customer,
-        u.email,
-        COUNT(oi.id) AS items
-
-        FROM orders o
-        JOIN users u ON u.id = o.user_id
-        LEFT JOIN order_items oi ON oi.order_id = o.id
-
-        GROUP BY o.id
-        ORDER BY o.created_at DESC
-        LIMIT 10
       `),
       // recent order activity
       db.query(`
@@ -373,12 +328,11 @@ exports.orderDashboard = async (req, res) => {
     }
     // TODO: Implement order search functionality
     // TODO: Add activity block for cancelled or refunded orders
-    res.render('admin/orders', {
+    res.json({
       totalOrders: stats.totalOrders,
       pendingOrders: stats.pendingOrders,
       processingOrders: stats.processingOrders,
       completedOrders: stats.completedOrders,
-      orders,
       activities,
     });
   } catch (error) {
@@ -389,12 +343,10 @@ exports.orderDashboard = async (req, res) => {
 
 // Disputes Dashboard
 // Fetch dispute statistics (total, open, in progress, resolved)
-// and recent dispute logs
-exports.disputedDashboard = async (req, res) => {
+
+exports.disputeStats = async (req, res) => {
   try {
-    const [[[disputeStats]], [disputesData]] = await Promise.all([
-      // fetch total, open, pending, resolved disputes stats
-      db.query(`
+    const [[disputeStats]]= await db.query(`
   SELECT
     COUNT(*) AS totalDisputes,
 
@@ -405,37 +357,16 @@ exports.disputedDashboard = async (req, res) => {
     SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) AS resolvedDisputes
 
   FROM disputes
-`),
-      // fetch dispute logs
-      db.query(`SELECT 
-d.id AS disputeId,
-d.order_id AS orderId,
-p.name AS productName,
-u.name AS customerName,
-s.business_name AS supplierName,
-d.type,
-d.created_at AS date,
-d.priority,
-d.status
-FROM disputes d
-JOIN orders o ON d.order_id = o.id
-JOIN order_items oi ON oi.order_id = o.id
-JOIN products p ON p.id = oi.product_id
-JOIN users u ON u.id = d.customer_id
-JOIN suppliers s ON s.id = d.supplier_id
-ORDER BY d.id DESC
-LIMIT 5;`),
-    ]);
+`);
 
     // TODO: Dynamically render tabs for open, in progress, resolved and escalated disputes
     // TODO: Add search functionality for disputes
 
-    res.render('admin/disputes', {
+    res.json({
       total: disputeStats.totalDisputes,
       open: disputeStats.openDisputes,
       inProgress: disputeStats.inProgressDisputes,
       resolved: disputeStats.resolvedDisputes,
-      disputesData,
     });
   } catch (error) {
     console.error('Dispute dashboard error:', error);

@@ -1,5 +1,5 @@
 import { orderState } from './order.state.js';
-import { fetchOrders } from './order.api.js';
+import { fetchOrders, loadActivities } from './order.api.js';
 
 function setStatusFilter(status) {
   if (orderState.status === status) {
@@ -35,13 +35,11 @@ function setDateFilter(dateRange) {
   fetchOrders();
 }
 
-
 async function performSearch(query) {
   try {
     orderState.search = query;
     orderState.page = 1;
     fetchOrders();
-    
   } catch (err) {
     console.error(err);
   }
@@ -62,6 +60,7 @@ function clearFilters() {
 // 🔹 INITIAL LOAD
 document.addEventListener('DOMContentLoaded', () => {
   fetchOrders();
+  loadActivities();
 });
 
 // 🔹 STATUS FILTER
@@ -112,7 +111,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.querySelectorAll('input[name="search"]').forEach(input => {
+document.querySelectorAll('input[name="search"]').forEach((input) => {
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -127,7 +126,6 @@ document.querySelector('.search-btn')?.addEventListener('click', () => {
   orderState.page = 1;
   fetchSuppliers();
 });
-
 
 document.addEventListener('click', (e) => {
   if (e.target.closest('.clear-filters')) {

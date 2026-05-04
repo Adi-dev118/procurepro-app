@@ -87,7 +87,36 @@ function renderOrders(orders) {
   });
 }
 
+function renderActivities(activities) {
+  const container = document.getElementById('activity-container');
 
+  if (!activities || activities.length === 0) {
+    container.innerHTML = `<p class="text-center">No recent activity</p>`;
+    return;
+  }
+
+  const html = activities.map(activity => {
+    return `
+      <div class="col-md-4">
+        <div class="activity-card">
+          
+          <div class="activity-icon bg-${activity.color}">
+            <i class="bi ${activity.icon}"></i>
+          </div>
+
+          <div class="activity-content">
+            <h5>${activity.title}</h5>
+            <p class="text-muted">${activity.message || ''}</p>
+            <span class="text-muted small">${activity.date || ''}</span>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = html;
+}
 function renderPagination(totalPages) {
   const container = document.getElementById('pagination');
   container.innerHTML = '';
@@ -161,4 +190,4 @@ function updateProductCount(currentPage, totalOrders, limit = 5) {
   container.textContent = text;
 }
 
-export {renderOrders, renderPagination, updateProductCount};
+export {renderOrders, renderPagination, renderActivities,  updateProductCount};

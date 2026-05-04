@@ -1,29 +1,29 @@
 import { productState } from './product.state.js';
-import { fetchProducts } from './product.api.js';
+import { fetchProducts, loadCategories } from './product.api.js';
 
 // 🔹 STATUS FILTER
 function setStatusFilter(status) {
-  if(status === 'active') 
-    {status = 'approved'}
+  if (status === 'active') {
+    status = 'approved';
+  }
   if (productState.status === status) {
     productState.status = ''; // toggle off
   } else {
     productState.status = status;
   }
-  
+
   productState.page = 1;
   fetchProducts();
 }
 
 // 🔹 STOCK FILTER
 function setStockFilter(stock) {
-
   if (productState.stock === stock) {
     productState.stock = '';
   } else {
     productState.stock = stock;
   }
-  console.log(stock)
+  console.log(stock);
 
   productState.page = 1;
   fetchProducts();
@@ -46,12 +46,10 @@ async function performSearch(query) {
     productState.search = query;
     productState.page = 1;
     fetchProducts();
-    
   } catch (err) {
     console.error(err);
   }
 }
-
 
 // 🔹 CLEAR FILTERS
 function clearFilters() {
@@ -71,6 +69,7 @@ function clearFilters() {
 // 🔹 INITIAL LOAD
 document.addEventListener('DOMContentLoaded', () => {
   fetchProducts();
+  loadCategories();
 });
 
 // 🔹 PAGINATION
@@ -87,7 +86,6 @@ document.addEventListener('click', (e) => {
     fetchProducts();
   }
 });
-
 
 // 🔹 STATUS FILTER CLICK
 document.addEventListener('click', (e) => {
@@ -122,7 +120,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.querySelectorAll('input[name="search"]').forEach(input => {
+document.querySelectorAll('input[name="search"]').forEach((input) => {
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();

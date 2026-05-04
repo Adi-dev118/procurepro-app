@@ -1,5 +1,5 @@
 import { productState } from './product.state.js';
-import { renderProducts, renderPagination, updateProductCount, renderCategoryFilters } from './product.render.js';
+import { renderProducts, renderCategories, renderPagination, updateProductCount, renderCategoryFilters } from './product.render.js';
 
 export async function fetchProducts() {
   try {
@@ -46,3 +46,14 @@ export async function fetchProducts() {
     }
   }
 }
+
+export async function loadCategories() {
+  try {
+    const res = await fetch('/api/v1/admin/product-stats');
+    const data = await res.json();
+    renderCategories(data.categories);
+  } catch (err) {
+    console.error('Error loading categories:', err);
+  }
+}
+

@@ -172,7 +172,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Total Disputes</h6>
-                      <h3 class="mb-0"><%=total%></h3>
+                      <h3 class="mb-0" id="total-dispute"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-exclamation-triangle"></i>
@@ -190,7 +190,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Open Disputes</h6>
-                      <h3 class="mb-0"><%=open%></h3>
+                      <h3 class="mb-0" id="open-dispute"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-clock-history"></i>
@@ -208,7 +208,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">In Progress</h6>
-                      <h3 class="mb-0"><%=inProgress%></h3>
+                      <h3 class="mb-0" id="inprogress-dispute"></h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-gear"></i>
@@ -226,7 +226,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Resolved</h6>
-                      <h3 class="mb-0"><%=resolved%></h3>
+                      <h3 class="mb-0" id="resolved-dispute"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -787,5 +787,26 @@
     <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
     <script type="module" src="../assets/js/admin/dispute/dispute.main.js"></script>
+    <script>
+      async function loadDisputeStats() {
+        try {
+          const res = await fetch('/api/v1/admin/dispute-stats'); // your API
+          const data = await res.json();
+
+          document.getElementById('total-dispute').innerText = data.total || 0;
+
+          document.getElementById('open-dispute').innerText = Number(data.open || 0);
+
+          document.getElementById('inprogress-dispute').innerText = Number(data.inProgress || 0);
+
+          document.getElementById('resolved-dispute').innerText = Number(data.resolved || 0);
+        } catch (err) {
+          console.error('Error loading dispute stats:', err);
+        }
+      }
+
+      // call it
+      loadDisputeStats();
+    </script>
   </body>
 </html>

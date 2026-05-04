@@ -13,6 +13,9 @@ router.use(authController.restrictTo('admin'));
 router.get('/api/v1/admin/dashboard-stats', adminController.adminStats);
 router.get('/api/v1/admin/users-stats', adminController.userStats);
 router.get('/api/v1/admin/vendor-stats', adminController.vendorStats);
+router.get('/api/v1/admin/product-stats', adminController.productStats);
+router.get('/api/v1/admin/order-stats', adminController.orderStats);
+router.get('/api/v1/admin/dispute-stats', adminController.disputeStats);
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/users-data', userController.getAllUsers);
@@ -43,15 +46,6 @@ router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
 router.get('/admin/product/product-data', productController.getProducts);
 
 
-router.get('/admin/products', authController.restrictTo('admin'), adminController.productDashboard);
-
-router.get('/admin/orders', authController.restrictTo('admin'), adminController.orderDashboard);
-
-router.get(
-  '/admin/disputes',
-  authController.restrictTo('admin'),
-  adminController.disputedDashboard,
-);
 
 router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
 router.get('/admin/supplier-details/:supplierId', (req, res) => {
@@ -69,6 +63,21 @@ router.get('/admin/users', (req, res) => {
 router.get('/admin/suppliers', (req, res) => {
   res.render('admin/suppliers');
 });
+
+
+
+router.get('/admin/products', (req, res) => {
+  res.render('admin/products');
+});
+
+router.get('/admin/orders', (req, res) => {
+  res.render('admin/orders');
+});
+
+router.get('/admin/disputes', (req, res) => {
+  res.render('admin/disputes');
+});
+
 router.get('/admin/order-detail/:orderId', (req, res) => {
   res.render('admin/order-detail');
 });

@@ -172,7 +172,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Total Products</h6>
-                      <h3 class="mb-0"><%=products%></h3>
+                      <h3 class="mb-0" id="total-product"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-box"></i>
@@ -190,7 +190,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Active Listings</h6>
-                      <h3 class="mb-0"><%=approved%></h3>
+                      <h3 class="mb-0" id="active-product"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -208,7 +208,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Inactive Listings</h6>
-                      <h3 class="mb-0"><%=inactive%></h3>
+                      <h3 class="mb-0" id="inactive-product"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-pause-circle"></i>
@@ -226,7 +226,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Avg. Price</h6>
-                      <h3 class="mb-0">$ <%=avgPrice%></h3>
+                      <h3 class="mb-0" id="avg-price">$</h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-tag"></i>
@@ -412,35 +412,7 @@
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <%categories.forEach(category=> {%>
-                      <tr>
-                        <td>
-                          <strong><%=category.name%></strong>
-                          <div class="text-muted small"><%=category.description%></div>
-                        </td>
-                        <td><%=category.totalProducts%></td>
-                        <td>
-                          <%if(category.status === 'active'){%>
-                          <span class="status-badge active">Active</span>
-                          <%}else{%>
-                          <span class="status-badge suspended">Inactive</span>
-                          <%}%>
-                        </td>
-                        <td>
-                          <div class="action-buttons">
-                            <button class="btn-icon edit" title="Edit">
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn-icon delete" title="Delete">
-                              <i class="bi bi-trash"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <%})%>
-                    </tbody>
+                    <tbody id="category-body"></tbody>
                   </table>
                 </div>
               </div>
@@ -507,5 +479,26 @@
     <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
     <script type="module" src="../assets/js/admin/product/product.main.js"></script>
+    <script>
+      async function loadProductStats() {
+  try {
+    const res = await fetch('/api/v1/admin/product-stats'); // your API
+    const data = await res.json();
+
+    document.getElementById('total-product').innerText = data.products || 0;
+    document.getElementById('active-product').innerText = data.approved || 0;
+    document.getElementById('inactive-product').innerText = data.inactive || 0;
+
+    document.getElementById('avg-price').innerText =
+      '$' + Number(data.avgPrice || 0).toFixed(2);
+
+  } catch (err) {
+    console.error('Error loading product stats:', err);
+  }
+}
+
+// call it
+loadProductStats();
+    </script>
   </body>
 </html>

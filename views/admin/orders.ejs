@@ -171,7 +171,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Total Orders</h6>
-                      <h3 class="mb-0"><%= totalOrders %></h3>
+                      <h3 class="mb-0" id="total-order"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-cart"></i>
@@ -189,7 +189,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Pending Orders</h6>
-                      <h3 class="mb-0"><%= pendingOrders %></h3>
+                      <h3 class="mb-0" id="pending-order"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-clock-history"></i>
@@ -207,7 +207,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Processing</h6>
-                      <h3 class="mb-0"><%= processingOrders %></h3>
+                      <h3 class="mb-0" id="processing-order"></h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-gear"></i>
@@ -225,7 +225,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Completed</h6>
-                      <h3 class="mb-0"><%= completedOrders %></h3>
+                      <h3 class="mb-0" id="completed-order"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -418,27 +418,7 @@
           </div>
 
           <!-- Recent Order Activity -->
-          <div class="mt-5">
-            <h3 class="section-title">Recent Order Activity</h3>
-
-            <div class="row">
-              <% activities.forEach(activity => { %>
-              <div class="col-md-4">
-                <div class="activity-card">
-                  <div class="activity-icon bg-<%= activity.color %>">
-                    <i class="bi <%= activity.icon %>"></i>
-                  </div>
-
-                  <div class="activity-content">
-                    <h5><%= activity.title %></h5>
-                    <p class="text-muted"><%= activity.message %></p>
-                    <span class="text-muted small"><%= activity.date %></span>
-                  </div>
-                </div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
+          <div class="mt-5" id="activity-container"></div>
         </div>
         <!-- end content-wrapper -->
       </main>
@@ -587,5 +567,31 @@
     <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
     <script type="module" src="../assets/js/admin/order/order.main.js"></script>
+    <script>
+      async function loadOrderStats() {
+  try {
+    const res = await fetch('/api/v1/admin/order-stats');
+    const data = await res.json();
+
+    document.getElementById('total-order').innerText =
+      data.totalOrders || 0;
+
+    document.getElementById('pending-order').innerText =
+      Number(data.pendingOrders || 0);
+
+    document.getElementById('processing-order').innerText =
+      Number(data.processingOrders || 0);
+
+    document.getElementById('completed-order').innerText =
+      Number(data.completedOrders || 0);
+
+  } catch (err) {
+    console.error('Error loading order stats:', err);
+  }
+}
+
+// call it
+loadOrderStats();
+    </script>
   </body>
 </html>

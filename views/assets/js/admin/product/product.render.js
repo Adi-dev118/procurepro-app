@@ -118,6 +118,45 @@ function renderProducts(products) {
   });
 }
 
+function renderCategories(categories) {
+  const tbody = document.getElementById('category-body');
+
+  if (!categories || categories.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" class="text-center">No categories found</td></tr>`;
+    return;
+  }
+
+  const html = categories.map(category => {
+    return `
+      <tr>
+        <td>
+          <strong>${category.name}</strong>
+          <div class="text-muted small">${category.description || ''}</div>
+        </td>
+        <td>${category.totalProducts || 0}</td>
+        <td>
+          ${
+            category.status === 'active'
+              ? `<span class="status-badge active">Active</span>`
+              : `<span class="status-badge suspended">Inactive</span>`
+          }
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-icon edit" data-id="${category._id}" title="Edit">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon delete" data-id="${category._id}" title="Delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = html;
+}
 function renderPagination(totalPages) {
   const container = document.getElementById('pagination');
   container.innerHTML = '';
@@ -222,4 +261,4 @@ function renderCategoryFilters(categories) {
   container.innerHTML = html;
 }
 
-export { renderProducts, renderPagination, updateProductCount, renderCategoryFilters };
+export { renderProducts, renderCategories, renderPagination, updateProductCount, renderCategoryFilters };

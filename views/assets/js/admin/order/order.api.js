@@ -1,5 +1,5 @@
 import { orderState } from './order.state.js';
-import { renderOrders, renderPagination, updateProductCount } from './order.render.js';
+import { renderOrders, renderActivities, renderPagination, updateProductCount } from './order.render.js';
 
 export async function fetchOrders() {
   try {
@@ -36,5 +36,16 @@ export async function fetchOrders() {
         </tr>
       `;
     }
+  }
+}
+
+export async function loadActivities() {
+  try {
+    const res = await fetch('/api/v1/admin/order-stats'); // your API
+    const data = await res.json();
+
+    renderActivities(data.activities);
+  } catch (err) {
+    console.error('Error loading activities:', err);
   }
 }
