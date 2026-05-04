@@ -78,6 +78,10 @@ router.get('/admin/disputes', (req, res) => {
   res.render('admin/disputes');
 });
 
+router.get('/admin/rfq', (req, res) => {
+  res.render('admin/rfqs');
+});
+
 router.get('/admin/order-detail/:orderId', (req, res) => {
   res.render('admin/order-detail');
 });
