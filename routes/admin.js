@@ -10,8 +10,9 @@ const router = express.Router();
 
 router.use(authController.restrictTo('admin'));
 
-router.get('/api/v1/admin/dashboard-data', adminController.admimStats);
-router.get('/api/v1/admin/users-data', adminController.userStats);
+router.get('/api/v1/admin/dashboard-stats', adminController.adminStats);
+router.get('/api/v1/admin/users-stats', adminController.userStats);
+router.get('/api/v1/admin/vendor-stats', adminController.vendorStats);
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/users-data', userController.getAllUsers);
@@ -41,11 +42,6 @@ router.get('/admin/order/order-data/order-modal/:orderId', orderController.getOr
 router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
 router.get('/admin/product/product-data', productController.getProducts);
 
-router.get(
-  '/admin/suppliers',
-  authController.restrictTo('admin'),
-  adminController.supplierDashboard,
-);
 
 router.get('/admin/products', authController.restrictTo('admin'), adminController.productDashboard);
 
@@ -62,7 +58,6 @@ router.get('/admin/supplier-details/:supplierId', (req, res) => {
   res.render('admin/supplier-detail');
 });
 
-
 router.get('/admin/dashboard', (req, res) => {
   res.render('admin/dashboard');
 });
@@ -71,6 +66,9 @@ router.get('/admin/users', (req, res) => {
   res.render('admin/users');
 });
 
+router.get('/admin/suppliers', (req, res) => {
+  res.render('admin/suppliers');
+});
 router.get('/admin/order-detail/:orderId', (req, res) => {
   res.render('admin/order-detail');
 });
@@ -78,6 +76,5 @@ router.get('/admin/order-detail/:orderId', (req, res) => {
 router.get('/admin/activities', (req, res) => {
   res.render('admin/activities');
 });
-
 
 module.exports = router;

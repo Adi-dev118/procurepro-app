@@ -14,9 +14,8 @@ const formatDate = (date) => {
 };
 
 // Admin Dashboard
-// Fetch platform order statistics, platform stats and recent activities
 
-exports.admimStats = async (req, res) => {
+exports.adminStats = async (req, res) => {
   try {
     const [[[orderStats]], [[platformStats]], [[rfqStats]]] = await Promise.all([
       // =========================
@@ -140,15 +139,11 @@ exports.admimStats = async (req, res) => {
   }
 };
 
-// User Dashboard
-// Fetch Users, and seperate them in buyers, suppliers with their status of approval
-// and recent activities
+// User Stats
 
 exports.userStats = async (req, res) => {
   try {
-    const [[[userStats]]] = await Promise.all([
-      // Fetch User Stats such as suppliers, buyers, active or pending
-      db.query(`SELECT
+    const [[[userStats]]] = await db.query(`SELECT
 (SELECT COUNT(*) FROM users) AS totalUsers,
 
 (SELECT COUNT(*) 
@@ -165,8 +160,7 @@ WHERE verification_status='approved') AS activeSuppliers,
 
 (SELECT COUNT(*) 
 FROM suppliers 
-WHERE verification_status='pending') AS pendingSuppliers;`),
-    ]);
+WHERE verification_status='pending') AS pendingSuppliers;`);
 
     res.json({
       stats: userStats,
@@ -176,15 +170,11 @@ WHERE verification_status='pending') AS pendingSuppliers;`),
   }
 };
 
-// Fetch supplier statistics:
-// total suppliers, active suppliers, pending suppliers
-// and overall average supplier rating
-exports.supplierDashboard = async (req, res) => {
+// Fetch supplier statistics
+
+exports.vendorStats = async (req, res) => {
   try {
-    const [[[stats]], [supplierData]] = await Promise.all([
-      // Fetch all suppliers statistic data such as total , active, suppliers along with
-      // average rating of all suppliers with pending approvals
-      db.query(`
+    const [[stats]] = await db.query(`
         SELECT 
 
 COUNT(*) AS suppliers,
@@ -205,68 +195,11 @@ FROM (
 ) AS avgSupplierRating
 
 FROM suppliers;
-      `),
-      // Fetch supplier data to show on dashboard
-      db.query(`
-        SELECT 
-s.id,
-s.business_name AS company,
-s.mobile_no AS mobile,
-s.business_type AS type,
-s.description,
-DATE_FORMAT(s.created_at, '%e %M, %Y') AS date,
-s.verification_status AS status,
-u.email,
-s.commission_rate AS commission,
-
-MAX(
-CONCAT(
-sa.address_line1, ', ',
-sa.address_line2, ', ',
-sa.city, ', ',
-sa.state, ' - ',
-sa.pincode, ', ',
-sa.country
-)
-) AS address,
-
-COUNT(DISTINCT p.id) AS products,
-
-IFNULL(SUM(oi.quantity * oi.price_at_purchase),0) AS totalSales,
-
-ROUND(AVG(pr.rating),1) AS avgRating,
-
-COUNT(DISTINCT pr.id) AS totalRatings
-
-FROM suppliers s
-
-LEFT JOIN users u 
-ON u.id = s.user_id
-
-LEFT JOIN products p 
-ON p.supplier_id = s.id
-
-LEFT JOIN product_reviews pr 
-ON p.id = pr.product_id
-
-LEFT JOIN order_items oi 
-ON p.id = oi.product_id
-
-LEFT JOIN supplier_address sa 
-ON s.id = sa.supplier_id
-
-WHERE u.role = 'supplier'
-
-GROUP BY s.id
-
-LIMIT 5;
-      `),
-    ]);
+      `);
 
     // TODO: Implement dynamic rendering for flagged/inappropriate product listings
 
-    res.render('admin/suppliers', {
-      supplierData,
+    res.json({
       stats,
     });
   } catch (err) {

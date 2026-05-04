@@ -58,7 +58,7 @@ app.use('/api/v1/rfq', rfqRoutes);
 
 // VIEWS ROUTES
 app.use('/', vendorRoutes);
-app.use('/', adminRoutes);
 app.use('/', companyRoutes);
+app.use('/', adminRoutes);
 
 module.exports = app;

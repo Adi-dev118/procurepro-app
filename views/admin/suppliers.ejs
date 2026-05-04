@@ -170,8 +170,8 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="text-muted">Total Suppliers</h6>
-                      <h3 class="mb-0"><%=stats.suppliers%></h3>
+                      <h6 class="text-muted">Total Vendors</h6>
+                      <h3 class="mb-0" id="total-vendors"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-building"></i>
@@ -188,8 +188,8 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="text-muted">Active Suppliers</h6>
-                      <h3 class="mb-0"><%=stats.activeSuppliers%></h3>
+                      <h6 class="text-muted">Active Vendors</h6>
+                      <h3 class="mb-0" id="active-vendors"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -207,7 +207,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Pending Approval</h6>
-                      <h3 class="mb-0"><%=stats.pendingSuppliers%></h3>
+                      <h3 class="mb-0" id="pending-approval"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-clock-history"></i>
@@ -223,7 +223,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Avg. Rating</h6>
-                      <h3 class="mb-0"><%=stats.avgSupplierRating%> ★</h3>
+                      <h3 class="mb-0" id="avg-rating"></h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-star-fill"></i>
@@ -537,6 +537,25 @@
           document.getElementById('modalSupplierAddress').innerText = address;
         });
       });
+
+      async function loadSupplierStats() {
+        try {
+          const res = await fetch('/api/v1/admin/vendor-stats'); // your API route
+          const data = await res.json();
+
+          const stats = data.stats;
+
+          document.getElementById('total-vendors').innerText = stats.suppliers || 0;
+          document.getElementById('active-vendors').innerText = stats.activeSuppliers || 0;
+          document.getElementById('pending-approval').innerText = stats.pendingSuppliers || 0;
+          document.getElementById('avg-rating').innerText = stats.avgSupplierRating || 0;
+        } catch (err) {
+          console.error('Error loading stats:', err);
+        }
+      }
+
+      // call on page load
+      loadSupplierStats();
     </script>
   </body>
 </html>

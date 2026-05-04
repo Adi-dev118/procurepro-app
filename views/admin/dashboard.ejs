@@ -488,7 +488,7 @@
       // ===== Load dashboard data =====
       async function loadDashboard() {
         try {
-          const res = await fetch('/api/v1/admin/dashboard-data');
+          const res = await fetch('/api/v1/admin/dashboard-stats');
           const data = await res.json();
 
           const { business, operations, rfq } = data;
