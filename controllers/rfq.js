@@ -206,13 +206,13 @@ exports.getQuotesByRFQ = async (req, res) => {
     const userId = req.session.user.id;
 
     // 🔒 SECURITY: Check RFQ belongs to user
-    const [[rfq]] = await db.query(
-      `SELECT id FROM rfqs WHERE id = ? AND user_id = ?`,
-      [rfqId, userId]
-    );
+    const [[rfq]] = await db.query(`SELECT id FROM rfqs WHERE id = ? AND user_id = ?`, [
+      rfqId,
+      userId,
+    ]);
 
     if (!rfq) {
-      return res.status(404).json({ message: "RFQ not found" });
+      return res.status(404).json({ message: 'RFQ not found' });
     }
 
     // 📦 GET QUOTES
@@ -246,14 +246,13 @@ exports.getQuotesByRFQ = async (req, res) => {
         (q.status = 'accepted') DESC,
         q.price ASC
       `,
-      [rfqId]
+      [rfqId],
     );
 
     res.json({ quotes });
-
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -276,44 +275,37 @@ exports.acceptQuote = async (req, res) => {
       JOIN rfqs r ON r.id = q.rfq_id
       WHERE q.id = ? AND r.user_id = ?
       `,
-      [quoteId, userId]
+      [quoteId, userId],
     );
 
     if (!quote) {
       await connection.rollback();
-      return res.status(404).json({ message: "Quote not found" });
+      return res.status(404).json({ message: 'Quote not found' });
     }
 
     const rfqId = quote.rfq_id;
 
     // 2. Accept selected quote
-    await connection.query(
-      `UPDATE rfq_quotes SET status = 'accepted' WHERE id = ?`,
-      [quoteId]
-    );
+    await connection.query(`UPDATE rfq_quotes SET status = 'accepted' WHERE id = ?`, [quoteId]);
 
     // 3. Reject all other quotes
     await connection.query(
       `UPDATE rfq_quotes 
        SET status = 'rejected' 
        WHERE rfq_id = ? AND id != ?`,
-      [rfqId, quoteId]
+      [rfqId, quoteId],
     );
 
     // 4. Close RFQ
-    await connection.query(
-      `UPDATE rfqs SET status = 'closed' WHERE id = ?`,
-      [rfqId]
-    );
+    await connection.query(`UPDATE rfqs SET status = 'closed' WHERE id = ?`, [rfqId]);
 
     await connection.commit();
 
-    res.json({ message: "Quote accepted successfully" });
-
+    res.json({ message: 'Quote accepted successfully' });
   } catch (err) {
     await connection.rollback();
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   } finally {
     connection.release();
   }
@@ -332,23 +324,19 @@ exports.rejectQuote = async (req, res) => {
       JOIN rfqs r ON r.id = q.rfq_id
       WHERE q.id = ? AND r.user_id = ?
       `,
-      [quoteId, userId]
+      [quoteId, userId],
     );
 
     if (!quote) {
-      return res.status(404).json({ message: "Quote not found" });
+      return res.status(404).json({ message: 'Quote not found' });
     }
 
-    await db.query(
-      `UPDATE rfq_quotes SET status = 'rejected' WHERE id = ?`,
-      [quoteId]
-    );
+    await db.query(`UPDATE rfq_quotes SET status = 'rejected' WHERE id = ?`, [quoteId]);
 
-    res.json({ message: "Quote rejected" });
-
+    res.json({ message: 'Quote rejected' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -574,20 +562,13 @@ exports.submitQuote = async (req, res) => {
     // =========================
     // Vendor from session
     // =========================
-    const rfqId = req.params.rfqId; 
+    const rfqId = req.params.rfqId;
     const vendorId = req.session.user.vendorId;
-
 
     // =========================
     // Request body
     // =========================
-    const {
-      price,
-      message,
-      deliveryDays,
-      warranty,
-      paymentTerms
-    } = req.body;
+    const { price, message, deliveryDays, warranty, paymentTerms } = req.body;
 
     // =========================
     // Validation
@@ -595,22 +576,19 @@ exports.submitQuote = async (req, res) => {
     if (!rfqId || !price) {
       return res.status(400).json({
         success: false,
-        message: "RFQ ID and price are required"
+        message: 'RFQ ID and price are required',
       });
     }
 
     // =========================
     // Check if RFQ exists
     // =========================
-    const [rfq] = await connection.query(
-      `SELECT id FROM rfqs WHERE id = ?`,
-      [rfqId]
-    );
+    const [rfq] = await connection.query(`SELECT id FROM rfqs WHERE id = ?`, [rfqId]);
 
     if (rfq.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "RFQ not found"
+        message: 'RFQ not found',
       });
     }
 
@@ -620,13 +598,13 @@ exports.submitQuote = async (req, res) => {
     const [existing] = await connection.query(
       `SELECT id FROM rfq_quotes 
        WHERE rfq_id = ? AND supplier_id = ?`,
-      [rfqId, vendorId]
+      [rfqId, vendorId],
     );
 
     if (existing.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "You have already submitted a quote for this RFQ"
+        message: 'You have already submitted a quote for this RFQ',
       });
     }
 
@@ -644,27 +622,25 @@ exports.submitQuote = async (req, res) => {
         message || null,
         deliveryDays || null,
         warranty || null,
-        paymentTerms || null
-      ]
+        paymentTerms || null,
+      ],
     );
 
     await connection.commit();
 
     return res.status(201).json({
       success: true,
-      message: "Quote submitted successfully",
-      quoteId: result.insertId
+      message: 'Quote submitted successfully',
+      quoteId: result.insertId,
     });
-
   } catch (error) {
     await connection.rollback();
     console.error(error);
 
     return res.status(500).json({
       success: false,
-      message: "Something went wrong"
+      message: 'Something went wrong',
     });
-
   } finally {
     connection.release();
   }
@@ -680,26 +656,163 @@ exports.getVendorQuoteById = async (req, res) => {
        FROM rfq_quotes rq
        JOIN rfqs r ON rq.rfq_id = r.id
        WHERE rq.id = ? AND rq.supplier_id = ?`,
-      [quoteId, vendorId]
+      [quoteId, vendorId],
     );
 
     if (rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Quote not found"
+        message: 'Quote not found',
       });
     }
 
     res.json({
       success: true,
-      quote: rows[0]
+      quote: rows[0],
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: 'Server error',
+    });
+  }
+};
+
+// controllers/rfqController.js
+
+
+exports.getAllRfqs = async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        r.id,
+        r.user_id,
+        r.title,
+        r.budget_min,
+        r.budget_max,
+        r.quantity,
+        r.deadline,
+        r.location,
+        r.priority,
+        r.status,
+        r.created_at,
+        u.name AS buyer,
+        COUNT(q.id) AS quote_count
+      FROM rfqs r
+      LEFT JOIN rfq_quotes q ON r.id = q.rfq_id
+      LEFT JOIN users u ON r.user_id = u.id
+      GROUP BY r.id
+      ORDER BY r.created_at DESC
+    `;
+
+    const [rows] = await db.execute(query);
+
+    res.status(200).json({
+      status: 'success',
+      results: rows.length,
+      rfqs: rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch RFQs',
+    });
+  }
+};
+
+// controllers/rfqController.js
+
+exports.getRfqItems = async (req, res) => {
+  try {
+    const rfqId = req.params.id;
+
+    const query = `
+      SELECT 
+        id,
+        rfq_id,
+        product_name,
+        quantity,
+        specifications
+      FROM rfq_items
+      WHERE rfq_id = ?
+      ORDER BY id ASC
+    `;
+
+    const [rows] = await db.execute(query, [rfqId]);
+
+    res.status(200).json(rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch RFQ items'
+    });
+  }
+};
+
+// controllers/rfqController.js
+
+exports.getRfqQuotes = async (req, res) => {
+  try {
+    const rfqId = req.params.id;
+
+    const query = `
+      SELECT 
+        id,
+        rfq_id,
+        supplier_id,
+        price,
+        message,
+        delivery_days,
+        warranty,
+        payment_terms,
+        status,
+        created_at
+      FROM rfq_quotes
+      WHERE rfq_id = ?
+      ORDER BY created_at DESC
+    `;
+
+    const [rows] = await db.execute(query, [rfqId]);
+
+    res.status(200).json(rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch RFQ quotes'
+    });
+  }
+};
+
+exports.getRfqSpecifications = async (req, res) => {
+  try {
+    const rfqId = req.params.id;
+
+    const query = `
+      SELECT 
+        id,
+        rfq_id,
+        spec_name,
+        spec_value
+      FROM rfq_specifications
+      WHERE rfq_id = ?
+      ORDER BY id ASC
+    `;
+
+    const [rows] = await db.execute(query, [rfqId]);
+
+    res.status(200).json(rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch RFQ specifications'
     });
   }
 };

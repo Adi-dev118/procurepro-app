@@ -5,6 +5,7 @@ const userController = require('./../controllers/users');
 const productController = require('./../controllers/product');
 const orderController = require('./../controllers/order');
 const disputeController = require('./../controllers/disputes');
+const rfqController = require('./../controllers/rfq');
 const { route } = require('./users');
 const router = express.Router();
 
@@ -16,6 +17,12 @@ router.get('/api/v1/admin/vendor-stats', adminController.vendorStats);
 router.get('/api/v1/admin/product-stats', adminController.productStats);
 router.get('/api/v1/admin/order-stats', adminController.orderStats);
 router.get('/api/v1/admin/dispute-stats', adminController.disputeStats);
+
+
+router.get('/api/v1/admin/all-rfq-data', rfqController.getAllRfqs);
+router.get('/api/v1/admin/rfq/:id/items', rfqController.getRfqItems);
+router.get('/api/v1/admin/rfq/:id/quotes', rfqController.getRfqQuotes );
+router.get('/api/v1/admin/rfq/:id/specifications', rfqController.getRfqSpecifications );
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
 router.get('/admin/user/users-data', userController.getAllUsers);
@@ -78,7 +85,7 @@ router.get('/admin/disputes', (req, res) => {
   res.render('admin/disputes');
 });
 
-router.get('/admin/rfq', (req, res) => {
+router.get('/admin/rfqs', (req, res) => {
   res.render('admin/rfqs');
 });
 

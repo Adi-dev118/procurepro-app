@@ -201,9 +201,7 @@
                       <i class="bi bi-clock-history"></i>
                     </div>
                   </div>
-                  <p class="text-danger mt-2 mb-0">
-                    <i class="bi bi-arrow-up"></i> 3 new today
-                  </p>
+                  <p class="text-danger mt-2 mb-0"><i class="bi bi-arrow-up"></i> 3 new today</p>
                 </div>
               </div>
             </div>
@@ -237,9 +235,7 @@
                       <i class="bi bi-check-circle"></i>
                     </div>
                   </div>
-                  <p class="text-success mt-2 mb-0">
-                    <i class="bi bi-arrow-up"></i> 8 this month
-                  </p>
+                  <p class="text-success mt-2 mb-0"><i class="bi bi-arrow-up"></i> 8 this month</p>
                 </div>
               </div>
             </div>
@@ -271,12 +267,34 @@
                     <i class="bi bi-filter me-1"></i>Status
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="">All</a></li>
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="active">Active</a></li>
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="pending">Pending</a></li>
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="awarded">Awarded</a></li>
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="closed">Closed</a></li>
-                    <li><a class="dropdown-item rfq-status-filter" href="#" data-status="cancelled">Cancelled</a></li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="">All</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="active"
+                        >Active</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="pending"
+                        >Pending</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="awarded"
+                        >Awarded</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="closed"
+                        >Closed</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-status-filter" href="#" data-status="cancelled"
+                        >Cancelled</a
+                      >
+                    </li>
                   </ul>
                 </div>
 
@@ -290,10 +308,24 @@
                     <i class="bi bi-filter me-1"></i>Priority
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item rfq-priority-filter" href="#" data-priority="">All</a></li>
-                    <li><a class="dropdown-item rfq-priority-filter" href="#" data-priority="high">High</a></li>
-                    <li><a class="dropdown-item rfq-priority-filter" href="#" data-priority="medium">Medium</a></li>
-                    <li><a class="dropdown-item rfq-priority-filter" href="#" data-priority="low">Low</a></li>
+                    <li>
+                      <a class="dropdown-item rfq-priority-filter" href="#" data-priority="">All</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-priority-filter" href="#" data-priority="high"
+                        >High</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-priority-filter" href="#" data-priority="medium"
+                        >Medium</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-priority-filter" href="#" data-priority="low"
+                        >Low</a
+                      >
+                    </li>
                   </ul>
                 </div>
 
@@ -307,10 +339,24 @@
                     <i class="bi bi-calendar me-1"></i>Deadline
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item rfq-deadline-filter" href="#" data-range="">All</a></li>
-                    <li><a class="dropdown-item rfq-deadline-filter" href="#" data-range="7days">Next 7 Days</a></li>
-                    <li><a class="dropdown-item rfq-deadline-filter" href="#" data-range="30days">Next 30 Days</a></li>
-                    <li><a class="dropdown-item rfq-deadline-filter" href="#" data-range="expired">Expired</a></li>
+                    <li>
+                      <a class="dropdown-item rfq-deadline-filter" href="#" data-range="">All</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-deadline-filter" href="#" data-range="7days"
+                        >Next 7 Days</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-deadline-filter" href="#" data-range="30days"
+                        >Next 30 Days</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item rfq-deadline-filter" href="#" data-range="expired"
+                        >Expired</a
+                      >
+                    </li>
                   </ul>
                 </div>
 
@@ -326,14 +372,12 @@
                 <thead>
                   <tr>
                     <th>RFQ ID</th>
-                    <th>Title</th>
-                    <th>Buyer ID</th>
+                    <th>Buyer</th>
                     <th>Budget Range</th>
                     <th>Qty</th>
                     <th>Deadline</th>
-                    <th>Location</th>
-                    <th>Priority</th>
                     <th>Status</th>
+                    <th>Priority</th>
                     <th>Quotes</th>
                     <th>Actions</th>
                   </tr>
@@ -477,7 +521,6 @@
             </ul>
 
             <div class="tab-content" id="rfqDetailTabsContent">
-
               <!-- ── TAB 1: Details ── -->
               <div class="tab-pane fade show active" id="tab-details" role="tabpanel">
                 <div class="row mb-3">
@@ -485,8 +528,12 @@
                   <div class="col-md-6">
                     <h6 class="fw-semibold mb-2">Buyer Information</h6>
                     <div class="card p-3">
-                      <p class="mb-1"><strong>User ID:</strong> <span id="modal-user-id">—</span></p>
-                      <p class="mb-0"><strong>Location:</strong> <span id="modal-location">—</span></p>
+                      <p class="mb-1">
+                        <strong>User ID:</strong> <span id="modal-user-id">—</span>
+                      </p>
+                      <p class="mb-0">
+                        <strong>Location:</strong> <span id="modal-location">—</span>
+                      </p>
                     </div>
                   </div>
                   <!-- RFQ Meta -->
@@ -556,7 +603,9 @@
                       </tr>
                     </thead>
                     <tbody id="modal-items-body">
-                      <tr><td colspan="4" class="text-center text-muted py-4">No items found</td></tr>
+                      <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No items found</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -580,7 +629,9 @@
                       </tr>
                     </thead>
                     <tbody id="modal-quotes-body">
-                      <tr><td colspan="9" class="text-center text-muted py-4">No quotes yet</td></tr>
+                      <tr>
+                        <td colspan="9" class="text-center text-muted py-4">No quotes yet</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -598,12 +649,15 @@
                       </tr>
                     </thead>
                     <tbody id="modal-specs-body">
-                      <tr><td colspan="3" class="text-center text-muted py-4">No specifications added</td></tr>
+                      <tr>
+                        <td colspan="3" class="text-center text-muted py-4">
+                          No specifications added
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-
             </div>
             <!-- end tab-content -->
           </div>
@@ -627,6 +681,7 @@
 
     <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/admin/rfq/rfq.main.js"></script>
 
     <script>
       /* =========================================================
@@ -634,396 +689,19 @@
          Replace fetch URLs with your actual API endpoints.
       ========================================================= */
 
-      const ITEMS_PER_PAGE = 10;
-      let allRfqs      = [];
-      let filteredRfqs = [];
-      let currentPage  = 1;
-      let activeFilters = { status: '', priority: '', deadline: '', search: '' };
-
-      /* ---------- Helpers ---------- */
-      function fmtCurrency(val) {
-        if (!val && val !== 0) return '—';
-        return '₹' + Number(val).toLocaleString('en-IN');
-      }
-
-      function fmtDate(dateStr) {
-        if (!dateStr) return '—';
-        return new Date(dateStr).toLocaleDateString('en-IN', {
-          day: '2-digit', month: 'short', year: 'numeric'
-        });
-      }
-
-      function statusBadge(status) {
-        const map = {
-          active:    ['bg-primary',  'Active'],
-          pending:   ['bg-warning text-dark', 'Pending'],
-          awarded:   ['bg-success',  'Awarded'],
-          closed:    ['bg-secondary','Closed'],
-          cancelled: ['bg-danger',   'Cancelled'],
-        };
-        const [cls, label] = map[status?.toLowerCase()] || ['bg-secondary', status || '—'];
-        return `<span class="badge ${cls}">${label}</span>`;
-      }
-
-      function priorityBadge(priority) {
-        const map = {
-          high:   'badge bg-danger',
-          medium: 'badge bg-warning text-dark',
-          low:    'badge bg-success',
-        };
-        const cls = map[priority?.toLowerCase()] || 'badge bg-secondary';
-        return `<span class="${cls} text-capitalize">${priority || '—'}</span>`;
-      }
-
-      function quoteStatusBadge(status) {
-        const map = {
-          accepted:  'badge bg-success',
-          rejected:  'badge bg-danger',
-          submitted: 'badge bg-primary',
-          pending:   'badge bg-warning text-dark',
-        };
-        const cls = map[status?.toLowerCase()] || 'badge bg-secondary';
-        return `<span class="${cls} text-capitalize">${status || '—'}</span>`;
-      }
-
       /* ---------- Stats ---------- */
       async function loadRfqStats() {
         try {
-          const res  = await fetch('/api/v1/admin/rfq-stats');
+          const res = await fetch('/api/v1/admin/rfq-stats');
           const data = await res.json();
-          document.getElementById('stat-total').innerText  = data.totalRfqs    ?? 0;
-          document.getElementById('stat-active').innerText = data.activeRfqs   ?? 0;
-          document.getElementById('stat-quotes').innerText = data.totalQuotes  ?? 0;
-          document.getElementById('stat-closed').innerText = data.closedRfqs   ?? 0;
+          document.getElementById('stat-total').innerText = data.totalRfqs ?? 0;
+          document.getElementById('stat-active').innerText = data.activeRfqs ?? 0;
+          document.getElementById('stat-quotes').innerText = data.totalQuotes ?? 0;
+          document.getElementById('stat-closed').innerText = data.closedRfqs ?? 0;
         } catch (err) {
           console.error('Error loading RFQ stats:', err);
         }
       }
-
-      /* ---------- Load RFQs ---------- */
-      async function loadRfqs() {
-        try {
-          const res  = await fetch('/api/v1/admin/rfqs');
-          const data = await res.json();
-          allRfqs      = data.rfqs || data || [];
-          filteredRfqs = [...allRfqs];
-          renderTable();
-        } catch (err) {
-          console.error('Error loading RFQs:', err);
-          document.getElementById('rfq-body').innerHTML =
-            `<tr><td colspan="11" class="text-center text-muted py-4">
-               <i class="bi bi-exclamation-circle me-2"></i>Failed to load RFQs
-             </td></tr>`;
-        }
-      }
-
-      /* ---------- Render Table ---------- */
-      function renderTable() {
-        const start  = (currentPage - 1) * ITEMS_PER_PAGE;
-        const page   = filteredRfqs.slice(start, start + ITEMS_PER_PAGE);
-        const tbody  = document.getElementById('rfq-body');
-
-        if (filteredRfqs.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="11" class="text-center text-muted py-4">
-            <i class="bi bi-inbox me-2"></i>No RFQs found</td></tr>`;
-          renderPagination();
-          return;
-        }
-
-        tbody.innerHTML = page.map(r => `
-          <tr>
-            <td><span class="order-id-badge">RFQ-${String(r.id).padStart(4,'0')}</span></td>
-            <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                title="${r.title}">${r.title}</td>
-            <td><span class="text-muted">UID-${r.user_id}</span></td>
-            <td class="order-amount">${fmtCurrency(r.budget_min)} – ${fmtCurrency(r.budget_max)}</td>
-            <td>${r.quantity ?? '—'}</td>
-            <td class="order-date">${fmtDate(r.deadline)}</td>
-            <td>${r.location || '—'}</td>
-            <td>${priorityBadge(r.priority)}</td>
-            <td>${statusBadge(r.status)}</td>
-            <td>
-              <span class="badge bg-light text-dark border" style="font-size:13px">
-                <i class="bi bi-chat-square-text me-1"></i>${r.quote_count ?? 0}
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary me-1"
-                      onclick="openRfqModal(${r.id})" title="View RFQ">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger"
-                      onclick="cancelRfq(${r.id})" title="Cancel RFQ">
-                <i class="bi bi-x-circle"></i>
-              </button>
-            </td>
-          </tr>
-        `).join('');
-
-        renderPagination();
-        updatePaginationInfo();
-      }
-
-      /* ---------- Pagination ---------- */
-      function renderPagination() {
-        const total = Math.ceil(filteredRfqs.length / ITEMS_PER_PAGE);
-        const ul    = document.getElementById('rfq-pagination');
-        if (total <= 1) { ul.innerHTML = ''; return; }
-
-        let html = `<li class="page-item ${currentPage===1?'disabled':''}">
-          <a class="page-link" href="#" onclick="changePage(${currentPage-1})">‹</a></li>`;
-        for (let i = 1; i <= total; i++) {
-          html += `<li class="page-item ${i===currentPage?'active':''}">
-            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
-        }
-        html += `<li class="page-item ${currentPage===total?'disabled':''}">
-          <a class="page-link" href="#" onclick="changePage(${currentPage+1})">›</a></li>`;
-        ul.innerHTML = html;
-      }
-
-      function changePage(page) {
-        const total = Math.ceil(filteredRfqs.length / ITEMS_PER_PAGE);
-        if (page < 1 || page > total) return;
-        currentPage = page;
-        renderTable();
-      }
-
-      function updatePaginationInfo() {
-        const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-        const end   = Math.min(currentPage * ITEMS_PER_PAGE, filteredRfqs.length);
-        document.getElementById('rfq-pagination-info').textContent =
-          filteredRfqs.length > 0
-            ? `Showing ${start}–${end} of ${filteredRfqs.length} RFQs`
-            : 'No results';
-      }
-
-      /* ---------- Filters ---------- */
-      function applyFilters() {
-        const { status, priority, deadline, search } = activeFilters;
-        const now = new Date();
-
-        filteredRfqs = allRfqs.filter(r => {
-          if (status   && r.status?.toLowerCase()   !== status)   return false;
-          if (priority && r.priority?.toLowerCase() !== priority) return false;
-          if (deadline) {
-            const dl = new Date(r.deadline);
-            if (deadline === 'expired' && dl >= now) return false;
-            if (deadline === '7days'   && (dl < now || dl > new Date(now.getTime() + 7*86400000)))  return false;
-            if (deadline === '30days'  && (dl < now || dl > new Date(now.getTime() + 30*86400000))) return false;
-          }
-          if (search) {
-            const q = search.toLowerCase();
-            if (!r.title?.toLowerCase().includes(q) &&
-                !String(r.id).includes(q) &&
-                !r.location?.toLowerCase().includes(q)) return false;
-          }
-          return true;
-        });
-
-        currentPage = 1;
-        renderTable();
-      }
-
-      /* Attach filter listeners */
-      document.querySelectorAll('.rfq-status-filter').forEach(el =>
-        el.addEventListener('click', e => {
-          e.preventDefault();
-          activeFilters.status = el.dataset.status;
-          applyFilters();
-        })
-      );
-      document.querySelectorAll('.rfq-priority-filter').forEach(el =>
-        el.addEventListener('click', e => {
-          e.preventDefault();
-          activeFilters.priority = el.dataset.priority;
-          applyFilters();
-        })
-      );
-      document.querySelectorAll('.rfq-deadline-filter').forEach(el =>
-        el.addEventListener('click', e => {
-          e.preventDefault();
-          activeFilters.deadline = el.dataset.range;
-          applyFilters();
-        })
-      );
-
-      document.getElementById('rfq-search-btn').addEventListener('click', () => {
-        activeFilters.search = document.getElementById('rfq-search-input').value.trim();
-        applyFilters();
-      });
-      document.getElementById('rfq-search-input').addEventListener('keyup', e => {
-        if (e.key === 'Enter') {
-          activeFilters.search = e.target.value.trim();
-          applyFilters();
-        }
-      });
-
-      document.getElementById('rfq-clear-filters').addEventListener('click', () => {
-        activeFilters = { status: '', priority: '', deadline: '', search: '' };
-        document.getElementById('rfq-search-input').value = '';
-        filteredRfqs = [...allRfqs];
-        currentPage  = 1;
-        renderTable();
-      });
-
-      /* ---------- Open RFQ Modal ---------- */
-      async function openRfqModal(rfqId) {
-        const rfq = allRfqs.find(r => r.id === rfqId);
-        if (!rfq) return;
-
-        // Populate Details tab
-        document.getElementById('modal-rfq-id').textContent     = `RFQ-${String(rfq.id).padStart(4,'0')}`;
-        document.getElementById('modal-user-id').textContent    = `UID-${rfq.user_id}`;
-        document.getElementById('modal-location').textContent   = rfq.location || '—';
-        document.getElementById('modal-created-at').textContent = fmtDate(rfq.created_at);
-        document.getElementById('modal-deadline').textContent   = fmtDate(rfq.deadline);
-        document.getElementById('modal-title').textContent      = rfq.title;
-        document.getElementById('modal-description').textContent= rfq.description || '—';
-        document.getElementById('modal-budget-min').textContent = fmtCurrency(rfq.budget_min);
-        document.getElementById('modal-budget-max').textContent = fmtCurrency(rfq.budget_max);
-        document.getElementById('modal-quantity').textContent   = rfq.quantity ?? '—';
-        document.getElementById('modal-priority').innerHTML     = priorityBadge(rfq.priority);
-        document.getElementById('modal-status').innerHTML       = statusBadge(rfq.status);
-
-        // Store rfq id on cancel button
-        document.getElementById('modal-cancel-rfq-btn').dataset.id = rfqId;
-
-        // Modal title
-        document.getElementById('viewRfqModalLabel').innerHTML =
-          `<i class="bi bi-file-earmark-text me-2"></i>RFQ-${String(rfq.id).padStart(4,'0')} — ${rfq.title}`;
-
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('viewRfqModal'));
-        modal.show();
-
-        // Lazy-load items, quotes, specs
-        loadRfqItems(rfqId);
-        loadRfqQuotes(rfqId);
-        loadRfqSpecs(rfqId);
-      }
-
-      async function loadRfqItems(rfqId) {
-        const tbody = document.getElementById('modal-items-body');
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-3">
-          <i class="bi bi-hourglass-split me-1"></i>Loading…</td></tr>`;
-        try {
-          const res   = await fetch(`/api/v1/admin/rfqs/${rfqId}/items`);
-          const items = await res.json();
-          if (!items.length) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">No items found</td></tr>`;
-            return;
-          }
-          tbody.innerHTML = items.map((it, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td><strong>${it.product_name}</strong></td>
-              <td>${it.quantity}</td>
-              <td class="text-muted">${it.specifications || '—'}</td>
-            </tr>
-          `).join('');
-        } catch (e) {
-          tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-3">Failed to load items</td></tr>`;
-        }
-      }
-
-      async function loadRfqQuotes(rfqId) {
-        const tbody = document.getElementById('modal-quotes-body');
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-3">
-          <i class="bi bi-hourglass-split me-1"></i>Loading…</td></tr>`;
-        try {
-          const res    = await fetch(`/api/v1/admin/rfqs/${rfqId}/quotes`);
-          const quotes = await res.json();
-          if (!quotes.length) {
-            tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4">No quotes yet</td></tr>`;
-            return;
-          }
-          tbody.innerHTML = quotes.map(q => `
-            <tr>
-              <td><span class="order-id-badge">Q-${String(q.id).padStart(3,'0')}</span></td>
-              <td>SUP-${q.supplier_id}</td>
-              <td class="order-amount">${fmtCurrency(q.price)}</td>
-              <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                  title="${q.message}">${q.message || '—'}</td>
-              <td>${q.delivery_days ?? '—'} days</td>
-              <td>${q.warranty ?? '—'} yrs</td>
-              <td class="text-muted" style="font-size:13px">${q.payment_terms || '—'}</td>
-              <td>${quoteStatusBadge(q.status)}</td>
-              <td class="order-date">${fmtDate(q.created_at)}</td>
-            </tr>
-          `).join('');
-        } catch (e) {
-          tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger py-3">Failed to load quotes</td></tr>`;
-        }
-      }
-
-      async function loadRfqSpecs(rfqId) {
-        const tbody = document.getElementById('modal-specs-body');
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-3">
-          <i class="bi bi-hourglass-split me-1"></i>Loading…</td></tr>`;
-        try {
-          const res   = await fetch(`/api/v1/admin/rfqs/${rfqId}/specifications`);
-          const specs = await res.json();
-          if (!specs.length) {
-            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-4">No specifications added</td></tr>`;
-            return;
-          }
-          tbody.innerHTML = specs.map((s, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td><strong>${s.spec_name}</strong></td>
-              <td>${s.spec_value}</td>
-            </tr>
-          `).join('');
-        } catch (e) {
-          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger py-3">Failed to load specifications</td></tr>`;
-        }
-      }
-
-      /* ---------- Cancel RFQ ---------- */
-      async function cancelRfq(rfqId) {
-        if (!confirm(`Cancel RFQ-${String(rfqId).padStart(4,'0')}? This cannot be undone.`)) return;
-        try {
-          const res = await fetch(`/api/v1/admin/rfqs/${rfqId}/cancel`, { method: 'PATCH' });
-          if (res.ok) {
-            const rfq = allRfqs.find(r => r.id === rfqId);
-            if (rfq) rfq.status = 'cancelled';
-            applyFilters();
-          } else {
-            alert('Failed to cancel RFQ. Please try again.');
-          }
-        } catch (e) {
-          alert('Network error. Please try again.');
-        }
-      }
-
-      document.getElementById('modal-cancel-rfq-btn').addEventListener('click', function () {
-        const id = parseInt(this.dataset.id);
-        if (id) cancelRfq(id);
-      });
-
-      /* ---------- Print ---------- */
-      document.getElementById('modal-print-btn').addEventListener('click', () => window.print());
-
-      /* ---------- Export ---------- */
-      document.getElementById('rfq-export-btn').addEventListener('click', () => {
-        const rows  = [['RFQ ID','Title','Buyer ID','Budget Min','Budget Max','Qty','Deadline','Location','Priority','Status']];
-        filteredRfqs.forEach(r => rows.push([
-          `RFQ-${String(r.id).padStart(4,'0')}`,
-          `"${r.title}"`, `UID-${r.user_id}`,
-          r.budget_min, r.budget_max, r.quantity,
-          fmtDate(r.deadline), r.location, r.priority, r.status
-        ]));
-        const csv  = rows.map(r => r.join(',')).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url  = URL.createObjectURL(blob);
-        const a    = Object.assign(document.createElement('a'), { href: url, download: 'rfqs_export.csv' });
-        a.click();
-        URL.revokeObjectURL(url);
-      });
-
-      /* ---------- Init ---------- */
-      loadRfqStats();
-      loadRfqs();
     </script>
   </body>
 </html>

@@ -320,10 +320,9 @@ body {
   margin-bottom: 15px;
 }
 
-
 .kpi-card-header i {
   color: #777;
-   font-size: 20px;
+  font-size: 20px;
   opacity: 0.6;
 }
 
@@ -409,8 +408,6 @@ body {
 /* ===== Tables ===== */
 .table {
   width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
 }
 .table-container {
   background-color: white;
@@ -465,30 +462,9 @@ body {
 .table tr:hover {
   background-color: #f8f9fa;
 }
-.table th:nth-child(1) {
-  width: 8%;
-} /* ID */
-.table th:nth-child(2) {
-  width: 16%;
-} /* Name */
-.table th:nth-child(3) {
-  width: 18%;
-} /* Email */
-.table th:nth-child(4) {
-  width: 11%;
-} /* Role/Orders */
-.table th:nth-child(5) {
-  width: 16%;
-} /* Date/Spent */
-.table th:nth-child(6) {
-  width: 11%;
-} /* Status */
-.table th:nth-child(7) {
-  width: 10%;
+Actions */ #rfq-table {
+  min-width: 1300px;
 }
-.table th:nth-child(8) {
-  width: 10%;
-} /* Actions */
 .status-badge {
   padding: 5px 10px;
   border-radius: 30px;
@@ -1401,13 +1377,13 @@ th {
   background: #eef2ff;
   padding: 3px 9px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .order-amount {
   font-weight: 700;
   color: #111827;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .order-status {
@@ -1416,7 +1392,7 @@ th {
   gap: 5px;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -1465,7 +1441,7 @@ th {
 
 .order-date {
   color: #6b7280;
-  font-size: 13.5px;
+  font-size: 18px;
 }
 
 /* ===== Earnings Summary ===== */
