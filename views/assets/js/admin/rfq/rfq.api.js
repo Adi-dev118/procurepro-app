@@ -26,6 +26,7 @@ async function loadRfqs() {
 }
 
 async function loadRfqItems(rfqId) {
+  const tbody = document.getElementById('modal-items-body');
   try {
     const res = await fetch(`/api/v1/admin/rfq/${rfqId}/items`);
     const items = await res.json();
@@ -36,9 +37,11 @@ async function loadRfqItems(rfqId) {
 }
 
 async function loadRfqQuotes(rfqId) {
+  const tbody = document.getElementById('modal-quotes-body');
   try {
     const res = await fetch(`/api/v1/admin/rfq/${rfqId}/quotes`);
     const quotes = await res.json();
+
     if (!quotes.length) {
       tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4">No quotes yet</td></tr>`;
       return;
@@ -48,18 +51,31 @@ async function loadRfqQuotes(rfqId) {
     tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger py-3">Failed to load quotes</td></tr>`;
   }
 }
-
 async function loadRfqSpecs(rfqId) {
+  const tbody = document.getElementById('modal-specs-body'); // move outside
+
   try {
     const res = await fetch(`/api/v1/admin/rfq/${rfqId}/specifications`);
     const specs = await res.json();
+
     if (!specs.length) {
-      tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-4">No specifications added</td></tr>`;
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="3" class="text-center text-muted py-4">
+            No specifications added
+          </td>
+        </tr>`;
       return;
     }
-    renderSpecifications(specs);
+
+    renderSpecifications(specs, rfqId); // ✅ pass rfqId
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger py-3">Failed to load specifications</td></tr>`;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" class="text-center text-danger py-3">
+          Failed to load specifications
+        </td>
+      </tr>`;
   }
 }
 

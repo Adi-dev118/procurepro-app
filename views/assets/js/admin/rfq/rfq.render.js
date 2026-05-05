@@ -76,12 +76,12 @@ function renderTable() {
               </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-primary me-1"
-                      onclick="openRfqModal(${r.id})" title="View RFQ">
+              <button class="btn btn-sm btn-outline-primary me-1 view-btn"
+        data-id="${r.id}" title="View RFQ">
                 <i class="bi bi-eye"></i>
               </button>
-              <button class="btn btn-sm btn-outline-danger"
-                      onclick="cancelRfq(${r.id})" title="Cancel RFQ">
+              <button class="btn btn-sm btn-outline-danger cancel-btn"
+  data-id="${r.id}" title="Cancel RFQ">
                 <i class="bi bi-x-circle"></i>
               </button>
             </td>
@@ -140,53 +140,65 @@ function renderQuotes(quotes) {
     .join('');
 }
 
-function renderSpecifications(specs) {
+function renderSpecifications(specs, rfqId) {
   const tbody = document.getElementById('modal-specs-body');
   tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-3">
           <i class="bi bi-hourglass-split me-1"></i>Loading…</td></tr>`;
-  if (!confirm(`Cancel RFQ-${String(rfqId).padStart(4, '0')}? This cannot be undone.`)) return;
+
   tbody.innerHTML = specs
     .map(
       (s, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td><strong>${s.spec_name}</strong></td>
-              <td>${s.spec_value}</td>
-            </tr>
-          `,
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${s.spec_name}</strong></td>
+      <td>${s.spec_value}</td>
+    </tr>
+  `,
     )
     .join('');
 }
+
+function changePage(page) {
+  const total = Math.ceil(rfqState.filteredRfqs.length / rfqState.limit);
+  if (page < 1 || page > total) return;
+  rfqState.currentPage = page;
+  renderTable();
+}
 /* ---------- Pagination ---------- */
 function renderPagination() {
-  const total = Math.ceil(filteredRfqs.length / limit);
+  const total = Math.ceil(rfqState.filteredRfqs.length / rfqState.limit);
   const ul = document.getElementById('rfq-pagination');
+
   if (total <= 1) {
     ul.innerHTML = '';
     return;
   }
 
-  let html = `<li class="page-item ${rfqState.currentPage === 1 ? 'disabled' : ''}">
-          <button class="page-link" onclick="changePage(${rfqState.currentPage - 1})">‹</button></li>`;
+  let html = `
+    <li class="page-item ${rfqState.currentPage === 1 ? 'disabled' : ''}">
+      <button class="page-link page-btn" data-page="${rfqState.currentPage - 1}">‹</button>
+    </li>
+  `;
+
   for (let i = 1; i <= total; i++) {
-    html += `<li class="page-item ${i === rfqState.currentPage ? 'active' : ''}">
-            <button class="page-link" onclick="changePage(${i})">${i}</button></li>`;
+    html += `
+      <li class="page-item ${i === rfqState.currentPage ? 'active' : ''}">
+        <button class="page-link page-btn" data-page="${i}">${i}</button>
+      </li>
+    `;
   }
-  html += `<li class="page-item ${rfqState.currentPage === total ? 'disabled' : ''}">
-          <button class="page-link" onclick="changePage(${rfqState.currentPage + 1})">›</button></li>`;
+
+  html += `
+    <li class="page-item ${rfqState.currentPage === total ? 'disabled' : ''}">
+      <button class="page-link page-btn" data-page="${rfqState.currentPage + 1}">›</button>
+    </li>
+  `;
+
   ul.innerHTML = html;
 }
-
-function changePage(page) {
-  const total = Math.ceil(filteredRfqs.length / limit);
-  if (page < 1 || page > total) return;
-  rfqState.currentPage = page;
-  renderTable();
-}
-
 function updatePaginationInfo() {
   const start = (rfqState.currentPage - 1) * rfqState.limit + 1;
-  const end = Math.min(rfqState.currentPage * rfqState.limit, filteredRfqs.length);
+  const end = Math.min(rfqState.currentPage * rfqState.limit, rfqState.filteredRfqs.length);
   document.getElementById('rfq-pagination-info').textContent =
     rfqState.filteredRfqs.length > 0
       ? `Showing ${start}–${end} of ${rfqState.filteredRfqs.length} RFQs`
@@ -201,4 +213,9 @@ export {
   renderPagination,
   changePage,
   updatePaginationInfo,
+  fmtDate,
+  fmtCurrency,
+  statusBadge,
+  priorityBadge,
+  quoteStatusBadge,
 };

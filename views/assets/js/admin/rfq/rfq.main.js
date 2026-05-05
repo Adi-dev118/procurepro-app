@@ -1,9 +1,17 @@
 import { rfqState } from './rfq.state.js';
 import { loadRfqs, loadRfqItems, loadRfqQuotes, loadRfqSpecs } from './rfq.api.js';
-import { renderTable } from './rfq.render.js';
+import {
+  renderTable,
+  changePage,
+  fmtDate,
+  fmtCurrency,
+  statusBadge,
+  priorityBadge,
+  quoteStatusBadge,
+} from './rfq.render.js';
 
 function applyFilters() {
-  const { status, deadline, search } = rfqState.activeFilters;
+  const { status, priority, deadline, search } = rfqState.activeFilters;
   const now = new Date();
 
   rfqState.filteredRfqs = rfqState.allRfqs.filter((r) => {
@@ -29,7 +37,7 @@ function applyFilters() {
     return true;
   });
 
-  currentPage = 1;
+  rfqState.currentPage = 1;
   renderTable();
 }
 
@@ -71,32 +79,32 @@ async function openRfqModal(rfqId) {
 document.querySelectorAll('.rfq-status-filter').forEach((el) =>
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    activeFilters.status = el.dataset.status;
+    rfqState.activeFilters.status = el.dataset.status;
     applyFilters();
   }),
 );
 document.querySelectorAll('.rfq-priority-filter').forEach((el) =>
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    activeFilters.priority = el.dataset.priority;
+    rfqState.activeFilters.priority = el.dataset.priority;
     applyFilters();
   }),
 );
 document.querySelectorAll('.rfq-deadline-filter').forEach((el) =>
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    activeFilters.deadline = el.dataset.range;
+    rfqState.activeFilters.deadline = el.dataset.range;
     applyFilters();
   }),
 );
 
 document.getElementById('rfq-search-btn').addEventListener('click', () => {
-  activeFilters.search = document.getElementById('rfq-search-input').value.trim();
+  rfqState.activeFilters.search = document.getElementById('rfq-search-input').value.trim();
   applyFilters();
 });
 document.getElementById('rfq-search-input').addEventListener('keyup', (e) => {
   if (e.key === 'Enter') {
-    activeFilters.search = e.target.value.trim();
+    rfqState.activeFilters.search = e.target.value.trim();
     applyFilters();
   }
 });
@@ -109,6 +117,15 @@ document.getElementById('rfq-clear-filters').addEventListener('click', () => {
   renderTable();
 });
 
+document.getElementById('rfq-pagination').addEventListener('click', (e) => {
+  const btn = e.target.closest('.page-btn');
+  if (!btn) return;
+
+  const page = parseInt(btn.dataset.page);
+  if (!page) return;
+
+  changePage(page);
+});
 async function cancelRfq(rfqId) {
   try {
     const res = await fetch(`/api/v1/admin/rfqs/${rfqId}/cancel`, { method: 'PATCH' });
@@ -169,11 +186,22 @@ document.getElementById('rfq-export-btn').addEventListener('click', () => {
   a.click();
   URL.revokeObjectURL(url);
 });
+document.getElementById('rfq-body').addEventListener('click', (e) => {
+  const viewBtn = e.target.closest('.view-btn');
+  const cancelBtn = e.target.closest('.cancel-btn');
+
+  if (viewBtn) {
+    const id = viewBtn.dataset.id;
+    openRfqModal(parseInt(id));
+  }
+
+  if (cancelBtn) {
+    const id = cancelBtn.dataset.id;
+    cancelRfq(parseInt(id));
+  }
+});
 
 // 🔹 INITIAL LOAD
 document.addEventListener('DOMContentLoaded', () => {
   loadRfqs();
-  loadRfqItems();
-  loadRfqQuotes();
-  loadRfqSpecs();
 });
