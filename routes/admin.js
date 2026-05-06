@@ -11,12 +11,6 @@ const router = express.Router();
 
 router.use(authController.restrictTo('admin'));
 
-router.get('/api/v1/admin/users-stats', adminController.userStats);
-router.get('/api/v1/admin/vendor-stats', adminController.vendorStats);
-router.get('/api/v1/admin/product-stats', adminController.productStats);
-router.get('/api/v1/admin/order-stats', adminController.orderStats);
-router.get('/api/v1/admin/dispute-stats', adminController.disputeStats);
-
 
 router.get('/api/v1/admin/all-rfq-data', rfqController.getAllRfqs);
 router.get('/api/v1/admin/rfq/:id/items', rfqController.getRfqItems);
@@ -24,13 +18,9 @@ router.get('/api/v1/admin/rfq/:id/quotes', rfqController.getRfqQuotes );
 router.get('/api/v1/admin/rfq/:id/specifications', rfqController.getRfqSpecifications );
 
 router.get('/admin/user/suppliers-data', userController.getSuppliers);
-router.get('/admin/user/users-data', userController.getAllUsers);
+
 router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
 router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
-router.get('/admin/user/users-data/modal-data/:userId', userController.getUserById);
-router.put('/admin/user/users-data/modal-data/:userId/suspend', userController.suspendUser);
-router.put('/admin/user/users-data/modal-data/:userId/activate', userController.activateUser);
-router.put('/admin/user/users-data/modal-data/:userId/approve', userController.approveUser);
 router.get('/admin/supplier/supplier-data', userController.getSupplierManagement);
 router.get('/admin/supplier/supplier-data/modal-data/:supplierId', userController.getSupplierById);
 router.put(
