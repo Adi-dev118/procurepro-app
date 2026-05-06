@@ -12,11 +12,6 @@ const router = express.Router();
 router.use(authController.restrictTo('admin'));
 
 
-router.get('/api/v1/admin/all-rfq-data', rfqController.getAllRfqs);
-router.get('/api/v1/admin/rfq/:id/items', rfqController.getRfqItems);
-router.get('/api/v1/admin/rfq/:id/quotes', rfqController.getRfqQuotes );
-router.get('/api/v1/admin/rfq/:id/specifications', rfqController.getRfqSpecifications );
-
 
 router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
 router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);

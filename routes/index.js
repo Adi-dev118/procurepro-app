@@ -12,4 +12,6 @@ router.use('/', require('./admin/admin.product'));
 
 router.use('/', require('./admin/admin.order'));
 
+router.use('/', require('./admin/admin.rfq'));
+
 module.exports = router;
