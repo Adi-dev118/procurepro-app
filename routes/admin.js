@@ -17,24 +17,9 @@ router.get('/api/v1/admin/rfq/:id/items', rfqController.getRfqItems);
 router.get('/api/v1/admin/rfq/:id/quotes', rfqController.getRfqQuotes );
 router.get('/api/v1/admin/rfq/:id/specifications', rfqController.getRfqSpecifications );
 
-router.get('/admin/user/suppliers-data', userController.getSuppliers);
 
 router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
 router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
-router.get('/admin/supplier/supplier-data', userController.getSupplierManagement);
-router.get('/admin/supplier/supplier-data/modal-data/:supplierId', userController.getSupplierById);
-router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/suspend',
-  userController.suspendSupplier,
-);
-router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/activate',
-  userController.activateSupplier,
-);
-router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/approve',
-  userController.approveSupplier,
-);
 
 router.get('/admin/order/order-data', orderController.getOrderManagement);
 router.get('/admin/order/order-data/order-modal/:orderId', orderController.getOrderProducts);

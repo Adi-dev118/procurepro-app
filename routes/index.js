@@ -6,4 +6,6 @@ router.use('/', require('./admin/admin.dashboard'));
 
 router.use('/', require('./admin/admin.user'));
 
+router.use('/', require('./admin/admin.vendor'));
+
 module.exports = router;
