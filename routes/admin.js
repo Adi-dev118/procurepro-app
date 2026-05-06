@@ -16,9 +16,6 @@ router.use(authController.restrictTo('admin'));
 router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
 router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
 
-router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
-
-
 
 router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
 router.get('/admin/supplier-details/:supplierId', (req, res) => {

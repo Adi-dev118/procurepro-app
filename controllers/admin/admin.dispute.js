@@ -1,4 +1,4 @@
-const db = require('./../config/db');
+const db = require('./../../config/db');
 
 exports.getDisputes = async (req, res) => {
   try {
