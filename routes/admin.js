@@ -4,7 +4,7 @@ const authController = require('./../controllers/authentication');
 const userController = require('./../controllers/users');
 const productController = require('./../controllers/product');
 const orderController = require('./../controllers/order');
-const disputeController = require('./../controllers/disputes');
+
 const rfqController = require('./../controllers/rfq');
 const { route } = require('./users');
 const router = express.Router();
@@ -12,9 +12,6 @@ const router = express.Router();
 router.use(authController.restrictTo('admin'));
 
 
-
-router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
-router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
 
 
 router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
