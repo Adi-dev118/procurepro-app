@@ -8,7 +8,6 @@ const orderController = require('./../controllers/order');
 const { render } = require('../app');
 
 router.get('/dashboard', companyController.companyDashboard);
-
 router.get('/marketplace', companyController.marketplaceDashboard);
 
 router.get('/company/dashboard/dashboard-data', userController.getRecentOrdersRFQS);

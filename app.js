@@ -13,6 +13,7 @@ const adminRoutes = require('./routes/admin');
 const companyRoutes = require('./routes/company');
 const vendorRoutes = require('./routes/vendor');
 const rfqRoutes = require('./routes/rfq');
+const routes = require('./routes');
 const { createClient } = require('redis');
 
 //EJS VIEW SETUP
@@ -25,17 +26,17 @@ app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'views/assets')));
 
 const redisClient = createClient({
-   url: "redis://127.0.0.1:6379"
+  url: 'redis://127.0.0.1:6379',
 });
-redisClient.on("connect", () => {
-  console.log("✅ Redis Connected");
-});
-
-redisClient.on("error", (err) => {
-  console.log("Redis Error:", err);
+redisClient.on('connect', () => {
+  console.log('✅ Redis Connected');
 });
 
-redisClient.connect().catch(console.error)
+redisClient.on('error', (err) => {
+  console.log('Redis Error:', err);
+});
+
+redisClient.connect().catch(console.error);
 
 app.use(
   session({
@@ -44,8 +45,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24
-    }
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   }),
 );
 
@@ -60,5 +61,6 @@ app.use('/api/v1/rfq', rfqRoutes);
 app.use('/', vendorRoutes);
 app.use('/', companyRoutes);
 app.use('/', adminRoutes);
+app.use(routes);
 
 module.exports = app;

@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.use(authController.restrictTo('admin'));
 
-router.get('/api/v1/admin/dashboard-stats', adminController.adminStats);
 router.get('/api/v1/admin/users-stats', adminController.userStats);
 router.get('/api/v1/admin/vendor-stats', adminController.vendorStats);
 router.get('/api/v1/admin/product-stats', adminController.productStats);
@@ -70,8 +69,6 @@ router.get('/admin/users', (req, res) => {
 router.get('/admin/suppliers', (req, res) => {
   res.render('admin/suppliers');
 });
-
-
 
 router.get('/admin/products', (req, res) => {
   res.render('admin/products');

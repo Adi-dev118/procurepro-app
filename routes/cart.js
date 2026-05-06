@@ -1,8 +1,11 @@
 const express = require('express');
 const cartControllers = require('./../controllers/cart');
+const authControllers = require('./../controllers/authentication');
 
 const router = express.Router();
 
+
+router.use(authControllers.restrictTo('customer'));
 router.route('/add-items/').post(cartControllers.addItems);
 router.route('/get-items/').get(cartControllers.getCartItems);
 router.route('/increase-items/').patch(cartControllers.increaseQuantity);
