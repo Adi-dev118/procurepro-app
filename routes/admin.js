@@ -21,8 +21,6 @@ router.get('/api/v1/admin/rfq/:id/specifications', rfqController.getRfqSpecifica
 router.get('/admin/user/users-data/recent-activities', adminController.getRecentActivities);
 router.get('/admin/user/users-data/activities-data', adminController.getAllActivities);
 
-router.get('/admin/order/order-data', orderController.getOrderManagement);
-router.get('/admin/order/order-data/order-modal/:orderId', orderController.getOrderProducts);
 router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
 
 
