@@ -24,7 +24,6 @@ router.get('/admin/user/users-data/activities-data', adminController.getAllActiv
 router.get('/admin/order/order-data', orderController.getOrderManagement);
 router.get('/admin/order/order-data/order-modal/:orderId', orderController.getOrderProducts);
 router.get('/admin/dispute/dispute-data', disputeController.getDisputes);
-router.get('/admin/product/product-data', productController.getProducts);
 
 
 

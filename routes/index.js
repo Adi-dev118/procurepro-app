@@ -8,4 +8,6 @@ router.use('/', require('./admin/admin.user'));
 
 router.use('/', require('./admin/admin.vendor'));
 
+router.use('/', require('./admin/admin.product'));
+
 module.exports = router;
