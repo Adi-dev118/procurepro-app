@@ -80,7 +80,7 @@
         </nav>
 
         <div class="vendor-sidebar-footer">
-          <p>TechGadgets Ltd</p>
+          <p class="vendor-name"></p>
           <small>Vendor Account</small>
         </div>
       </aside>
@@ -109,31 +109,7 @@
               <span>3</span>
             </div>
 
-            <div class="vendor-user-profile" id="profileTrigger">
-              <div class="vendor-user-avatar">
-                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-              </div>
-              <span class="vendor-user-name"><%=name%></span>
-              <i class="bi bi-chevron-down" id="profileChevron"></i>
-            </div>
-
-            <!-- Profile Dropdown -->
-            <div class="vendor-profile-dropdown" id="profileDropdown">
-              <div class="vendor-profile-dropdown-header">
-                <div class="vendor-profile-dropdown-avatar">
-                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-                </div>
-                <div class="vendor-profile-dropdown-info">
-                  <strong><%=name%></strong>
-                  <small><%=email%></small>
-                </div>
-              </div>
-              <div class="vendor-profile-dropdown-divider"></div>
-              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
-                <i class="bi bi-box-arrow-right"></i>
-                Sign Out
-              </a>
-            </div>
+            <div id="navbarProfileContainer"></div>
           </div>
         </header>
 
@@ -160,7 +136,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Total Products</h6>
-                      <h3 class="mb-0"><%=totalProducts%></h3>
+                      <h3 class="mb-0" id="total-product"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-box"></i>
@@ -178,7 +154,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Active Listings</h6>
-                      <h3 class="mb-0"><%=activeProducts%></h3>
+                      <h3 class="mb-0" id="active-product"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -196,7 +172,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Low Stock</h6>
-                      <h3 class="mb-0"><%=lowStock%></h3>
+                      <h3 class="mb-0" id="low-stock"></h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-exclamation-triangle"></i>
@@ -214,7 +190,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Out of Stock</h6>
-                      <h3 class="mb-0"><%=outOfStock%></h3>
+                      <h3 class="mb-0" id="out-of-stock"></h3>
                     </div>
                     <div class="stat-icon bg-danger">
                       <i class="bi bi-x-circle"></i>
@@ -432,5 +408,6 @@
     <!-- Vendor JS -->
     <script src="../assets/js/vendor.js"></script>
     <script src="../assets/js/vendor/product/product.main.js" type="module"></script>
+    <script src="../assets/js/vendor/profile/profile.main.js" type="module"></script>
   </body>
 </html>

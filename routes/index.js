@@ -4,6 +4,8 @@ const router = express.Router();
 
 router.use('/vendor', require('./vendor/vendor.dashboard'));
 
+router.use('/vendor', require('./vendor/vendor.product'));
+
 router.use('/admin', require('./admin/admin.dashboard'));
 
 router.use('/admin', require('./admin/admin.user'));

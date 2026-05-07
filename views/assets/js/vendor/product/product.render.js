@@ -107,3 +107,10 @@ export function updateCount(currentPage, totalItems, limit = 4) {
 
   info.innerText = `Showing ${start} to ${end} of ${totalItems} products`;
 }
+
+export function renderProductStats(stats) {
+  document.getElementById('total-product').textContent = stats.totalProducts;
+  document.getElementById('active-product').textContent = stats.activeProducts;
+  document.getElementById('low-stock').textContent = stats.lowStock;
+  document.getElementById('out-of-stock').textContent = stats.outOfStock;
+}

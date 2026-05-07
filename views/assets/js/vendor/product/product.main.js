@@ -1,5 +1,6 @@
 import { productState } from './product.state.js';
 import {
+  loadProductStats,
   fetchAllProducts,
   fetchActiveProducts,
   fetchInactiveProducts,
@@ -10,7 +11,9 @@ function loadProducts() {
   fetchAllProducts();
 }
 
+
 document.addEventListener('DOMContentLoaded', loadProducts);
+document.addEventListener('DOMContentLoaded', loadProductStats);
 document.querySelectorAll('[data-bs-toggle="tab"]').forEach((tab) => {
   tab.addEventListener('shown.bs.tab', (e) => {
     const id = e.target.id;

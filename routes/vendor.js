@@ -8,7 +8,9 @@ const { render } = require('../app');
 
 router.get('/vendor/dashboard', vendorController.vendorDashboard);
 
-router.get('/vendor/products', vendorController.productsDashboard);
+router.get('/vendor/products', (req, res) => {
+  res.render('vendor/products');
+});
 
 router.get('/vendor/rfqs', vendorController.rfqDashboard);
 
@@ -18,10 +20,8 @@ router.get('/vendor/profile', vendorController.profileDashboard);
 
 router.get('/vendor/finance', vendorController.financeDashboard);
 
-router.get('/vendor/product/products-data', productController.getVendorProducts);
 
 router.get('/vendor/order/orders-data', orderController.getVendorOrderManagement);
-
 
 router.get('/vendor/rfq/rfq-data', rfqController.getVendorRFQs);
 

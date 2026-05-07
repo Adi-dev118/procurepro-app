@@ -1,5 +1,25 @@
 import { productState } from './product.state.js';
-import { renderProducts, renderPagination, updateCount } from './product.render.js';
+import {
+  renderProducts,
+  renderPagination,
+  renderProductStats,
+  updateCount,
+} from './product.render.js';
+
+export async function loadProductStats() {
+  try {
+    const res = await fetch('/vendor/api/v1/products-stats');
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    const stats = data.stats;
+    renderProductStats(stats);
+  } catch (error) {
+    console.error('Product Stats Error:', error);
+  }
+}
 
 async function fetchProductsBase(status) {
   const query = new URLSearchParams({
@@ -14,7 +34,7 @@ async function fetchProductsBase(status) {
           : '',
   });
 
-  const res = await fetch(`/vendor/product/products-data?${query}`);
+  const res = await fetch(`/vendor/api/v1/product/products-data?${query}`);
   const data = await res.json();
 
   productState.page = data.currentPage;

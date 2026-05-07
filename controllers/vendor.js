@@ -154,10 +154,6 @@ AND status = 'pending'`,
   }
 };
 
-
-// Vendor Orders Dashboard
-// Fetch vendor name, order statistics, and full order list for this vendor
-
 exports.orderDashboard = async (req, res) => {
   // Temporary vendor id (will normally come from login/session)
   const vendorId = req.session.user.vendorId;
