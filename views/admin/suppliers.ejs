@@ -546,7 +546,7 @@
 
       async function loadSupplierStats() {
         try {
-          const res = await fetch('/api/v1/admin/vendor-stats'); // your API route
+          const res = await fetch('/admin/api/v1/admin/vendor-stats'); // your API route
           const data = await res.json();
 
           const stats = data.stats;

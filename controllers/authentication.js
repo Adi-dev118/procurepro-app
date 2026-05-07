@@ -72,7 +72,6 @@ exports.login = async (req, res) => {
 
     const sessionId = { id: user.id, name: user.name, role: user.role, vendorId: user.vendorId };
     const session = (req.session.user = sessionId);
-    // console.log(session);
 
     res.status(200).json({
       status: 'Success',
@@ -104,16 +103,26 @@ exports.logout = (req, res) => {
     });
   });
 };
-
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (!req.session.user) return res.status(403).send('Unauthorized');
-    if (!roles.includes(req.session.user.role)) return res.status(403).send('Unauthorized');
+    console.log('SESSION:', req.session.user);
+    console.log('ALLOWED ROLES:', roles);
+
+    if (!req.session.user) {
+      console.log('NO SESSION USER');
+      return res.status(403).send('Unauthorized');
+    }
+
+    if (!roles.includes(req.session.user.role)) {
+      console.log('ROLE FAILED');
+      return res.status(403).send('Unauthorized');
+    }
+
+    console.log('PASSED');
 
     next();
   };
 };
-
 // exports.protect = (req, res, next) => {
 //   if (req.session.user.role === 'admin') {
 //     next();

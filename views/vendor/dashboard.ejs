@@ -79,7 +79,7 @@
         </nav>
 
         <div class="vendor-sidebar-footer">
-          <p><%=name%></p>
+          <p class="vendor-name"></p>
           <small>Vendor Account</small>
         </div>
       </aside>
@@ -107,32 +107,7 @@
               <i class="bi bi-bell"></i>
               <span>3</span>
             </div>
-
-            <div class="vendor-user-profile" id="profileTrigger">
-              <div class="vendor-user-avatar">
-                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-              </div>
-              <span class="vendor-user-name"><%=name%></span>
-              <i class="bi bi-chevron-down" id="profileChevron"></i>
-            </div>
-
-            <!-- Profile Dropdown -->
-            <div class="vendor-profile-dropdown" id="profileDropdown">
-              <div class="vendor-profile-dropdown-header">
-                <div class="vendor-profile-dropdown-avatar">
-                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-                </div>
-                <div class="vendor-profile-dropdown-info">
-                  <strong><%=name%></strong>
-                  <small><%=email%></small>
-                </div>
-              </div>
-              <div class="vendor-profile-dropdown-divider"></div>
-              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
-                <i class="bi bi-box-arrow-right"></i>
-                Sign Out
-              </a>
-            </div>
+            <div id="navbarProfileContainer"></div>
           </div>
         </header>
 
@@ -144,7 +119,9 @@
               <div class="vendor-form-section">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h2 class="vendor-section-title mb-2">Welcome back, <%=name%>!</h2>
+                    <h2 class="vendor-section-title mb-2">
+                      Welcome back, <span class="vendor-name"></span>!
+                    </h2>
                     <p class="text-muted">Here's what's happening with your store today.</p>
                   </div>
                   <div class="mt-2">
@@ -176,7 +153,7 @@
                 <h3 class="vendor-stat-card-title">Total Sales</h3>
                 <i class="bi bi-currency-dollar"></i>
               </div>
-              <div class="vendor-stat-card-value">$ <%=totalEarned%></div>
+              <div class="vendor-stat-card-value" id="total-earned">$</div>
               <div class="vendor-stat-card-change positive">↑ 12% from last month</div>
             </div>
 
@@ -185,7 +162,7 @@
                 <h3 class="vendor-stat-card-title">Total Orders</h3>
                 <i class="bi bi-cart"></i>
               </div>
-              <div class="vendor-stat-card-value"><%=totalOrders%></div>
+              <div class="vendor-stat-card-value" id="total-order"></div>
               <div class="vendor-stat-card-change positive">↑ 8% from last week</div>
             </div>
 
@@ -194,7 +171,7 @@
                 <h3 class="vendor-stat-card-title">Active Products</h3>
                 <i class="bi bi-box-seam"></i>
               </div>
-              <div class="vendor-stat-card-value"><%=totalProducts%></div>
+              <div class="vendor-stat-card-value" id="total-product"></div>
               <div class="vendor-stat-card-change positive">↑ 5 from last month</div>
             </div>
 
@@ -203,7 +180,7 @@
                 <h3 class="vendor-stat-card-title">New Customers</h3>
                 <i class="bi bi-people"></i>
               </div>
-              <div class="vendor-stat-card-value"><%=newCustomers%></div>
+              <div class="vendor-stat-card-value" id="total-customer"></div>
               <div class="vendor-stat-card-change positive">↑ 15% from last month</div>
             </div>
 
@@ -212,7 +189,7 @@
                 <h3 class="vendor-stat-card-title">Average Rating</h3>
                 <i class="bi bi-star"></i>
               </div>
-              <div class="vendor-stat-card-value"><%=rating.avgRating%> ★</div>
+              <div class="vendor-stat-card-value" id="avg-rating">★</div>
               <div class="vendor-stat-card-change positive">↑ 0.2 from last month</div>
             </div>
 
@@ -221,7 +198,7 @@
                 <h3 class="vendor-stat-card-title">Pending Payout</h3>
                 <i class="bi bi-wallet2"></i>
               </div>
-              <div class="vendor-stat-card-value">$ <%=pendingPayout.total%></div>
+              <div class="vendor-stat-card-value" id="pending-payout">$</div>
               <div class="vendor-stat-card-change negative">↓ 2% from last week</div>
             </div>
           </div>
@@ -286,38 +263,9 @@
                         <th>Date</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <%activities.forEach(activity=> {%>
-                      <tr>
-                        <td>#ORD-<%=activity.id%></td>
-                        <td><%=activity.customer%></td>
-                        <td><%=activity.date%></td>
-                        <td>
-                          $
-                          <%=activity.amount%>
-                        </td>
-                        <td>
-                          <span
-                            class="vendor-status-badge <%= activity.status === 'pending' ? 'pending' : activity.status === 'delivered' ? 'completed' : activity.status === 'cancelled' ? 'cancelled': 'shipped' %>"
-                            ><%=activity.status%></span
-                          >
-                        </td>
-                        <td>
-                          <div class="vendor-action-buttons">
-                            <button
-                              class="btn btn-primary btn-sm btn-process-order"
-                              data-order-id="7842"
-                            >
-                              <i class="bi bi-check-circle me-1"></i> Process
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <%})%>
-                    </tbody>
+                    <tbody id="recent-orders-body"></tbody>
                   </table>
                 </div>
               </div>
@@ -451,5 +399,6 @@
 
     <!-- Vendor JS -->
     <script src="../assets/js/vendor.js"></script>
+    <script type="module" src="/assets/js/vendor/profile/profile.main.js"></script>
   </body>
 </html>

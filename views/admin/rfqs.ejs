@@ -692,7 +692,7 @@
       /* ---------- Stats ---------- */
       async function loadRfqStats() {
         try {
-          const res = await fetch('/api/v1/admin/rfq-stats');
+          const res = await fetch('/admin/api/v1/admin/rfq-stats');
           const data = await res.json();
           document.getElementById('stat-total').innerText = data.totalRfqs ?? 0;
           document.getElementById('stat-active').innerText = data.activeRfqs ?? 0;

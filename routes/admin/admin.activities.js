@@ -6,9 +6,9 @@ const adminActivitiesController = require('./../../controllers/admin/admin.activ
 router.use(authController.restrictTo('admin'));
 
 router.get(
-  '/admin/user/users-data/recent-activities',
+  '/user/users-data/recent-activities',
   adminActivitiesController.getRecentActivities,
 );
-router.get('/admin/user/users-data/activities-data', adminActivitiesController.getAllActivities);
+router.get('/user/users-data/activities-data', adminActivitiesController.getAllActivities);
 
 module.exports = router;

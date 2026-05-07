@@ -52,7 +52,7 @@ async function fetchSuppliers() {
 }
 async function loadUserStats() {
   try {
-    const res = await fetch('/api/v1/admin/users-stats'); // your endpoint
+    const res = await fetch('/admin/api/v1/admin/users-stats'); // your endpoint
     const data = await res.json();
     console.log(data)
 

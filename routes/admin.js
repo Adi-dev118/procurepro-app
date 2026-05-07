@@ -9,12 +9,6 @@ const rfqController = require('./../controllers/rfq');
 const { route } = require('./users');
 const router = express.Router();
 
-router.use(authController.restrictTo('admin'));
-
-
-
-
-router.get('/admin/settings', authController.restrictTo('admin'), adminController.adminSettings);
 router.get('/admin/supplier-details/:supplierId', (req, res) => {
   res.render('admin/supplier-detail');
 });

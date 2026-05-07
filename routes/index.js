@@ -2,20 +2,23 @@ const express = require('express');
 
 const router = express.Router();
 
-router.use('/', require('./admin/admin.dashboard'));
+router.use('/vendor', require('./vendor/vendor.dashboard'));
 
-router.use('/', require('./admin/admin.user'));
+router.use('/admin', require('./admin/admin.dashboard'));
 
-router.use('/', require('./admin/admin.vendor'));
+router.use('/admin', require('./admin/admin.user'));
 
-router.use('/', require('./admin/admin.product'));
+router.use('/admin', require('./admin/admin.vendor'));
 
-router.use('/', require('./admin/admin.order'));
+router.use('/admin', require('./admin/admin.product'));
 
-router.use('/', require('./admin/admin.rfq'));
+router.use('/admin', require('./admin/admin.order'));
 
-router.use('/', require('./admin/admin.dispute'));
+router.use('/admin', require('./admin/admin.rfq'));
 
-router.use('/', require('./admin/admin.activities'));
+router.use('/admin', require('./admin/admin.dispute'));
+
+router.use('/admin', require('./admin/admin.activities'));
+
 
 module.exports = router;

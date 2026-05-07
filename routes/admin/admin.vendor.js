@@ -5,22 +5,22 @@ const adminVendorController = require('./../../controllers/admin/admin.vendor');
 
 router.use(authController.restrictTo('admin'));
 
-router.get('/admin/user/suppliers-data', adminVendorController.getSuppliers);
-router.get('/admin/supplier/supplier-data', adminVendorController.getSupplierManagement);
+router.get('/user/suppliers-data', adminVendorController.getSuppliers);
+router.get('/supplier/supplier-data', adminVendorController.getSupplierManagement);
 router.get(
-  '/admin/supplier/supplier-data/modal-data/:supplierId',
+  '/supplier/supplier-data/modal-data/:supplierId',
   adminVendorController.getSupplierById,
 );
 router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/suspend',
+  '/supplier/supplier-data/modal-data/:supplierId/suspend',
   adminVendorController.suspendSupplier,
 );
 router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/activate',
+  '/supplier/supplier-data/modal-data/:supplierId/activate',
   adminVendorController.activateSupplier,
 );
 router.put(
-  '/admin/supplier/supplier-data/modal-data/:supplierId/approve',
+  '/supplier/supplier-data/modal-data/:supplierId/approve',
   adminVendorController.approveSupplier,
 );
 

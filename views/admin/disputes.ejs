@@ -796,7 +796,7 @@
     <script>
       async function loadDisputeStats() {
         try {
-          const res = await fetch('/api/v1/admin/dispute-stats'); // your API
+          const res = await fetch('/admin/api/v1/admin/dispute-stats'); // your API
           const data = await res.json();
 
           document.getElementById('total-dispute').innerText = data.total || 0;

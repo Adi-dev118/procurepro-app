@@ -488,7 +488,7 @@
     <script>
       async function loadProductStats() {
   try {
-    const res = await fetch('/api/v1/admin/product-stats'); // your API
+    const res = await fetch('/admin/api/v1/admin/product-stats'); // your API
     const data = await res.json();
 
     document.getElementById('total-product').innerText = data.products || 0;

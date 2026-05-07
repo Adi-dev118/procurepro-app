@@ -576,7 +576,7 @@
     <script>
       async function loadOrderStats() {
   try {
-    const res = await fetch('/api/v1/admin/order-stats');
+    const res = await fetch('/admin/api/v1/admin/order-stats');
     const data = await res.json();
 
     document.getElementById('total-order').innerText =
