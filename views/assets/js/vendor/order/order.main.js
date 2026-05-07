@@ -1,9 +1,10 @@
 import { orderState } from './order.state.js';
-import { fetchOrders } from './order.api.js';
+import { fetchOrders, loadOrderStats } from './order.api.js';
 
 /* ================= LOAD ================= */
 document.addEventListener('DOMContentLoaded', () => {
   fetchOrders();
+  loadOrderStats()
 });
 
 /* ================= TABS ================= */ document

@@ -1,4 +1,4 @@
-import { orderState } from "./order.state.js";
+import { orderState } from './order.state.js';
 
 export function renderOrders(orders) {
   const tbody = document.getElementById('orders-body');
@@ -17,13 +17,13 @@ export function renderOrders(orders) {
 
   let html = '';
 
-  orders.forEach(order => {
+  orders.forEach((order) => {
     // Format date
     const date = new Date(order.date);
     const formattedDate = date.toLocaleDateString();
     const formattedTime = date.toLocaleTimeString([], {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
 
     // Status badge
@@ -36,29 +36,6 @@ export function renderOrders(orders) {
       statusHTML = `<span class="vendor-status-badge shipped">Shipped</span>`;
     } else if (order.status === 'delivered') {
       statusHTML = `<span class="vendor-status-badge completed">Completed</span>`;
-    }
-
-    // Action buttons
-    let actionHTML = `
-      <button class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-eye"></i>
-      </button>
-    `;
-
-    if (order.status === 'pending') {
-      actionHTML = `
-        <button class="btn btn-primary btn-sm btn-process-order" data-order-id="${order.id}">
-          <i class="bi bi-check-circle me-1"></i> Process
-        </button>
-        ${actionHTML}
-      `;
-    } else if (order.status === 'processing') {
-      actionHTML = `
-        <button class="btn btn-info btn-sm" data-order-id="${order.id}">
-          <i class="bi bi-truck me-1"></i> Ship
-        </button>
-        ${actionHTML}
-      `;
     }
 
     html += `
@@ -85,9 +62,9 @@ export function renderOrders(orders) {
         <td>${statusHTML}</td>
 
         <td>
-          <div class="vendor-action-buttons">
-            ${actionHTML}
-          </div>
+          <button class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-eye"></i>
+       </button>
         </td>
       </tr>
     `;
@@ -171,4 +148,11 @@ export function updateOrderCount(currentPage, totalOrders, limit = 5) {
   const end = Math.min(currentPage * limit, totalOrders);
 
   container.textContent = `Showing ${start} to ${end} of ${totalOrders} orders`;
+}
+
+export function renderOrderStats(stats) {
+  document.getElementById('new-order').textContent = stats.newOrders;
+  document.getElementById('shipped-order').textContent = stats.shipped;
+  document.getElementById('processing-order').textContent = stats.processing;
+  document.getElementById('completed-order').textContent = stats.completed;
 }

@@ -8,7 +8,7 @@ import {
 
 export async function loadProductStats() {
   try {
-    const res = await fetch('/vendor/api/v1/products-stats');
+    const res = await fetch('vendor/api/v1/product/products-stats');
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message);
