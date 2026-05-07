@@ -14,7 +14,7 @@ export async function fetchRFQs() {
 }
 
 export async function fetchQuotes(id) {
-  const res = await fetch(`/api/v1/rfq/vendor/quotes/${id}`);
+  const res = await fetch(`/vendor/api/v1/rfq/quotes/${id}`);
   const data = await res.json();
 
   if (!res.ok) throw new Error(data.message);

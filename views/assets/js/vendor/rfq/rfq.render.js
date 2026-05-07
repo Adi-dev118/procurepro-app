@@ -101,6 +101,7 @@ export function viewQuote(data) {
     const q = data.quote;
     const statusEl = document.getElementById('viewStatus');
 
+    console.log(q);
     statusEl.textContent = q.status;
 
     statusEl.className =
@@ -117,7 +118,7 @@ export function viewQuote(data) {
     document.getElementById('viewPrice').textContent = q.price;
     document.getElementById('viewDelivery').textContent = q.delivery_days;
     document.getElementById('viewPayment').textContent = q.payment_terms;
-    // document.getElementById('viewStatus').textContent = q.status;
+    document.getElementById('viewStatus').textContent = q.status;
     document.getElementById('viewMessage').textContent = q.message || '—';
 
     new bootstrap.Modal(document.getElementById('viewQuoteModal')).show();

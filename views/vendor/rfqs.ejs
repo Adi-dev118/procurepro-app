@@ -591,6 +591,70 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="viewQuoteModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <!-- HEADER -->
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-file-earmark-text"></i>
+              Quote Details
+            </h5>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- BODY -->
+          <div class="modal-body">
+            <!-- RFQ TITLE -->
+            <div class="quote-rfq-card">
+              <div class="quote-rfq-label">RFQ Title</div>
+
+              <div class="quote-rfq-title" id="viewRfqTitle"></div>
+            </div>
+
+            <!-- DETAILS -->
+            <div class="quote-details-grid">
+              <div class="quote-detail-card">
+                <div class="quote-detail-label">Quote Price</div>
+
+                <div class="quote-detail-value" id="viewPrice"></div>
+              </div>
+
+              <div class="quote-detail-card">
+                <div class="quote-detail-label">Delivery Days</div>
+
+                <div class="quote-detail-value" id="viewDelivery"></div>
+              </div>
+
+              <div class="quote-detail-card">
+                <div class="quote-detail-label">Payment Terms</div>
+
+                <div class="quote-detail-value" id="viewPayment"></div>
+              </div>
+
+              <div class="quote-detail-card">
+                <div class="quote-detail-label">Status</div>
+
+                <div id="viewStatus" class="quote-status"></div>
+              </div>
+            </div>
+
+            <!-- MESSAGE -->
+            <div class="quote-message-box">
+              <div class="quote-detail-label">Vendor Message</div>
+
+              <div class="quote-message-text" id="viewMessage"></div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -654,7 +718,7 @@
         this.innerHTML = 'Submitting...';
 
         try {
-          const res = await fetch(`/api/v1/rfq/quotes/${currentRfqId}/submit`, {
+          const res = await fetch(`/vendor/api/v1/rfq/quotes/${currentRfqId}/submit`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ price, deliveryDays, message, paymentTerms }),
