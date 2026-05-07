@@ -223,4 +223,27 @@ function updateOrderCount(page, totalOrders, limit) {
     `Showing ${start} to ${end} of ${totalOrders} orders`;
 }
 
-export { renderPagination, updateOrderCount, renderOrders };
+function renderOrderStats(stats) {
+
+  document.getElementById(
+    'total-order'
+  ).textContent =
+    stats.totalOrders;
+
+  document.getElementById(
+    'pending-order'
+  ).textContent =
+    stats.pendingOrders;
+
+  document.getElementById(
+    'transit-order'
+  ).textContent =
+    stats.inTransitOrders;
+
+  document.getElementById(
+    'complete-order'
+  ).textContent =
+    stats.completedOrders;
+
+}
+export { renderPagination, updateOrderCount, renderOrders, renderOrderStats };

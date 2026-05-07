@@ -14,12 +14,13 @@ router.get('/marketplace', (req, res) => {
   res.render('company/marketplace');
 });
 
-router.get('/company/order/order-data', orderController.getCompanyOrders);
 router.get('/company/rfq/rfq-data', rfqController.getCompanyRFQs);
 
 router.get('/rfq', companyController.rfqsDashboard);
 
-router.get('/orders', companyController.ordersDashboard);
+router.get('/orders', (req, res) => {
+  res.render('company/orders')
+});
 
 router.get('/profile', companyController.profileDashboard);
 

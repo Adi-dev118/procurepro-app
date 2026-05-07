@@ -1,5 +1,5 @@
 import { orderState } from './order.state.js';
-import { fetchOrders } from './order.api.js';
+import { fetchOrders, loadOrderStats } from './order.api.js';
 
 // 🔹 Change Page
 function changePage(page) {
@@ -10,25 +10,23 @@ function changePage(page) {
 }
 
 // 🔹 Search (Topbar)
-document.querySelector('.topbar-search input')
-  ?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      orderState.search = e.target.value.trim();
-      orderState.page = 1;
-      fetchOrders();
-    }
-  });
+document.querySelector('.topbar-search input')?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    orderState.search = e.target.value.trim();
+    orderState.page = 1;
+    fetchOrders();
+  }
+});
 
 // 🔹 Status Filter
-document.querySelectorAll('.filter-bar select')[0]
-  ?.addEventListener('change', (e) => {
-    const value = e.target.value.toLowerCase();
+document.querySelectorAll('.filter-bar select')[0]?.addEventListener('change', (e) => {
+  const value = e.target.value.toLowerCase();
 
-    orderState.status = value === 'all status' ? '' : value;
-    orderState.page = 1;
+  orderState.status = value === 'all status' ? '' : value;
+  orderState.page = 1;
 
-    fetchOrders();
-  });
+  fetchOrders();
+});
 
 // 🔹 Payment Filter (if you add later)
 document.addEventListener('change', (e) => {
@@ -76,10 +74,8 @@ document.addEventListener('click', (e) => {
 
 // 🔹 Initial Load
 document.addEventListener('DOMContentLoaded', () => {
-    
-// 🔹 Pagination Click
-document.getElementById('pagination')
-  ?.addEventListener('click', (e) => {
+  // 🔹 Pagination Click
+  document.getElementById('pagination')?.addEventListener('click', (e) => {
     const btn = e.target.closest('.pag-btn');
     if (!btn || btn.classList.contains('disabled')) return;
 
@@ -88,6 +84,7 @@ document.getElementById('pagination')
   });
 
   fetchOrders();
+  loadOrderStats();
 });
 
 function openOrderModal(order) {
@@ -107,8 +104,7 @@ function openOrderModal(order) {
   }
 
   // Modal Title
-  document.querySelector('#viewOrderModal .modal-title').textContent =
-    `Order #${order.id}`;
+  document.querySelector('#viewOrderModal .modal-title').textContent = `Order #${order.id}`;
 
   // Modal Body → Only Order Items
   document.getElementById('order-items-content').innerHTML = `
@@ -174,7 +170,7 @@ function openOrderModal(order) {
                             <td>₹${item.price}</td>
                             <td>₹${item.quantity * item.price}</td>
                           </tr>
-                        `
+                        `,
                       )
                       .join('')
                   : `

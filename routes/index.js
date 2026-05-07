@@ -30,4 +30,6 @@ router.use('/company', require('./company/company.dashboard'));
 
 router.use('/company', require('./company/company.product'));
 
+router.use('/company', require('./company/company.order'));
+
 module.exports = router;
