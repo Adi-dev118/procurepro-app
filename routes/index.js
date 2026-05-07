@@ -26,4 +26,6 @@ router.use('/vendor', require('./vendor/vendor.order'));
 
 router.use('/vendor', require('./vendor/vendor.rfq'));
 
+router.use('/company', require('./company/company.dashboard'));
+
 module.exports = router;

@@ -100,16 +100,7 @@
           </div>
 
           <!-- User Card Trigger -->
-          <div class="user-card" id="userCard">
-            <div class="user-avatar">
-              <%= name.name.split(' ').map(w=>w[0]).join('').toUpperCase() %>
-            </div>
-            <div>
-              <div class="user-name"><%= name.name %></div>
-              <div class="user-role">Buyer Account</div>
-            </div>
-            <i class="bi bi-chevron-up user-chevron"></i>
-          </div>
+          <div class="user-card" id="userCard"></div>
         </div>
       </aside>
 
@@ -122,7 +113,7 @@
           </button>
           <span class="topbar-title d-none d-md-block"
             >Good morning,
-            <%= name.name.split(' ')[0] %>
+            <span class="first-name"></span>
             👋</span
           >
           <div class="topbar-search ms-auto ms-md-0">
@@ -146,7 +137,7 @@
           <div class="welcome-banner">
             <div>
               <div class="wb-label">Buyer Portal</div>
-              <div class="wb-heading">Welcome back, <%= name.name %></div>
+              <div class="wb-heading">Welcome back, <span class="first-name"></span></div>
               <div class="wb-sub">
                 Track procurement, manage RFQs, and discover verified suppliers.
               </div>
@@ -161,15 +152,15 @@
             </div>
             <div class="wb-stats">
               <div class="wb-stat">
-                <div class="wb-stat-val">$<%= stats.totalSpend %></div>
+                <div class="wb-stat-val"><span class="total-spend"></span>$</div>
                 <div class="wb-stat-lbl">Monthly Spend</div>
               </div>
               <div class="wb-stat">
-                <div class="wb-stat-val"><%= stats.activeRFQs %></div>
+                <div class="wb-stat-val active-rfq"></div>
                 <div class="wb-stat-lbl">Active RFQs</div>
               </div>
               <div class="wb-stat">
-                <div class="wb-stat-val"><%= stats.activeOrders %></div>
+                <div class="wb-stat-val active-order"></div>
                 <div class="wb-stat-lbl">Open Orders</div>
               </div>
             </div>
@@ -182,7 +173,7 @@
                 <div class="kpi-icon-wrap blue"><i class="bi bi-currency-dollar"></i></div>
                 <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>12%</span>
               </div>
-              <div class="kpi-value">$<%= stats.totalSpend %></div>
+              <div class="kpi-value total-spend">$</div>
               <div class="kpi-label">Total Spend This Month</div>
             </div>
             <div class="kpi-card">
@@ -190,7 +181,7 @@
                 <div class="kpi-icon-wrap amber"><i class="bi bi-megaphone"></i></div>
                 <span class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>1</span>
               </div>
-              <div class="kpi-value"><%= stats.activeRFQs %></div>
+              <div class="kpi-value active-rfq"></div>
               <div class="kpi-label">Active RFQs / Tenders</div>
             </div>
             <div class="kpi-card">
@@ -198,7 +189,7 @@
                 <div class="kpi-icon-wrap green"><i class="bi bi-file-earmark-text"></i></div>
                 <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>3 new</span>
               </div>
-              <div class="kpi-value"><%= stats.pendingQuotes %></div>
+              <div class="kpi-value" id="pending-quote"></div>
               <div class="kpi-label">Pending Quotations</div>
             </div>
             <div class="kpi-card">
@@ -206,7 +197,7 @@
                 <div class="kpi-icon-wrap purple"><i class="bi bi-cart-check"></i></div>
                 <span class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>2 new</span>
               </div>
-              <div class="kpi-value"><%= stats.activeOrders %></div>
+              <div class="kpi-value active-order"></div>
               <div class="kpi-label">Current Active Orders</div>
             </div>
           </div>
@@ -313,6 +304,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../assets/js/company/dashboard/dashboard.main.js"></script>
+    <script type="module" src="../assets/js/company/profile/profile.main.js"></script>
     <script>
       const menuToggle = document.getElementById('menuToggle');
       const sidebar = document.getElementById('sidebar');

@@ -17,7 +17,7 @@ export function renderOrders(orders) {
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
 
     html += `
@@ -111,4 +111,11 @@ export function renderRFQs(rfqs) {
   });
 
   tbody.innerHTML = html;
+}
+
+export function renderStats(stats) {
+  document.querySelectorAll('.total-spend').forEach((n) => (n.textContent = stats.totalSpend));
+  document.querySelectorAll('.active-order').forEach((n) => (n.textContent = stats.activeOrders));
+  document.querySelectorAll('.active-rfq').forEach((n) => (n.textContent = stats.activeRFQs));
+  document.getElementById('pending-quote').textContent = stats.pendingQuotes;
 }
