@@ -79,7 +79,7 @@
         </nav>
 
         <div class="vendor-sidebar-footer">
-          <p><%= name%></p>
+          <p class="vendor-name"></p>
           <small>Vendor Account</small>
         </div>
       </aside>
@@ -108,31 +108,7 @@
               <span>3</span>
             </div>
 
-            <div class="vendor-user-profile" id="profileTrigger">
-              <div class="vendor-user-avatar">
-                <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-              </div>
-              <span class="vendor-user-name"><%=name%></span>
-              <i class="bi bi-chevron-down" id="profileChevron"></i>
-            </div>
-
-            <!-- Profile Dropdown -->
-            <div class="vendor-profile-dropdown" id="profileDropdown">
-              <div class="vendor-profile-dropdown-header">
-                <div class="vendor-profile-dropdown-avatar">
-                  <span><%= name.split(' ').map(word => word[0]).join('').toUpperCase() %></span>
-                </div>
-                <div class="vendor-profile-dropdown-info">
-                  <strong><%=name%></strong>
-                  <small><%=email%></small>
-                </div>
-              </div>
-              <div class="vendor-profile-dropdown-divider"></div>
-              <a href="/company/login" class="vendor-profile-dropdown-signout" id="signoutButton">
-                <i class="bi bi-box-arrow-right"></i>
-                Sign Out
-              </a>
-            </div>
+            <div id="navbarProfileContainer"></div>
           </div>
         </header>
 
@@ -161,7 +137,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Active RFQs</h6>
-                      <h3 class="mb-0"><%=activeRFQs%></h3>
+                      <h3 class="mb-0" id="active-rfq"></h3>
                     </div>
                     <div class="stat-icon bg-primary">
                       <i class="bi bi-chat-left-text"></i>
@@ -179,7 +155,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Quotes Submitted</h6>
-                      <h3 class="mb-0"><%=quotesSubmitted%></h3>
+                      <h3 class="mb-0" id="quote-submitted"></h3>
                     </div>
                     <div class="stat-icon bg-success">
                       <i class="bi bi-check-circle"></i>
@@ -197,7 +173,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Quotes Won</h6>
-                      <h3 class="mb-0"><%=quotesWon%></h3>
+                      <h3 class="mb-0" id="quote-won"></h3>
                     </div>
                     <div class="stat-icon bg-info">
                       <i class="bi bi-trophy"></i>
@@ -215,7 +191,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="text-muted">Success Rate</h6>
-                      <h3 class="mb-0"><%=successRate%>%</h3>
+                      <h3 class="mb-0" id="success-rate">%</h3>
                     </div>
                     <div class="stat-icon bg-warning">
                       <i class="bi bi-graph-up"></i>
@@ -621,6 +597,8 @@
     <!-- Vendor JS -->
     <script src="../assets/js/vendor.js"></script>
     <script type="module" src="../assets/js/vendor/rfq/rfq.main.js"></script>
+    <script type="module" src="/assets/js/vendor/profile/profile.main.js"></script>
+
     <script>
       let currentRfqId = null;
 

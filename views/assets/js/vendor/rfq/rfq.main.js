@@ -1,8 +1,9 @@
 import { rfqState } from './rfq.state.js';
-import { fetchRFQs, fetchQuotes } from './rfq.api.js';
+import { fetchRFQs, fetchQuotes, loadRFQStats } from './rfq.api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchRFQs();
+  loadRFQStats();
 });
 
 document.querySelectorAll('[data-bs-toggle="tab"]').forEach((tab) => {

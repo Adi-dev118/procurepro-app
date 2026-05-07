@@ -125,3 +125,10 @@ export function viewQuote(data) {
     alert(err.message);
   }
 }
+
+export function renderRFQStats(stats) {
+  document.getElementById('active-rfq').textContent = stats.activeRFQs;
+  document.getElementById('quote-submitted').textContent = stats.quotesSubmitted;
+  document.getElementById('quote-won').textContent = stats.quotesWon;
+  document.getElementById('success-rate').textContent = stats.successRate;
+}

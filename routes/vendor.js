@@ -12,7 +12,9 @@ router.get('/vendor/products', (req, res) => {
   res.render('vendor/products');
 });
 
-router.get('/vendor/rfqs', vendorController.rfqDashboard);
+router.get('/vendor/rfqs', (req, res) => {
+  res.render('vendor/rfqs');
+});
 
 router.get('/vendor/orders', (req, res) => {
   res.render('vendor/orders');
@@ -21,8 +23,6 @@ router.get('/vendor/orders', (req, res) => {
 router.get('/vendor/profile', vendorController.profileDashboard);
 
 router.get('/vendor/finance', vendorController.financeDashboard);
-
-router.get('/vendor/rfq/rfq-data', rfqController.getVendorRFQs);
 
 router.get('/vendor/logout', (req, res) => {
   res.render('company/login');
