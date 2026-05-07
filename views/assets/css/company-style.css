@@ -1,10 +1,4 @@
-/* ==========================================================
-   company.css — ProcurePro Buyer Portal
-   Shared across: cart, create-rfq, dashboard, login,
-   marketplace, orders, profile, rfq, rfq-quotes, rfq-success
-   ========================================================== */
 
-/* ── 1. CSS VARIABLES ── */
 :root {
   --col-bg: #eef2f9;
   --col-surface: #f7f9fd;

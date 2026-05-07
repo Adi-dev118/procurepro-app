@@ -123,10 +123,26 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
-// exports.protect = (req, res, next) => {
-//   if (req.session.user.role === 'admin') {
-//     next();
-//   } else {
-//     res.status(403).send('Unauthorized');
-//   }
-// };
+
+exports.protect = (req, res, next) => {
+  if (!req.session.user) {
+    /* =========================
+       API REQUEST
+    ========================== */
+
+    if (req.originalUrl.startsWith('/api')) {
+      return res.status(401).json({
+        status: 'fail',
+
+        message: 'Please login first',
+      });
+    }
+
+    /* =========================
+       PAGE REQUEST
+    ========================== */
+    return res.redirect('/signup');
+  }
+  req.user = req.session.user;
+  next();
+};

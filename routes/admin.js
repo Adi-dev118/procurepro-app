@@ -1,13 +1,12 @@
 const express = require('express');
-const adminController = require('./../controllers/admin');
 const authController = require('./../controllers/authentication');
 const userController = require('./../controllers/users');
 const productController = require('./../controllers/product');
 const orderController = require('./../controllers/order');
 
 const rfqController = require('./../controllers/rfq');
-const { route } = require('./users');
 const router = express.Router();
+
 
 router.get('/admin/supplier-details/:supplierId', (req, res) => {
   res.render('admin/supplier-detail');
@@ -47,6 +46,10 @@ router.get('/admin/order-detail/:orderId', (req, res) => {
 
 router.get('/admin/activities', (req, res) => {
   res.render('admin/activities');
+});
+
+router.get('/admin/setting', (req, res) => {
+  res.render('admin/settings');
 });
 
 module.exports = router;

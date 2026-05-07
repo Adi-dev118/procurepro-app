@@ -3,8 +3,6 @@ const router = express.Router();
 const authController = require('./../../controllers/authentication');
 const adminActivitiesController = require('./../../controllers/admin/admin.activities');
 
-router.use(authController.restrictTo('admin'));
-
 router.get(
   '/user/users-data/recent-activities',
   adminActivitiesController.getRecentActivities,

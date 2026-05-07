@@ -3,8 +3,6 @@ const router = express.Router();
 const authController = require('../../controllers/authentication');
 const compayRFQController = require('./../../controllers/company/company.rfq');
 
-router.use(authController.restrictTo('customer'));
-
 router.route('/api/v1/rfq/rfq-data').get(compayRFQController.getRFQs);
 router.route('/api/v1/rfq/new-rfq').post(compayRFQController.createRFQ);
 router.route('/api/v1/rfq/rfq-data/:id').get(compayRFQController.getRFQById);

@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const authController = require('./../../controllers/authentication');
 const adminOrderController = require('./../../controllers/admin/admin.order');
-
-router.use(authController.restrictTo('admin'));
 router.get('/order/order-data', adminOrderController.getOrders);
 router.get('/order/order-data/order-modal/:orderId', adminOrderController.getOrderProducts);
 

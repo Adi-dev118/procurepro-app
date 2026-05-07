@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const companyController = require('./../controllers/company');
 const userController = require('./../controllers/users');
 const productController = require('./../controllers/product');
-const rfqController = require('./../controllers/rfq');
 const orderController = require('./../controllers/order');
+
+const authController = require('./../controllers/authentication');
 
 router.get('/dashboard', (req, res) => {
   res.render('company/dashboard');
@@ -22,10 +22,8 @@ router.get('/orders', (req, res) => {
   res.render('company/orders');
 });
 
-router.get('/profile', companyController.profileDashboard);
-
-router.get('/signup', (req, res) => {
-  res.render('company/login');
+router.get('/profile', (req, res) => {
+  res.render('company/profile');
 });
 
 router.get('/company/login', (req, res) => {

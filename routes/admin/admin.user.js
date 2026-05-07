@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const authController = require('./../../controllers/authentication');
 const adminUserController = require('./../../controllers/admin/admin.user');
-
-router.use(authController.restrictTo('admin'));
 router.route('/').get(adminUserController.getAllUsers);
 router.get('/user/users-data', adminUserController.getAllUsers);
 router.put('/user/users-data/modal-data/:userId/suspend', adminUserController.suspendUser);

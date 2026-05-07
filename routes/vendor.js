@@ -3,8 +3,8 @@ const router = express.Router();
 const vendorController = require('./../controllers/vendor');
 const productController = require('./../controllers/product');
 const orderController = require('./../controllers/order');
-const rfqController = require('./../controllers/rfq');
-const { render } = require('../app');
+const authController = require('./../controllers/authentication');
+
 
 router.get('/vendor/dashboard', vendorController.vendorDashboard);
 
@@ -23,10 +23,6 @@ router.get('/vendor/orders', (req, res) => {
 router.get('/vendor/profile', vendorController.profileDashboard);
 
 router.get('/vendor/finance', vendorController.financeDashboard);
-
-router.get('/vendor/logout', (req, res) => {
-  res.render('company/login');
-});
 
 router.get('/vendor/rfq/:id', (req, res) => {
   res.render('vendor/rfq-details');

@@ -12,7 +12,7 @@ const cartRoutes = require('./routes/cart');
 const adminRoutes = require('./routes/admin');
 const companyRoutes = require('./routes/company');
 const vendorRoutes = require('./routes/vendor');
-const rfqRoutes = require('./routes/rfq');
+const authRoutes = require('./routes/authentication');
 const routes = require('./routes');
 const { createClient } = require('redis');
 
@@ -51,16 +51,18 @@ app.use(
 );
 
 // API ROUTERS
+app.use('/', authRoutes);
+
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/carts', cartRoutes);
-app.use('/api/v1/rfq', rfqRoutes);
+
 
 // VIEWS ROUTES
+app.use('/', adminRoutes);
 app.use('/', vendorRoutes);
 app.use('/', companyRoutes);
-app.use('/', adminRoutes);
 app.use(routes);
 
 module.exports = app;

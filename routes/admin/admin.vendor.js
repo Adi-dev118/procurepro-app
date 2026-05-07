@@ -3,8 +3,6 @@ const router = express.Router();
 const authController = require('./../../controllers/authentication');
 const adminVendorController = require('./../../controllers/admin/admin.vendor');
 
-router.use(authController.restrictTo('admin'));
-
 router.get('/user/suppliers-data', adminVendorController.getSuppliers);
 router.get('/supplier/supplier-data', adminVendorController.getSupplierManagement);
 router.get(
