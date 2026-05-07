@@ -14,12 +14,12 @@ router.get('/marketplace', (req, res) => {
   res.render('company/marketplace');
 });
 
-router.get('/company/rfq/rfq-data', rfqController.getCompanyRFQs);
-
-router.get('/rfq', companyController.rfqsDashboard);
+router.get('/rfq', (req, res) => {
+  res.render('company/rfq');
+});
 
 router.get('/orders', (req, res) => {
-  res.render('company/orders')
+  res.render('company/orders');
 });
 
 router.get('/profile', companyController.profileDashboard);

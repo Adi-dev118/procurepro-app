@@ -3,13 +3,12 @@ import { renderRFQs } from './rfq.render.js';
 
 export async function fetchRFQs() {
   try {
-    const res = await fetch('/company/rfq/rfq-data');
+    const res = await fetch('/company/api/v1/rfq/rfq-data');
     const data = await res.json();
 
     rfqState.data = data.rfqs || [];
 
     renderRFQs();
-
   } catch (err) {
     console.error('RFQ fetch error:', err);
   }

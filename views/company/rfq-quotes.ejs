@@ -468,8 +468,8 @@
 
         const url =
           action === 'accepted'
-            ? `/api/v1/rfq/quotes/${quoteId}/accept`
-            : `/api/v1/rfq/quotes/${quoteId}/reject`;
+            ? `/company/api/v1/rfq/quotes/${quoteId}/accept`
+            : `/company/api/v1/rfq/quotes/${quoteId}/reject`;
 
         fetch(url, { method: 'PATCH' })
           .then((res) => res.json())
@@ -488,7 +488,7 @@
       // LOAD DATA  — replace fetch URL with your API
       // ─────────────────────────────────────────────
       if (rfqId) {
-        fetch(`/api/v1/rfq/${rfqId}/quotes`)
+        fetch(`/company/api/v1/rfq/${rfqId}/quotes`)
           .then((res) => res.json())
           .then((data) => {
             // Remove skeletons

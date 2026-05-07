@@ -323,7 +323,7 @@
       console.log('RFQ ID:', rfqId);
 
       if (rfqId) {
-        fetch(`/api/v1/rfq/rfq-data/${rfqId}`)
+        fetch(`/company/api/v1/rfq/rfq-data/${rfqId}`)
           .then((res) => res.json())
           .then((data) => {
             const rfq = data.rfq;
