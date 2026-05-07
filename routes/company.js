@@ -10,9 +10,10 @@ router.get('/dashboard', (req, res) => {
   res.render('company/dashboard');
 });
 
-router.get('/marketplace', companyController.marketplaceDashboard);
+router.get('/marketplace', (req, res) => {
+  res.render('company/marketplace');
+});
 
-router.get('/company/product/products-data', productController.getCompanyProducts);
 router.get('/company/order/order-data', orderController.getCompanyOrders);
 router.get('/company/rfq/rfq-data', rfqController.getCompanyRFQs);
 

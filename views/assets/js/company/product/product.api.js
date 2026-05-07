@@ -15,7 +15,7 @@ export async function fetchProducts() {
     status: productState.status,
   });
 
-  const res = await fetch(`/company/product/products-data?${query}`);
+  const res = await fetch(`/company/api/v1/product/products-data?${query}`);
   const data = await res.json();
 
   renderProducts(data.products);

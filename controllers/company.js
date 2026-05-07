@@ -1,56 +1,7 @@
 const db = require('./../config/db');
-
-// marketplace dashboard
-// products purchase
-exports.marketplaceDashboard = async (req, res) => {
-  try {
-    const companyId = 3;
-
-    const [[[name]], [products]] = await Promise.all([
-      // user name
-      db.query(`SELECT name FROM users WHERE id = ?`, [companyId]),
-
-      // fetch products
-      db.query(`SELECT 
-p.id,
-p.name,
-p.description,
-p.price,
-p.moq,
-p.stock,
-p.icon,
-c.name AS category,
-s.business_name AS supplier,
-MAX(sa.state) AS state,
-MAX(sa.country) AS country,
-ROUND(AVG(pr.rating),1) AS rating,
-COUNT(DISTINCT pr.id) AS reviews
-FROM products p
-JOIN categories c ON c.id = p.category_id
-JOIN suppliers s ON s.id = p.supplier_id
-LEFT JOIN supplier_address sa ON s.id = sa.supplier_id
-LEFT JOIN product_reviews pr ON pr.product_id = p.id
-WHERE p.verification_status = 'approved'
-GROUP BY p.id
-ORDER BY p.created_at DESC
-LIMIT 12;`),
-    ]);
-    // TODO: Add pagination for product listings
-    // TODO: Add category and price filters
-    res.render('company/marketplace', {
-      name,
-      products,
-    });
-  } catch (error) {
-    console.error('Company marketplace error:', error);
-    res.status(500).send('Server Error');
-  }
-};
-// Company Orders Dashboard
-// Fetch user order statistics and recent order history
 exports.ordersDashboard = async (req, res) => {
   try {
-const companyId = req.session.user.id;
+    const companyId = req.session.user.id;
     const [[[name]], [[orderStats]], [orderHistory]] = await Promise.all([
       //company user name
       db.query(`SELECT name FROM users WHERE id = ?`, [companyId]),
@@ -128,13 +79,12 @@ LIMIT 10`,
   }
 };
 
-
 // company rfqs dashboard
-// rfq stats - active, pending, closed, new 
+// rfq stats - active, pending, closed, new
 
 exports.rfqsDashboard = async (req, res) => {
   try {
-const companyId = req.session.user.id;
+    const companyId = req.session.user.id;
     const [[[name]], [currentRFQs], [specifications], [quotes], [rfqStats]] = await Promise.all([
       // Company user name
       db.query(`SELECT name FROM users WHERE id = ?`, [companyId]),
@@ -281,6 +231,5 @@ const companyId = req.session.user.id;
 };
 
 exports.profileDashboard = async (req, res) => {
-
   res.render('company/profile');
-}
+};
