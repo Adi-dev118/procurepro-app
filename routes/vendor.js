@@ -1,30 +1,65 @@
 const express = require('express');
-const router = express.Router();
-const vendorController = require('./../controllers/vendor');
-const authController = require('./../controllers/authentication');
 
-router.get('/vendor/dashboard', (req, res) => {
+const authController = require('./../controllers/authentication');
+const vendorController = require('./../controllers/vendor');
+
+const router = express.Router();
+
+/* =========================================
+   VENDOR AUTH MIDDLEWARE
+========================================= */
+
+router.use(
+  authController.protect,
+  authController.restrictTo('supplier'),
+);
+
+/* =========================================
+   VENDOR DASHBOARD
+========================================= */
+
+router.get('/dashboard', (req, res) => {
   res.render('vendor/dashboard');
 });
 
-router.get('/vendor/products', (req, res) => {
+/* =========================================
+   PRODUCTS
+========================================= */
+
+router.get('/products', (req, res) => {
   res.render('vendor/products');
 });
 
-router.get('/vendor/rfqs', (req, res) => {
+/* =========================================
+   RFQS
+========================================= */
+
+router.get('/rfqs', (req, res) => {
   res.render('vendor/rfqs');
 });
 
-router.get('/vendor/orders', (req, res) => {
+router.get('/rfq/:id', (req, res) => {
+  res.render('vendor/rfq-details');
+});
+
+/* =========================================
+   ORDERS
+========================================= */
+
+router.get('/orders', (req, res) => {
   res.render('vendor/orders');
 });
 
-router.get('/vendor/profile', vendorController.profileDashboard);
+/* =========================================
+   PROFILE
+========================================= */
 
-router.get('/vendor/finance', vendorController.financeDashboard);
+router.get('/profile', vendorController.profileDashboard);
 
-router.get('/vendor/rfq/:id', (req, res) => {
-  res.render('vendor/rfq-details');
-});
+/* =========================================
+   FINANCE
+========================================= */
+
+router.get('/finance', vendorController.financeDashboard);
 
 module.exports = router;

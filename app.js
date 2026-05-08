@@ -9,7 +9,7 @@ const adminPages = require('./routes/admin');
 const companyPages = require('./routes/company');
 const vendorPages = require('./routes/vendor');
 const authRoutes = require('./routes/users');
-const routes = require('./routes');
+const apiRoutes = require('./routes');
 const { createClient } = require('redis');
 
 //EJS VIEW SETUP
@@ -49,9 +49,10 @@ app.use(
 // API ROUTERS
 app.use('/', authRoutes);
 
-app.use('/', adminPages);
-app.use('/', vendorPages);
-app.use('/', companyPages);
-app.use(routes);
+app.use('/admin', adminPages);
+app.use('/vendor', vendorPages);
+app.use('/company', companyPages);
+
+app.use(apiRoutes);
 
 module.exports = app;

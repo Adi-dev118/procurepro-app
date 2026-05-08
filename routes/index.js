@@ -1,39 +1,57 @@
 const express = require('express');
 
+const authController = require('./../controllers/authentication');
+
 const router = express.Router();
 
-router.use('/admin', require('./admin/admin.dashboard'));
+/* =================================================
+   ADMIN ROUTES
+================================================= */
 
-router.use('/admin', require('./admin/admin.user'));
+const adminRouter = express.Router();
 
-router.use('/admin', require('./admin/admin.vendor'));
+adminRouter.use(authController.protect, authController.restrictTo('admin'));
 
-router.use('/admin', require('./admin/admin.product'));
+adminRouter.use(require('./admin/admin.dashboard'));
+adminRouter.use(require('./admin/admin.user'));
+adminRouter.use(require('./admin/admin.vendor'));
+adminRouter.use(require('./admin/admin.product'));
+adminRouter.use(require('./admin/admin.order'));
+adminRouter.use(require('./admin/admin.rfq'));
+adminRouter.use(require('./admin/admin.dispute'));
+adminRouter.use(require('./admin/admin.activities'));
 
-router.use('/admin', require('./admin/admin.order'));
+router.use('/admin', adminRouter);
 
-router.use('/admin', require('./admin/admin.rfq'));
+/* =================================================
+   VENDOR ROUTES
+================================================= */
 
-router.use('/admin', require('./admin/admin.dispute'));
+const vendorRouter = express.Router();
 
-router.use('/admin', require('./admin/admin.activities'));
+vendorRouter.use(authController.protect, authController.restrictTo('supplier'));
 
-router.use('/vendor', require('./vendor/vendor.dashboard'));
+vendorRouter.use(require('./vendor/vendor.dashboard'));
+vendorRouter.use(require('./vendor/vendor.product'));
+vendorRouter.use(require('./vendor/vendor.order'));
+vendorRouter.use(require('./vendor/vendor.rfq'));
 
-router.use('/vendor', require('./vendor/vendor.product'));
+router.use('/vendor', vendorRouter);
 
-router.use('/vendor', require('./vendor/vendor.order'));
+/* =================================================
+   COMPANY ROUTES
+================================================= */
 
-router.use('/vendor', require('./vendor/vendor.rfq'));
+const companyRouter = express.Router();
 
-router.use('/company', require('./company/company.dashboard'));
+companyRouter.use(authController.protect, authController.restrictTo('customer'));
 
-router.use('/company', require('./company/company.product'));
+companyRouter.use(require('./company/company.dashboard'));
+companyRouter.use(require('./company/company.product'));
+companyRouter.use(require('./company/company.order'));
+companyRouter.use(require('./company/company.rfq'));
+companyRouter.use(require('./company/company.cart'));
 
-router.use('/company', require('./company/company.order'));
-
-router.use('/company', require('./company/company.rfq'));
-
-router.use('/company', require('./company/company.cart'));
+router.use('/company', companyRouter);
 
 module.exports = router;

@@ -1,74 +1,92 @@
 const express = require('express');
-const router = express.Router();
 
 const authController = require('./../controllers/authentication');
 
-router.get('/company/login', (req, res) => {
+const router = express.Router();
+
+/* =========================================
+   PUBLIC ROUTES
+========================================= */
+
+router.get('/login', (req, res) => {
   res.render('company/login');
 });
+
 router.get('/signup', (req, res) => {
   res.render('company/login');
 });
 
-router.get(
-  '/dashboard',
+/* =========================================
+   COMPANY AUTH MIDDLEWARE
+========================================= */
+
+router.use(
   authController.protect,
   authController.restrictTo('customer'),
-  (req, res) => {
-    res.render('company/dashboard');
-  },
 );
 
-router.get(
-  '/rfq/:id/quotes',
-  authController.protect,
-  authController.restrictTo('customer'),
-  (req, res) => {
-    res.render('company/rfq-quotes');
-  },
-);
+/* =========================================
+   DASHBOARD
+========================================= */
 
-router.get(
-  '/rfq/:id',
-  authController.protect,
-  authController.restrictTo('customer'),
-  (req, res) => {
-    res.render('company/rfq-success');
-  },
-);
-
-router.get('/create', authController.protect, authController.restrictTo('customer'), (req, res) => {
-  res.render('company/create-rfq');
+router.get('/dashboard', (req, res) => {
+  res.render('company/dashboard');
 });
 
-router.get('/cart', authController.protect, authController.restrictTo('customer'), (req, res) => {
-  res.render('company/cart');
+/* =========================================
+   RFQ
+========================================= */
+
+router.get('/rfq/:id/quotes', (req, res) => {
+  res.render('company/rfq-quotes');
 });
 
-router.get(
-  '/profile',
-  authController.protect,
-  authController.restrictTo('customer'),
-  (req, res) => {
-    res.render('company/profile');
-  },
-);
-
-router.get('/orders', authController.protect, authController.restrictTo('customer'), (req, res) => {
-  res.render('company/orders');
+router.get('/rfq/:id', (req, res) => {
+  res.render('company/rfq-success');
 });
 
-router.get('/rfq', authController.protect, authController.restrictTo('customer'), (req, res) => {
+router.get('/rfq', (req, res) => {
   res.render('company/rfq');
 });
 
-router.get(
-  '/marketplace',
-  authController.protect,
-  authController.restrictTo('customer'),
-  (req, res) => {
-    res.render('company/marketplace');
-  },
-);
+/* =========================================
+   CREATE RFQ
+========================================= */
+
+router.get('/create', (req, res) => {
+  res.render('company/create-rfq');
+});
+
+/* =========================================
+   CART
+========================================= */
+
+router.get('/cart', (req, res) => {
+  res.render('company/cart');
+});
+
+/* =========================================
+   PROFILE
+========================================= */
+
+router.get('/profile', (req, res) => {
+  res.render('company/profile');
+});
+
+/* =========================================
+   ORDERS
+========================================= */
+
+router.get('/orders', (req, res) => {
+  res.render('company/orders');
+});
+
+/* =========================================
+   MARKETPLACE
+========================================= */
+
+router.get('/marketplace', (req, res) => {
+  res.render('company/marketplace');
+});
 
 module.exports = router;

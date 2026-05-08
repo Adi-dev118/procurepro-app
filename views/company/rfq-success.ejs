@@ -33,31 +33,31 @@
 
         <nav class="sidebar-nav">
           <div class="sidebar-section-label">Main</div>
-          <a href="/dashboard" class="nav-item"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-          <a href="/marketplace" class="nav-item"><i class="bi bi-shop"></i> Marketplace</a>
-          <a href="/rfq" class="nav-item active"
+          <a href="/company/dashboard" class="nav-item"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+          <a href="/company/marketplace" class="nav-item"><i class="bi bi-shop"></i> Marketplace</a>
+          <a href="/company/rfq" class="nav-item active"
             ><i class="bi bi-megaphone"></i> My RFQs <span class="nav-badge">3</span></a
           >
-          <a href="/orders" class="nav-item"><i class="bi bi-cart-check"></i> Orders</a>
+          <a href="/company/orders" class="nav-item"><i class="bi bi-cart-check"></i> Orders</a>
 
           <div class="sidebar-section-label">Manage</div>
-          <a href="/suppliers" class="nav-item"><i class="bi bi-people"></i> Suppliers</a>
-          <a href="/invoices" class="nav-item"><i class="bi bi-receipt"></i> Invoices</a>
-          <a href="/reports" class="nav-item"><i class="bi bi-bar-chart-line"></i> Reports</a>
+          <a href="/company/suppliers" class="nav-item"><i class="bi bi-people"></i> Suppliers</a>
+          <a href="/company/invoices" class="nav-item"><i class="bi bi-receipt"></i> Invoices</a>
+          <a href="/company/reports" class="nav-item"><i class="bi bi-bar-chart-line"></i> Reports</a>
 
           <div class="sidebar-section-label">Account</div>
-          <a href="/settings" class="nav-item"><i class="bi bi-gear"></i> Settings</a>
-          <a href="/help" class="nav-item"><i class="bi bi-question-circle"></i> Help & Support</a>
+          <a href="/company/settings" class="nav-item"><i class="bi bi-gear"></i> Settings</a>
+          <a href="/company/help" class="nav-item"><i class="bi bi-question-circle"></i> Help & Support</a>
         </nav>
 
         <div class="sidebar-footer">
           <div class="user-popup" id="userPopup">
             <div class="user-popup-header">My Account</div>
-            <a href="/profile" class="user-popup-item">
+            <a href="/company/profile" class="user-popup-item">
               <i class="bi bi-person-circle"></i> Profile
             </a>
-            <a href="/cart" class="user-popup-item"> <i class="bi bi-cart3"></i> Cart </a>
-            <a href="/settings" class="user-popup-item"> <i class="bi bi-gear"></i> Settings </a>
+            <a href="/company/cart" class="user-popup-item"> <i class="bi bi-cart3"></i> Cart </a>
+            <a href="/company/settings" class="user-popup-item"> <i class="bi bi-gear"></i> Settings </a>
             <div class="user-popup-divider"></div>
             <a href="/company/login" class="user-popup-item danger" id="signoutButton">
               <i class="bi bi-box-arrow-left"></i> Sign Out
@@ -76,9 +76,9 @@
             <i class="bi bi-list" style="font-size: 18px"></i>
           </button>
           <nav class="breadcrumb-nav">
-            <a href="/dashboard">Dashboard</a>
+            <a href="/company/dashboard">Dashboard</a>
             <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
-            <a href="/rfq">RFQs</a>
+            <a href="/company/rfq">RFQs</a>
             <span class="sep"><i class="bi bi-chevron-right" style="font-size: 10px"></i></span>
             <span class="current">RFQ #</span>
           </nav>
@@ -110,10 +110,10 @@
               <div class="sb-rfq-id"><i class="bi bi-hash"></i> RFQ-</div>
             </div>
             <div class="success-banner-actions">
-              <a href="/rfq" class="btn-success-outline">
+              <a href="/company/rfq" class="btn-success-outline">
                 <i class="bi bi-list-ul"></i> All RFQs
               </a>
-              <a href="/rfq/create" class="btn-success-outline">
+              <a href="/company/rfq/create" class="btn-success-outline">
                 <i class="bi bi-plus-circle"></i> New RFQ
               </a>
             </div>
@@ -289,12 +289,12 @@
           <!-- ── Action Footer ── -->
           <div class="section-card" style="margin-bottom: 0">
             <div class="action-footer">
-              <a href="/rfq//quotes" class="btn-primary">
+              <a href="/company/rfq/quotes" class="btn-primary">
                 <i class="bi bi-collection"></i> View Incoming Quotes
               </a>
-              <a href="/rfq/edit" class="btn-outline"> <i class="bi bi-pencil"></i> Edit RFQ </a>
-              <a href="/rfq" class="btn-outline"> <i class="bi bi-list-ul"></i> Back to RFQs </a>
-              <a href="/rfq//close" class="btn-outline danger ms-auto">
+              <a href="/company/rfq/edit" class="btn-outline"> <i class="bi bi-pencil"></i> Edit RFQ </a>
+              <a href="/company/rfq" class="btn-outline"> <i class="bi bi-list-ul"></i> Back to RFQs </a>
+              <a href="/company/rfq//close" class="btn-outline danger ms-auto">
                 <i class="bi bi-x-circle"></i> Close RFQ
               </a>
             </div>
@@ -342,8 +342,8 @@
       const pathParts = window.location.pathname.split('/');
       const rfqId = pathParts[pathParts.length - 1];
 
-      document.querySelector('.btn-primary').href = `/rfq/${rfqId}/quotes`;
-      document.querySelector('.btn-outline.danger').href = `/rfq/${rfqId}/close`;
+      document.querySelector('.btn-primary').href = `/company/rfq/${rfqId}/quotes`;
+      document.querySelector('.btn-outline.danger').href = `/company/rfq/${rfqId}/close`;
 
       console.log('RFQ ID:', rfqId);
 

@@ -5,138 +5,89 @@ const authController = require('./../controllers/authentication');
 const router = express.Router();
 
 /* =========================================
+   ADMIN AUTH MIDDLEWARE
+========================================= */
+
+router.use(authController.protect, authController.restrictTo('admin'));
+
+/* =========================================
    ADMIN DASHBOARD
 ========================================= */
 
-router.get(
-  '/admin/dashboard',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/dashboard');
-  },
-);
+router.get('/dashboard', (req, res) => {
+  res.render('admin/dashboard');
+});
 
 /* =========================================
    USERS
 ========================================= */
 
-router.get(
-  '/admin/users',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/users');
-  },
-);
+router.get('/users', (req, res) => {
+  res.render('admin/users');
+});
 
 /* =========================================
    SUPPLIERS
 ========================================= */
 
-router.get(
-  '/admin/suppliers',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/suppliers');
-  },
-);
+router.get('/suppliers', (req, res) => {
+  res.render('admin/suppliers');
+});
 
-router.get(
-  '/admin/supplier-details/:supplierId',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/supplier-detail');
-  },
-);
+router.get('/supplier-details/:supplierId', (req, res) => {
+  res.render('admin/supplier-detail');
+});
 
 /* =========================================
    PRODUCTS
 ========================================= */
 
-router.get(
-  '/admin/products',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/products');
-  },
-);
+router.get('/products', (req, res) => {
+  res.render('admin/products');
+});
 
 /* =========================================
    ORDERS
 ========================================= */
 
-router.get(
-  '/admin/orders',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/orders');
-  },
-);
+router.get('/orders', (req, res) => {
+  res.render('admin/orders');
+});
 
-router.get(
-  '/admin/order-detail/:orderId',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/order-detail');
-  },
-);
+router.get('/order-detail/:orderId', (req, res) => {
+  res.render('admin/order-detail');
+});
 
 /* =========================================
    RFQS
 ========================================= */
 
-router.get(
-  '/admin/rfqs',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/rfqs');
-  },
-);
+router.get('/rfqs', (req, res) => {
+  res.render('admin/rfqs');
+});
 
 /* =========================================
    DISPUTES
 ========================================= */
 
-router.get(
-  '/admin/disputes',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/disputes');
-  },
-);
+router.get('/disputes', (req, res) => {
+  res.render('admin/disputes');
+});
 
 /* =========================================
    ACTIVITIES
 ========================================= */
 
-router.get(
-  '/admin/activities',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/activities');
-  },
-);
+router.get('/activities', (req, res) => {
+  res.render('admin/activities');
+});
 
 /* =========================================
    SETTINGS
 ========================================= */
 
-router.get(
-  '/admin/setting',
-  authController.protect,
-  authController.restrictTo('admin'),
-  (req, res) => {
-    res.render('admin/settings');
-  },
-);
+router.get('/setting', (req, res) => {
+  res.render('admin/settings');
+});
 
 module.exports = router;

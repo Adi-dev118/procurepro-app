@@ -33,49 +33,49 @@
 
         <nav class="sidebar-nav">
           <div class="sidebar-section-label">Main</div>
-          <a href="/dashboard" class="nav-item"
+          <a href="/company/dashboard" class="nav-item"
             ><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a
           >
-          <a href="/marketplace" class="nav-item"
+          <a href="/company/marketplace" class="nav-item"
             ><i class="bi bi-shop"></i><span>Marketplace</span></a
           >
-          <a href="/rfq" class="nav-item active">
+          <a href="/company/rfq" class="nav-item active">
             <i class="bi bi-megaphone"></i><span>RFQ Center</span>
             <span class="nav-badge warning">5</span>
           </a>
 
           <div class="sidebar-section-label">Procurement</div>
-          <a href="/orders" class="nav-item"
+          <a href="/company/orders" class="nav-item"
             ><i class="bi bi-cart-check"></i><span>Orders</span><span class="nav-badge">3</span></a
           >
-          <a href="/contracts" class="nav-item"
+          <a href="/company/contracts" class="nav-item"
             ><i class="bi bi-file-earmark-text"></i><span>Contracts</span></a
           >
-          <a href="/invoices" class="nav-item"
+          <a href="/company/invoices" class="nav-item"
             ><i class="bi bi-receipt"></i><span>Invoices</span></a
           >
-          <a href="/suppliers" class="nav-item"
+          <a href="/company/suppliers" class="nav-item"
             ><i class="bi bi-people"></i><span>Suppliers</span></a
           >
 
           <div class="sidebar-section-label">Account</div>
-          <a href="/analytics" class="nav-item"
+          <a href="/company/analytics" class="nav-item"
             ><i class="bi bi-bar-chart-line"></i><span>Analytics</span></a
           >
-          <a href="/profile" class="nav-item"
+          <a href="/company/profile" class="nav-item"
             ><i class="bi bi-person-circle"></i><span>Profile & Team</span></a
           >
-          <a href="/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
+          <a href="/company/settings" class="nav-item"><i class="bi bi-gear"></i><span>Settings</span></a>
         </nav>
 
         <div class="sidebar-footer">
           <div class="user-popup" id="userPopup">
             <div class="user-popup-header">My Account</div>
-            <a href="/profile" class="user-popup-item"
+            <a href="/company/profile" class="user-popup-item"
               ><i class="bi bi-person-circle"></i> Profile</a
             >
-            <a href="/cart" class="user-popup-item"><i class="bi bi-cart3"></i> Cart</a>
-            <a href="/settings" class="user-popup-item"><i class="bi bi-gear"></i> Settings</a>
+            <a href="/company/cart" class="user-popup-item"><i class="bi bi-cart3"></i> Cart</a>
+            <a href="/company/settings" class="user-popup-item"><i class="bi bi-gear"></i> Settings</a>
             <div class="user-popup-divider"></div>
             <a href="/company/login" class="user-popup-item danger" id="signoutButton"
               ><i class="bi bi-box-arrow-left"></i> Sign Out</a
@@ -94,7 +94,7 @@
           </button>
 
           <div class="topbar-breadcrumb">
-            <a href="/rfq">RFQ Center</a>
+            <a href="/company/rfq">RFQ Center</a>
             <span class="sep">/</span>
             <span class="current">Create New RFQ</span>
           </div>
@@ -689,7 +689,7 @@
       function confirmDiscard() {
         if (confirm('Discard this RFQ? Any unsaved changes will be lost.')) {
           localStorage.removeItem(DRAFT_KEY);
-          window.location.href = '/rfq';
+          window.location.href = '/company/rfq';
         }
       }
 
@@ -714,7 +714,7 @@
 
             if (d.status === 'Success') {
               localStorage.removeItem(DRAFT_KEY);
-              window.location.href = '/rfq/' + d.data.rfqId;
+              window.location.href = '/company/rfq/' + d.data.rfqId;
             } else {
               alert(d.message || 'RFQ creation failed');
             }

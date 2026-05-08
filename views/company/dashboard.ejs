@@ -34,15 +34,15 @@
         <nav class="sidebar-nav">
           <div class="sidebar-section-label">Main</div>
 
-          <a href="/dashboard" class="nav-item active">
+          <a href="/company/dashboard" class="nav-item active">
             <i class="bi bi-grid-1x2"></i>
             <span>Dashboard</span>
           </a>
-          <a href="/marketplace" class="nav-item">
+          <a href="/company/marketplace" class="nav-item">
             <i class="bi bi-shop"></i>
             <span>Marketplace</span>
           </a>
-          <a href="/rfq" class="nav-item">
+          <a href="/company/rfq" class="nav-item">
             <i class="bi bi-megaphone"></i>
             <span>RFQ Center</span>
             <span class="nav-badge warning">5</span>
@@ -50,35 +50,35 @@
 
           <div class="sidebar-section-label">Procurement</div>
 
-          <a href="/orders" class="nav-item">
+          <a href="/company/orders" class="nav-item">
             <i class="bi bi-cart-check"></i>
             <span>Orders</span>
             <span class="nav-badge">3</span>
           </a>
-          <a href="/contracts" class="nav-item">
+          <a href="/company/contracts" class="nav-item">
             <i class="bi bi-file-earmark-text"></i>
             <span>Contracts</span>
           </a>
-          <a href="/invoices" class="nav-item">
+          <a href="/company/invoices" class="nav-item">
             <i class="bi bi-receipt"></i>
             <span>Invoices</span>
           </a>
-          <a href="/suppliers" class="nav-item">
+          <a href="/company/suppliers" class="nav-item">
             <i class="bi bi-people"></i>
             <span>Suppliers</span>
           </a>
 
           <div class="sidebar-section-label">Account</div>
 
-          <a href="/analytics" class="nav-item">
+          <a href="/company/analytics" class="nav-item">
             <i class="bi bi-bar-chart-line"></i>
             <span>Analytics</span>
           </a>
-          <a href="/profile" class="nav-item">
+          <a href="/company/profile" class="nav-item">
             <i class="bi bi-person-circle"></i>
             <span>Profile & Team</span>
           </a>
-          <a href="/settings" class="nav-item">
+          <a href="/company/settings" class="nav-item">
             <i class="bi bi-gear"></i>
             <span>Settings</span>
           </a>
@@ -88,13 +88,13 @@
           <!-- Slide-up Popup Menu -->
           <div class="user-popup" id="userPopup">
             <div class="user-popup-header">My Account</div>
-            <a href="/profile" class="user-popup-item">
+            <a href="/company/profile" class="user-popup-item">
               <i class="bi bi-person-circle"></i> Profile
             </a>
-            <a href="/cart" class="user-popup-item"> <i class="bi bi-cart3"></i> Cart </a>
-            <a href="/settings" class="user-popup-item"> <i class="bi bi-gear"></i> Settings </a>
+            <a href="/company/cart" class="user-popup-item"> <i class="bi bi-cart3"></i> Cart </a>
+            <a href="/company/settings" class="user-popup-item"> <i class="bi bi-gear"></i> Settings </a>
             <div class="user-popup-divider"></div>
-            <a href="/company/login" class="user-popup-item danger" id="signoutButton">
+            <a href="/company/company/login" class="user-popup-item danger" id="signoutButton">
               <i class="bi bi-box-arrow-left"></i> Sign Out
             </a>
           </div>
@@ -144,7 +144,7 @@
               <div class="wb-actions">
                 <button class="btn-wb-primary">
                   <i class="bi bi-search"></i
-                  ><a href="/marketplace" class="nav-item">Browse Marketplace</a>
+                  ><a href="/company/marketplace" class="nav-item">Browse Marketplace</a>
                 </button>
                 <button class="btn-wb-outline"><i class="bi bi-plus"></i> Create RFQ</button>
                 <button class="btn-wb-outline"><i class="bi bi-cart"></i> View Orders</button>
@@ -225,7 +225,7 @@
                 </div>
               </div>
               <div class="quick-links-list">
-                <a href="/marketplace?category=machinery" class="quick-link">
+                <a href="/company/marketplace?category=machinery" class="quick-link">
                   <div class="ql-icon blue"><i class="bi bi-gear"></i></div>
                   <div>
                     <div class="ql-name">Browse Machinery</div>
@@ -233,7 +233,7 @@
                   </div>
                   <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/rfq" class="quick-link">
+                <a href="/company/rfq" class="quick-link">
                   <div class="ql-icon amber"><i class="bi bi-megaphone"></i></div>
                   <div>
                     <div class="ql-name">Manage RFQs</div>
@@ -241,7 +241,7 @@
                   </div>
                   <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/orders" class="quick-link">
+                <a href="/company/orders" class="quick-link">
                   <div class="ql-icon purple"><i class="bi bi-truck"></i></div>
                   <div>
                     <div class="ql-name">Track Orders</div>
@@ -249,7 +249,7 @@
                   </div>
                   <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/suppliers" class="quick-link">
+                <a href="/company/suppliers" class="quick-link">
                   <div class="ql-icon green"><i class="bi bi-people"></i></div>
                   <div>
                     <div class="ql-name">Approved Suppliers</div>
@@ -257,7 +257,7 @@
                   </div>
                   <i class="bi bi-chevron-right ql-arrow"></i>
                 </a>
-                <a href="/invoices" class="quick-link">
+                <a href="/company/invoices" class="quick-link">
                   <div class="ql-icon blue"><i class="bi bi-receipt"></i></div>
                   <div>
                     <div class="ql-name">Invoices & Payments</div>
@@ -276,7 +276,7 @@
                 <div class="section-title">Recent RFQs</div>
                 <div class="section-subtitle">Your latest request for quotations</div>
               </div>
-              <a href="/rfq" class="btn-link">View all RFQs <i class="bi bi-arrow-right"></i></a>
+              <a href="/company/rfq" class="btn-link">View all RFQs <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="rfq-table-wrap">
               <table class="rfq-table">
