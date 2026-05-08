@@ -89,8 +89,6 @@ function initFilters() {
   }
 }
 
-
-
 // Order tracking
 function initOrderTracking() {
   const trackOrderBtns = document.querySelectorAll('.track-order-btn');
@@ -519,14 +517,14 @@ function checkStrength(v) {
   fill.style.width = ['25%', '50%', '75%', '100%'][s - 1] || '0';
   fill.style.background = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'][s - 1] || 'transparent';
 }
-
 async function handleLogin() {
   const email = document.getElementById('lEmail').value.trim();
   const pass = document.getElementById('lPass').value;
+
   const e1 = setErr('lEmail', 'lEmailErr', !validEmail(email));
   const e2 = setErr('lPass', 'lPassErr', !pass);
+
   if (!e1 && !e2) {
-    // TODO: POST /api/auth/login  →  { email, password: pass }
     try {
       const res = await fetch('/api/v1/users/login', {
         method: 'POST',
@@ -538,29 +536,46 @@ async function handleLogin() {
           password: pass,
         }),
       });
+
       const data = await res.json();
-      //   console.log(data.session.role);
-      //   console.log(data.message, 'Hello');
+
+      /* ================================
+         RATE LIMIT HANDLING
+      ================================= */
+
+      if (res.status === 429) {
+        toast('Too many attempts. Try again later.');
+        return;
+      }
+
+      /* ================================
+         LOGIN SUCCESS
+      ================================= */
+
       if (res.ok) {
+        toast('Signed in successfully! Redirecting…');
+
         if (data.session.role === 'customer') {
-          toast('Signed in successfully! Redirecting…');
-          setTimeout(() => (window.location.href = '/dashboard'), 1800);
+          setTimeout(() => {
+            window.location.href = '/company/dashboard';
+          }, 1800);
         } else if (data.session.role === 'admin') {
-          toast('Signed in successfully! Redirecting…');
-          setTimeout(() => (window.location.href = '/admin/dashboard'), 1800);
+          setTimeout(() => {
+            window.location.href = '/admin/dashboard';
+          }, 1800);
         } else {
-          toast('Signed in successfully! Redirecting…');
-          setTimeout(() => (window.location.href = '/vendor/dashboard'), 1800);
+          setTimeout(() => {
+            window.location.href = '/vendor/dashboard';
+          }, 1800);
         }
       } else {
-        toast(data.message || 'login failed');
+        toast(data.message || 'Login failed');
       }
     } catch (error) {
       toast('Something went wrong');
     }
   }
 }
-
 async function handleSignup() {
   const first = document.getElementById('sFirst').value.trim();
   const last = document.getElementById('sLast').value.trim();
