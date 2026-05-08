@@ -8,7 +8,7 @@ const RedisStore = require('connect-redis').RedisStore;
 const adminPages = require('./routes/admin');
 const companyPages = require('./routes/company');
 const vendorPages = require('./routes/vendor');
-const authRoutes = require('./routes/users');
+const authRoutes = require('./routes/authentication');
 const apiRoutes = require('./routes');
 const { createClient } = require('redis');
 
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'views/assets')));
 
 const redisClient = createClient({
-  url: 'redis://127.0.0.1:6379',
+  url: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
 });
 redisClient.on('connect', () => {
   console.log('✅ Redis Connected');
@@ -45,14 +45,19 @@ app.use(
     },
   }),
 );
-
-// API ROUTERS
 app.use('/', authRoutes);
-
 app.use('/admin', adminPages);
 app.use('/vendor', vendorPages);
 app.use('/company', companyPages);
-
 app.use(apiRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ status: 'fail', message: 'Route not found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ status: 'error', message: 'Internal server error' });
+});
 
 module.exports = app;
