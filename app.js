@@ -5,14 +5,10 @@ const session = require('express-session');
 const RedisStore = require('connect-redis').RedisStore;
 
 // REQUIRED ROUTING FILES
-const userRoutes = require('./routes/users');
-const productRoutes = require('./routes/product');
-const orderRoutes = require('./routes/order');
-const cartRoutes = require('./routes/cart');
-const adminRoutes = require('./routes/admin');
-const companyRoutes = require('./routes/company');
-const vendorRoutes = require('./routes/vendor');
-const authRoutes = require('./routes/authentication');
+const adminPages = require('./routes/admin');
+const companyPages = require('./routes/company');
+const vendorPages = require('./routes/vendor');
+const authRoutes = require('./routes/users');
 const routes = require('./routes');
 const { createClient } = require('redis');
 
@@ -53,16 +49,9 @@ app.use(
 // API ROUTERS
 app.use('/', authRoutes);
 
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/products', productRoutes);
-app.use('/api/v1/orders', orderRoutes);
-app.use('/api/v1/carts', cartRoutes);
-
-
-// VIEWS ROUTES
-app.use('/', adminRoutes);
-app.use('/', vendorRoutes);
-app.use('/', companyRoutes);
+app.use('/', adminPages);
+app.use('/', vendorPages);
+app.use('/', companyPages);
 app.use(routes);
 
 module.exports = app;

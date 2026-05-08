@@ -1,55 +1,142 @@
 const express = require('express');
-const authController = require('./../controllers/authentication');
-const userController = require('./../controllers/users');
-const productController = require('./../controllers/product');
-const orderController = require('./../controllers/order');
 
-const rfqController = require('./../controllers/rfq');
+const authController = require('./../controllers/authentication');
+
 const router = express.Router();
 
+/* =========================================
+   ADMIN DASHBOARD
+========================================= */
 
-router.get('/admin/supplier-details/:supplierId', (req, res) => {
-  res.render('admin/supplier-detail');
-});
+router.get(
+  '/admin/dashboard',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/dashboard');
+  },
+);
 
-router.get('/admin/dashboard', (req, res) => {
-  res.render('admin/dashboard');
-});
+/* =========================================
+   USERS
+========================================= */
 
-router.get('/admin/users', (req, res) => {
-  res.render('admin/users');
-});
+router.get(
+  '/admin/users',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/users');
+  },
+);
 
-router.get('/admin/suppliers', (req, res) => {
-  res.render('admin/suppliers');
-});
+/* =========================================
+   SUPPLIERS
+========================================= */
 
-router.get('/admin/products', (req, res) => {
-  res.render('admin/products');
-});
+router.get(
+  '/admin/suppliers',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/suppliers');
+  },
+);
 
-router.get('/admin/orders', (req, res) => {
-  res.render('admin/orders');
-});
+router.get(
+  '/admin/supplier-details/:supplierId',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/supplier-detail');
+  },
+);
 
-router.get('/admin/disputes', (req, res) => {
-  res.render('admin/disputes');
-});
+/* =========================================
+   PRODUCTS
+========================================= */
 
-router.get('/admin/rfqs', (req, res) => {
-  res.render('admin/rfqs');
-});
+router.get(
+  '/admin/products',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/products');
+  },
+);
 
-router.get('/admin/order-detail/:orderId', (req, res) => {
-  res.render('admin/order-detail');
-});
+/* =========================================
+   ORDERS
+========================================= */
 
-router.get('/admin/activities', (req, res) => {
-  res.render('admin/activities');
-});
+router.get(
+  '/admin/orders',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/orders');
+  },
+);
 
-router.get('/admin/setting', (req, res) => {
-  res.render('admin/settings');
-});
+router.get(
+  '/admin/order-detail/:orderId',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/order-detail');
+  },
+);
+
+/* =========================================
+   RFQS
+========================================= */
+
+router.get(
+  '/admin/rfqs',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/rfqs');
+  },
+);
+
+/* =========================================
+   DISPUTES
+========================================= */
+
+router.get(
+  '/admin/disputes',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/disputes');
+  },
+);
+
+/* =========================================
+   ACTIVITIES
+========================================= */
+
+router.get(
+  '/admin/activities',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/activities');
+  },
+);
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+router.get(
+  '/admin/setting',
+  authController.protect,
+  authController.restrictTo('admin'),
+  (req, res) => {
+    res.render('admin/settings');
+  },
+);
 
 module.exports = router;

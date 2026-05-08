@@ -1,4 +1,4 @@
-const db = require('./../config/db');
+const db = require('../../config/db');
 
 exports.addItems = async (req, res) => {
   // Getting Independent Connection to DB

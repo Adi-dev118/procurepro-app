@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantity = qtyInput.value;
 
     try {
-      const res = await fetch('/api/v1/carts/add-items/', {
+      const res = await fetch('/company/api/v1/cart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ export async function fetchCart() {
       page: cartState.page,
     });
 
-    const res = await fetch(`/api/v1/carts/get-items/?${query}`);
+    const res = await fetch(`/company/api/v1/cart?${query}`);
     const data = await res.json();
 
     renderCart(data.cart || []);
@@ -23,7 +23,7 @@ export async function fetchCart() {
 // ===============================
 export async function increaseCartItem(productId) {
   try {
-    const res = await fetch(`/api/v1/carts/increase-items/`, {
+    const res = await fetch(`/company/api/v1/cart/increase-items`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function increaseCartItem(productId) {
 // ===============================
 export async function decreaseCartItem(productId) {
   try {
-    const res = await fetch(`/api/v1/carts/decrease-items/`, {
+    const res = await fetch(`/company/api/v1/cart/decrease-items`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export async function decreaseCartItem(productId) {
 // ===============================
 export async function deleteCartItem(productId) {
   try {
-    const res = await fetch(`/api/v1/carts/remove-items/`, {
+    const res = await fetch(`/company/api/v1/cart/remove-items`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export async function deleteCartItem(productId) {
 // ===============================
 export async function clearEntireCart() {
   try {
-    const res = await fetch(`/api/v1/carts/clear-items/`, {
+    const res = await fetch(`/company/api/v1/cart`, {
       method: 'DELETE',
     });
 

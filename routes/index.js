@@ -34,4 +34,6 @@ router.use('/company', require('./company/company.order'));
 
 router.use('/company', require('./company/company.rfq'));
 
+router.use('/company', require('./company/company.cart'));
+
 module.exports = router;
