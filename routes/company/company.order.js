@@ -5,5 +5,6 @@ const companyOrderController = require('./../../controllers/company/company.orde
 
 router.get('/api/v1/order/order-stats', companyOrderController.getOrderStats);
 router.get('/api/v1/order/order-data', companyOrderController.getOrders);
+router.post('/api/v1/order/new-order/:id', companyOrderController.newOrder);
 
 module.exports = router;
