@@ -191,7 +191,6 @@ function initializeCategoryTags() {
 
 function filterByCategory(category) {
     // Implement category filtering logic
-    console.log('Filtering by category:', category);
 }
 
 // Dashboard mobile toggle

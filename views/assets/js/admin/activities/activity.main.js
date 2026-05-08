@@ -1,25 +1,8 @@
 import { activityState } from './activity.state.js';
 import { fetchActivities } from './activity.api.js';
 
-// const rows = document.querySelectorAll('.activity-row');
 let visibleCount = 0;
-/*
-rows.forEach((row) => {
-  const name = row.dataset.name || '';
-  const log = row.dataset.log || '';
-  const status = row.dataset.status || '';
 
-  const matchSearch = !searchVal || name.includes(searchVal) || log.includes(searchVal);
-  const matchStatus = !statusVal || status.includes(statusVal);
-
-  if (matchSearch && matchStatus) {
-    row.style.display = '';
-    visibleCount++;
-  } else {
-    row.style.display = 'none';
-  }
-});
-*/
 function changePage(page) {
   if (page < 1) return;
 

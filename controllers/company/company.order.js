@@ -208,7 +208,6 @@ exports.newOrder = async (req, res) => {
         message: 'The cart is empty',
       });
     }
-    // console.log(cartItems)
     const productIds = cartItems.map((el) => el.product_id);
 
     const [check] = await connection.query(`SELECT id, stock, name FROM products WHERE id IN (?)`, [

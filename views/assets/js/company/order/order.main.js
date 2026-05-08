@@ -45,9 +45,6 @@ document.addEventListener('click', (e) => {
   if (!btn) return;
 
   const orderId = btn.dataset.orderId;
-
-  console.log('Track order:', orderId);
-
   // 👉 future: open tracking modal
 });
 
@@ -57,7 +54,6 @@ document.addEventListener('click', (e) => {
   if (!btn) return;
 
   const row = btn.closest('tr');
-  console.log('View order clicked', row);
 
   // 👉 future: open order details modal
 });
@@ -67,7 +63,6 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('[title="Pay"]');
   if (!btn) return;
 
-  console.log('Initiate payment');
 
   // 👉 integrate payment gateway later
 });

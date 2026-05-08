@@ -142,7 +142,6 @@ function renderProductPagination(totalPages) {
 function updateProductCount(currentPage, totalProducts, limit = 6) {
   const start = (currentPage - 1) * limit + 1;
   const end = Math.min(currentPage * limit, totalProducts);
-  console.log('limit', limit);
 
   const container = document.querySelector('.pagination-info');
   if (!container) return;

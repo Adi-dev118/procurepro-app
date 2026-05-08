@@ -11,7 +11,6 @@ async function fetchActivities() {
   const res = await fetch(`/admin/user/users-data/activities-data?${query}`);
   const data = await res.json();
 
-  console.log(data);
   activityState.page = data.currentPage;
 
   renderAllActivities(data.activities, data.total);

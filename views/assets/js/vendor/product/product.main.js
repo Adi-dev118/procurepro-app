@@ -34,9 +34,6 @@ document.querySelectorAll('[data-bs-toggle="tab"]').forEach((tab) => {
 
     productState.page = 1;
 
-    console.log('STATUS:', productState.status);
-    console.log('STOCK:', productState.stock);
-
     loadProducts();
   });
 });

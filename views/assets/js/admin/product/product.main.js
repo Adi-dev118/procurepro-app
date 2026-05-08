@@ -23,7 +23,6 @@ function setStockFilter(stock) {
   } else {
     productState.stock = stock;
   }
-  console.log(stock);
 
   productState.page = 1;
   fetchProducts();

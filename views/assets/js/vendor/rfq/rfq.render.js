@@ -101,7 +101,6 @@ export function viewQuote(data) {
     const q = data.quote;
     const statusEl = document.getElementById('viewStatus');
 
-    console.log(q);
     statusEl.textContent = q.status;
 
     statusEl.className =

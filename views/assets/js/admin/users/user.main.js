@@ -275,7 +275,6 @@ const handleAction = async () => {
   let url = '';
 
   if (currentAction === 'approve') {
-    console.log(currentType);
     if (currentType === 'vendor') {
       url = `/admin/supplier/supplier-data/modal-data/${currentUserId}/approve`;
     } else {
