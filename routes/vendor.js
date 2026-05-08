@@ -3,8 +3,9 @@ const router = express.Router();
 const vendorController = require('./../controllers/vendor');
 const authController = require('./../controllers/authentication');
 
-
-router.get('/vendor/dashboard', vendorController.vendorDashboard);
+router.get('/vendor/dashboard', (req, res) => {
+  res.render('vendor/dashboard');
+});
 
 router.get('/vendor/products', (req, res) => {
   res.render('vendor/products');

@@ -1,4 +1,4 @@
-import { loadVendorStats, loadRecentOrders } from './dashboard.api.js';
+import { loadVendorStats, loadRecentOrders , fetchRatingAndStatus } from './dashboard.api.js';
 async function initVendorStats() {
   const stats = await loadVendorStats();
 
@@ -15,5 +15,5 @@ async function initVendorStats() {
 }
 
 document.addEventListener('DOMContentLoaded', loadRecentOrders);
-
+fetchRatingAndStatus()
 initVendorStats();

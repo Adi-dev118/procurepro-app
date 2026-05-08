@@ -136,7 +136,7 @@ exports.vendorStats = async (req, res) => {
   }
 };
 
-exports.getRecentOrders= async (req, res) => {
+exports.getRecentOrders = async (req, res) => {
   try {
     const vendorId = req.session.user.vendorId;
 
@@ -191,6 +191,46 @@ exports.getRecentOrders= async (req, res) => {
     res.status(500).json({
       status: 'fail',
       message: 'Failed to load recent activities',
+    });
+  }
+};
+
+exports.getRatingAndStatus = async (req, res) => {
+  try {
+    const vendorId = req.session.user.vendorId;
+
+    const [rows] = await db.query(
+      `
+      SELECT
+        s.verification_status AS status,
+        ROUND(AVG(pr.rating), 1) AS avgRating,
+        COUNT(pr.id) AS totalReviews
+
+      FROM suppliers s
+
+      LEFT JOIN products p
+        ON s.id = p.supplier_id
+
+      LEFT JOIN product_reviews pr
+        ON p.id = pr.product_id
+
+      WHERE s.id = ?
+
+      GROUP BY s.id
+      `,
+      [vendorId],
+    );
+
+    res.status(200).json({
+      status: 'success',
+      data: rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      status: 'fail',
+      message: 'Something went wrong',
     });
   }
 };

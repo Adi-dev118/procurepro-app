@@ -108,7 +108,6 @@
               <span>3</span>
             </div>
             <div id="navbarProfileContainer"></div>
-            
           </div>
         </header>
 
@@ -125,23 +124,7 @@
                     </h2>
                     <p class="text-muted">Here's what's happening with your store today.</p>
                   </div>
-                  <div class="mt-2">
-                    <% if(status === 'approved'){ %>
-                    <span class="vendor-status-badge active me-2">Verified</span>
-
-                    <% } else if(status === 'pending'){ %>
-                    <span class="vendor-status-badge pending me-2">Pending</span>
-
-                    <% } else if(status === 'suspended'){ %>
-                    <span class="vendor-status-badge cancelled me-2">Suspended</span>
-
-                    <% } %>
-
-                    <span class="text-warning"
-                      ><%=rating.avgRating%>
-                      ★ (<%=rating.totalReviews%>)</span
-                    >
-                  </div>
+                  <div class="mt-2" id="vendor-status">"></div>
                 </div>
               </div>
             </div>
@@ -276,22 +259,17 @@
               <div class="vendor-chart-container">
                 <div class="vendor-chart-header">
                   <h3 class="vendor-chart-title">Stock Alerts</h3>
-                  <span class="badge bg-danger"><%=alerts%></span>
+                  <span class="badge bg-danger"></span>
                 </div>
-                <% stocks.forEach(stock => { %>
                 <div class="vendor-finance-item">
                   <div>
-                    <strong><%= stock.name %></strong>
-                    <div class="text-muted small">SKU: <%= stock.sku %></div>
+                    <strong></strong>
+                    <div class="text-muted small"></div>
                   </div>
 
-                  <% if(stock.stock_status === 'out_of_stock'){ %>
                   <span class="vendor-stock-badge out-of-stock">Out of Stock</span>
-                  <% } else { %>
                   <span class="vendor-stock-badge low-stock">Low Stock</span>
-                  <% } %>
                 </div>
-                <% }) %>
                 <div class="text-center mt-3">
                   <a href="/vendor/products" class="btn btn-outline-primary btn-sm"
                     >Manage Inventory</a

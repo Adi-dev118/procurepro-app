@@ -50,3 +50,39 @@ export function renderRecentOrders(orders) {
     tbody.appendChild(tr);
   });
 }
+
+export function renderStatusAndRating(vendor) {
+  const container = document.getElementById('vendor-status');
+
+  let statusBadge = '';
+
+  if (vendor.status === 'approved') {
+    statusBadge = `
+      <span class="vendor-status-badge active me-2">
+        Verified
+      </span>
+    `;
+  } else if (vendor.status === 'pending') {
+    statusBadge = `
+      <span class="vendor-status-badge pending me-2">
+        Pending
+      </span>
+    `;
+  } else if (vendor.status === 'suspended') {
+    statusBadge = `
+      <span class="vendor-status-badge cancelled me-2">
+        Suspended
+      </span>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="mt-2">
+      ${statusBadge}
+
+      <span class="text-warning">
+        ${vendor.avgRating} ★ (${vendor.totalReviews})
+      </span>
+    </div>
+  `;
+}

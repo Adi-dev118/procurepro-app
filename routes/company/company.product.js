@@ -5,10 +5,10 @@ const companyProductController = require('./../../controllers/company/company.pr
 
 router.get('/api/v1/product/products-data', companyProductController.getProducts);
 
-router.route('/').post(productController.newProduct).get(productController.getAllProducts);
-router.route('/categories').get(productController.getCategories);
-router.route('/by-category/:categoryId').get(productController.getProductByCategory);
-router.route('/:id').patch(productController.updateProduct);
+router.route('/').post(companyProductController.newProduct).get(companyProductController.getAllProducts);
+router.route('/categories').get(companyProductController.getCategories);
+router.route('/by-category/:categoryId').get(companyProductController.getProductByCategory);
+router.route('/:id').patch(companyProductController.updateProduct);
 
 
 module.exports = router;
