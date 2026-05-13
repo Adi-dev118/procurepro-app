@@ -11,7 +11,7 @@ import {
 
 async function loadRfqs() {
   try {
-    const res = await fetch('/api/v1/admin/all-rfq-data');
+    const res = await fetch('/admin/api/v1/admin/all-rfq-data');
     const data = await res.json();
     rfqState.allRfqs = data.rfqs || data || [];
     rfqState.filteredRfqs = [...rfqState.allRfqs];
@@ -28,7 +28,7 @@ async function loadRfqs() {
 async function loadRfqItems(rfqId) {
   const tbody = document.getElementById('modal-items-body');
   try {
-    const res = await fetch(`/api/v1/admin/rfq/${rfqId}/items`);
+    const res = await fetch(`/admin/api/v1/admin/rfq/${rfqId}/items`);
     const items = await res.json();
     renderItems(items);
   } catch (e) {
@@ -39,7 +39,7 @@ async function loadRfqItems(rfqId) {
 async function loadRfqQuotes(rfqId) {
   const tbody = document.getElementById('modal-quotes-body');
   try {
-    const res = await fetch(`/api/v1/admin/rfq/${rfqId}/quotes`);
+    const res = await fetch(`/admin/api/v1/admin/rfq/${rfqId}/quotes`);
     const quotes = await res.json();
 
     if (!quotes.length) {
@@ -55,7 +55,7 @@ async function loadRfqSpecs(rfqId) {
   const tbody = document.getElementById('modal-specs-body'); // move outside
 
   try {
-    const res = await fetch(`/api/v1/admin/rfq/${rfqId}/specifications`);
+    const res = await fetch(`/admin/api/v1/admin/rfq/${rfqId}/specifications`);
     const specs = await res.json();
 
     if (!specs.length) {

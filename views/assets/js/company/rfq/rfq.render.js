@@ -114,7 +114,7 @@ function rfqCard(rfq, label, badgeClass) {
         <!-- RIGHT SIDE -->
         <div class="rfq-actions">
           <span class="badge ${badgeClass}">${label}</span>
-          <button class="btn details-btn" onclick="window.location.href='/rfq/${rfq.id}'">Details</button>
+          <button class="btn details-btn" onclick="window.location.href='/company/rfq/${rfq.id}'">Details</button>
         </div>
 
       </div>

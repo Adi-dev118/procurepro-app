@@ -3,7 +3,7 @@ const router = express.Router();
 const authController = require('../../controllers/authentication');
 const companyProductController = require('./../../controllers/company/company.product');
 
-router.get('/api/v1/product/products-data', companyProductController.getProducts);
+router.get('/api/v1/product/products-data', companyProductController.getCompanyProducts);
 
 router.route('/').post(companyProductController.newProduct).get(companyProductController.getAllProducts);
 router.route('/categories').get(companyProductController.getCategories);

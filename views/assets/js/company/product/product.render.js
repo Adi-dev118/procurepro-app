@@ -1,5 +1,14 @@
 import { productState } from './product.state.js';
 
+function getInitials(name) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+}
 function renderProducts(products) {
   const container = document.querySelector('.products-grid');
 
@@ -73,15 +82,6 @@ function renderProducts(products) {
     `;
     })
     .join('');
-}
-
-function getInitials(name) {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
 }
 function renderProductPagination(totalPages) {
   const container = document.getElementById('pagination');

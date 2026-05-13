@@ -1,5 +1,5 @@
 const db = require('../../config/db');
-exports.getProducts = async (req, res) => {
+exports.getCompanyProducts = async (req, res) => {
   try {
     const search = req.query.search || '';
     const page = parseInt(req.query.page) || 1;
